@@ -1,0 +1,1571 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pre-order · ogi Mk I — Ships Q4 · ogi.space</title>
+<meta name="description" content="Reserve the first ogi Mk I. Wearable orthogonal intelligence. Hand-built eyewear. Ships Q4." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --void:        #07080C;
+    --ink:         #0B0D14;
+    --panel:       #11141D;
+    --panel-2:     #161A26;
+    --line:        rgba(239,231,213,0.12);
+    --line-soft:   rgba(239,231,213,0.06);
+    --bone:        #EFE7D5;
+    --bone-mist:   rgba(239,231,213,0.62);
+    --bone-low:    rgba(239,231,213,0.32);
+    --bone-faint:  rgba(239,231,213,0.18);
+    --ember:       #FF6F47;
+    --ember-deep:  #C44A2C;
+    --aurora:      #B8EBD0;
+    --plasma:      #E8B25B;
+
+    --display: "Instrument Serif", "Cormorant Garamond", serif;
+    --body:    "Geist", "Helvetica Neue", sans-serif;
+    --mono:    "Geist Mono", "JetBrains Mono", monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--bone); overflow-x: hidden; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    cursor: none;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.005em;
+    padding-bottom: 96px; /* room for sticky bar */
+    background:
+      radial-gradient(900px 600px at 80% -10%, rgba(255,111,71,0.10), transparent 60%),
+      radial-gradient(1100px 800px at 10% 30%, rgba(184,235,208,0.045), transparent 65%),
+      linear-gradient(180deg, #06070B 0%, #08090F 50%, #06070B 100%);
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.07;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+  }
+  ::selection { background: rgba(255,111,71,0.35); color: var(--bone); }
+
+  /* ── cursor ── */
+  .cursor-dot, .cursor-ring {
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 1100;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--ember);
+    box-shadow: 0 0 12px var(--ember);
+  }
+  .cursor-ring {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid rgba(255,111,71,0.5);
+    transition: width .22s ease, height .22s ease, border-color .22s ease;
+  }
+
+  /* ── NAV ── */
+  nav.top {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 20px 36px;
+    z-index: 50;
+    backdrop-filter: blur(10px);
+    background: linear-gradient(180deg, rgba(7,8,12,0.78), rgba(7,8,12,0));
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .wordmark { display: inline-flex; align-items: baseline; gap: 10px; text-decoration: none; color: var(--bone); }
+  .wordmark .mark { font-family: var(--display); font-size: 28px; letter-spacing: -0.02em; line-height: 1; }
+  .wordmark .dot {
+    display: inline-block; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--ember); box-shadow: 0 0 8px var(--ember); transform: translateY(-4px);
+  }
+  .wordmark .ext { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--bone-low); text-transform: lowercase; }
+  nav.top ul { list-style: none; display: flex; gap: 36px; justify-content: center; }
+  nav.top a {
+    color: var(--bone-mist); text-decoration: none;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    transition: color .3s ease;
+  }
+  nav.top a:hover { color: var(--bone); }
+  nav.top a::before { content: "—"; margin-right: 8px; color: var(--ember); opacity: 0; transition: opacity .3s ease; }
+  nav.top a:hover::before { opacity: 1; }
+  nav.top a.active { color: var(--ember); }
+  nav.top a.active::before { opacity: 1; }
+  .telemetry {
+    justify-self: end;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; color: var(--bone-low);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .telemetry .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--aurora); box-shadow: 0 0 10px var(--aurora); animation: pulse 2.4s ease-in-out infinite; }
+  .telemetry b { font-weight: 500; color: var(--bone); }
+  @keyframes pulse {
+    0%,100% { opacity: 0.35; transform: scale(0.85); }
+    50%     { opacity: 1;    transform: scale(1.15); }
+  }
+
+  /* ────────── HERO ────────── */
+  .product-hero {
+    padding: 130px 5vw 70px;
+    position: relative;
+  }
+  .product-hero-grid {
+    max-width: 1340px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .product-stage {
+    position: relative;
+    aspect-ratio: 5 / 4.2;
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(640px 360px at 50% 50%, rgba(255,111,71,0.16), transparent 65%),
+      radial-gradient(420px 240px at 50% 70%, rgba(184,235,208,0.08), transparent 70%),
+      linear-gradient(180deg, var(--panel) 0%, var(--ink) 100%);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .product-stage::before {
+    content: "";
+    position: absolute;
+    bottom: 14%;
+    left: 12%; right: 12%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,111,71,0.55), transparent);
+    filter: blur(2px);
+    box-shadow: 0 0 36px rgba(255,111,71,0.4);
+  }
+  .product-stage .bracket {
+    position: absolute; width: 16px; height: 16px;
+    border: 1px solid var(--ember); opacity: 0.6;
+  }
+  .product-stage .bracket.tl { top: 16px; left: 16px;    border-right: 0; border-bottom: 0; }
+  .product-stage .bracket.tr { top: 16px; right: 16px;   border-left: 0;  border-bottom: 0; }
+  .product-stage .bracket.bl { bottom: 16px; left: 16px; border-right: 0; border-top: 0; }
+  .product-stage .bracket.br { bottom: 16px; right: 16px; border-left: 0;  border-top: 0; }
+
+  .stage-head, .stage-foot {
+    position: absolute;
+    left: 36px; right: 36px;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--bone-low);
+  }
+  .stage-head { top: 34px; } .stage-foot { bottom: 34px; }
+  .stage-head b, .stage-foot b { color: var(--bone); font-weight: 500; }
+
+  .glasses-svg {
+    width: 78%;
+    max-width: 720px;
+    height: auto;
+    transition: transform .8s cubic-bezier(.16,1,.3,1), filter .8s ease;
+  }
+  .glasses-svg.tilt { transform: translateZ(0) rotate3d(0.4, 1, 0.1, 6deg); }
+
+  /* ── hero copy ── */
+  .hero-copy .crumbs {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--bone-low);
+    text-transform: uppercase;
+    margin-bottom: 22px;
+    display: flex; gap: 10px; align-items: center;
+  }
+  .hero-copy .crumbs a { color: var(--bone-mist); text-decoration: none; }
+  .hero-copy .crumbs .sep { color: var(--ember); }
+  .hero-copy .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border: 1px solid var(--ember);
+    color: var(--ember);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 26px;
+  }
+  .hero-copy .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ember); animation: pulse 2.4s ease-in-out infinite; }
+  .hero-copy h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(48px, 6.6vw, 104px);
+    line-height: 0.94;
+    color: var(--bone);
+    letter-spacing: -0.02em;
+    margin-bottom: 22px;
+  }
+  .hero-copy h1 em { font-style: italic; color: var(--ember); font-weight: 400; }
+  .hero-copy .lede {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--bone-mist);
+    font-size: 22px;
+    line-height: 1.35;
+    max-width: 36ch;
+    margin-bottom: 36px;
+  }
+
+  .price-block {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 32px;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 30px;
+  }
+  .price-block .label {
+    font-family: var(--mono); font-size: 10.5px;
+    text-transform: uppercase; letter-spacing: 0.18em; color: var(--bone-low);
+    display: block; margin-bottom: 6px;
+  }
+  .price-block .val {
+    font-family: var(--display); font-size: 38px;
+    color: var(--bone); letter-spacing: -0.015em; line-height: 1.0;
+  }
+  .price-block .val em { font-style: italic; color: var(--ember); }
+  .price-block .sub {
+    font-family: var(--mono); font-size: 11px; color: var(--bone-low); letter-spacing: 0.05em;
+    margin-top: 6px;
+  }
+
+  .hero-cta-row {
+    display: flex; gap: 14px; flex-wrap: wrap;
+  }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    border: 1px solid var(--bone-faint);
+    color: var(--bone);
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    background: transparent;
+    transition: background .3s ease, border-color .3s ease, color .3s ease;
+  }
+  .cta.primary {
+    background: var(--ember);
+    color: var(--void);
+    border-color: var(--ember);
+  }
+  .cta.primary:hover { background: #FF8966; border-color: #FF8966; }
+  .cta:not(.primary):hover { border-color: var(--bone); background: rgba(239,231,213,0.04); }
+  .cta .arrow { display: inline-block; width: 24px; height: 8px; position: relative; }
+  .cta .arrow::after {
+    content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: currentColor;
+  }
+  .cta .arrow::before {
+    content: ""; position: absolute; right: 0; top: 50%; width: 6px; height: 6px;
+    border-top: 1px solid currentColor; border-right: 1px solid currentColor;
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  /* ────────── SECTION SCAFFOLD ────────── */
+  section { position: relative; z-index: 2; }
+  .container { max-width: 1340px; margin: 0 auto; padding: 0 5vw; }
+  .section-head {
+    display: grid;
+    grid-template-columns: 240px 1fr 280px;
+    gap: 40px;
+    align-items: end;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 70px;
+  }
+  .section-head .index {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ember); line-height: 1.6;
+  }
+  .section-head .index span { display: block; color: var(--bone-low); margin-top: 6px; }
+  .section-head h2 {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(40px, 5.6vw, 84px); line-height: 0.98;
+    letter-spacing: -0.02em; color: var(--bone);
+  }
+  .section-head h2 em { font-style: italic; color: var(--ember); font-weight: 400; }
+  .section-head .lede {
+    font-family: var(--display); font-style: italic;
+    color: var(--bone-mist); font-size: 17px; line-height: 1.45;
+  }
+
+  /* ────────── CONFIGURATOR ────────── */
+  .configurator { padding: 110px 0 130px; }
+  .config-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .config-controls {
+    display: flex; flex-direction: column; gap: 56px;
+  }
+  .config-group .group-head {
+    display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px;
+  }
+  .config-group .group-head .label {
+    font-family: var(--mono); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.18em; color: var(--ember);
+  }
+  .config-group .group-head .selected {
+    font-family: var(--display); font-style: italic;
+    color: var(--bone); font-size: 20px;
+    letter-spacing: -0.005em;
+  }
+  /* swatch row */
+  .swatch-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .swatch {
+    cursor: none;
+    border: 1px solid var(--line);
+    padding: 18px 14px 20px;
+    background: var(--ink);
+    text-align: left;
+    transition: border-color .3s ease, background .3s ease, transform .3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .swatch:hover { border-color: var(--bone-faint); }
+  .swatch.active { border-color: var(--ember); background: rgba(255,111,71,0.04); }
+  .swatch .chip {
+    width: 100%; aspect-ratio: 1.6 / 1;
+    border-radius: 2px;
+    border: 1px solid var(--line);
+  }
+  .swatch .name {
+    font-family: var(--display);
+    color: var(--bone); font-size: 17px;
+    letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .swatch .name em { font-style: italic; color: var(--ember); }
+  .swatch .meta {
+    font-family: var(--mono); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.14em; color: var(--bone-low);
+  }
+
+  /* lens swatch (filled circle) */
+  .lens-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .lens-swatch {
+    cursor: none;
+    background: var(--ink);
+    border: 1px solid var(--line);
+    padding: 20px 14px;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+    transition: border-color .3s ease, background .3s ease;
+  }
+  .lens-swatch:hover { border-color: var(--bone-faint); }
+  .lens-swatch.active { border-color: var(--ember); background: rgba(255,111,71,0.04); }
+  .lens-swatch .ring {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid var(--line);
+    position: relative; overflow: hidden;
+  }
+  .lens-swatch .ring::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(closest-side at 35% 30%, rgba(255,255,255,0.18), transparent 70%);
+  }
+  .lens-swatch .name { font-family: var(--display); font-size: 17px; color: var(--bone); line-height: 1; }
+  .lens-swatch .meta { font-family: var(--mono); font-size: 10px; color: var(--bone-low); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  /* engraving */
+  .engraving-input {
+    width: 100%;
+    background: var(--ink);
+    border: 1px solid var(--line);
+    color: var(--bone);
+    font-family: var(--display);
+    font-size: 22px;
+    padding: 18px 22px;
+    letter-spacing: 0.04em;
+    transition: border-color .3s ease;
+    outline: none;
+  }
+  .engraving-input::placeholder { color: var(--bone-low); font-style: italic; }
+  .engraving-input:focus { border-color: var(--ember); }
+  .engraving-hint {
+    margin-top: 10px;
+    font-family: var(--mono); font-size: 10.5px; color: var(--bone-low);
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .engraving-hint b { color: var(--bone); font-weight: 500; }
+
+  /* size pills */
+  .size-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .size-pill {
+    cursor: none;
+    background: var(--ink);
+    border: 1px solid var(--line);
+    padding: 22px 22px 24px;
+    text-align: left;
+    transition: border-color .3s ease, background .3s ease;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .size-pill:hover { border-color: var(--bone-faint); }
+  .size-pill.active { border-color: var(--ember); background: rgba(255,111,71,0.04); }
+  .size-pill .name { font-family: var(--display); font-size: 22px; color: var(--bone); letter-spacing: -0.01em; }
+  .size-pill .name em { font-style: italic; color: var(--ember); }
+  .size-pill .dim { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; color: var(--bone-low); text-transform: uppercase; }
+
+  /* ── SUMMARY PANEL ── */
+  .summary {
+    position: sticky;
+    top: 100px;
+    background: var(--ink);
+    border: 1px solid var(--line);
+    padding: 36px 32px;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .summary .kicker {
+    font-family: var(--mono); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.18em; color: var(--ember);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .summary .kicker::before { content: ""; width: 32px; height: 1px; background: var(--ember); }
+  .summary h3 {
+    font-family: var(--display); font-weight: 400;
+    font-size: 38px; line-height: 1.05;
+    color: var(--bone); letter-spacing: -0.015em;
+  }
+  .summary h3 em { font-style: italic; color: var(--ember); }
+  .summary .config-readout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px;
+    padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .summary .config-readout .row .l {
+    font-family: var(--mono); font-size: 10px; color: var(--bone-low);
+    text-transform: uppercase; letter-spacing: 0.14em; display: block; margin-bottom: 4px;
+  }
+  .summary .config-readout .row .v {
+    font-family: var(--display); font-size: 18px; color: var(--bone); letter-spacing: -0.005em;
+  }
+  .summary .config-readout .row .v em { font-style: italic; color: var(--ember); }
+  .summary .price-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .summary .price-row .label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--bone-low); }
+  .summary .price-row .price { font-family: var(--display); font-size: 44px; color: var(--bone); letter-spacing: -0.015em; line-height: 1; }
+  .summary .price-row .price em { font-style: italic; color: var(--ember); }
+
+  .summary .reserve-btn {
+    width: 100%;
+    background: var(--ember);
+    color: var(--void);
+    border: 0;
+    padding: 20px 24px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: background .3s ease;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .summary .reserve-btn:hover { background: #FF8966; }
+  .summary .reserve-btn:disabled { background: rgba(184,235,208,0.85); color: var(--void); }
+
+  .summary .ship-line {
+    font-family: var(--mono); font-size: 10.5px;
+    text-transform: uppercase; letter-spacing: 0.14em; color: var(--bone-low);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .summary .ship-line .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--aurora);
+    box-shadow: 0 0 10px var(--aurora);
+  }
+  .summary .ship-line b { color: var(--bone); font-weight: 500; }
+
+  /* ────────── KIT ────────── */
+  .kit { padding: 120px 0 130px; }
+  .kit-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .kit-item {
+    background: var(--ink);
+    padding: 30px 24px 32px;
+    display: flex; flex-direction: column; gap: 14px;
+    aspect-ratio: 1 / 1.05;
+  }
+  .kit-item .icon {
+    height: 64px; display: flex; align-items: center;
+  }
+  .kit-item h4 {
+    font-family: var(--display); font-weight: 400;
+    font-size: 22px; line-height: 1.1;
+    color: var(--bone); letter-spacing: -0.005em;
+  }
+  .kit-item p {
+    font-size: 14.5px; color: var(--bone-mist); line-height: 1.55;
+  }
+  .kit-item .footer {
+    margin-top: auto;
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-low);
+  }
+
+  /* ────────── SPECS ────────── */
+  .specs { padding: 110px 0 130px; }
+  .specs-table { border-top: 1px solid var(--line); }
+  .spec-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    gap: 32px;
+    padding: 22px 0 24px;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .spec-row .key {
+    font-family: var(--mono); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.18em; color: var(--bone-low);
+  }
+  .spec-row .val {
+    font-family: var(--display); font-size: 22px;
+    color: var(--bone); letter-spacing: -0.005em; line-height: 1.25;
+  }
+  .spec-row .val em { font-style: italic; color: var(--ember); }
+  .spec-row .note {
+    font-size: 15.5px; color: var(--bone-mist); line-height: 1.55;
+  }
+
+  /* ────────── TIMELINE ────────── */
+  .timeline { padding: 110px 0 140px; }
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .tl-step {
+    padding: 36px 28px 40px;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 14px;
+    position: relative;
+  }
+  .tl-step:last-child { border-right: 0; }
+  .tl-step .when {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--ember);
+  }
+  .tl-step h4 {
+    font-family: var(--display); font-weight: 400;
+    font-size: 28px; line-height: 1.05;
+    color: var(--bone); letter-spacing: -0.01em;
+  }
+  .tl-step h4 em { font-style: italic; color: var(--ember); }
+  .tl-step p { font-size: 15px; color: var(--bone-mist); line-height: 1.55; }
+  .tl-step .pulse {
+    position: absolute; left: 28px; top: -7px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--ember);
+    box-shadow: 0 0 14px var(--ember);
+  }
+  .tl-step.future .pulse { background: var(--bone-faint); box-shadow: none; }
+
+  /* ────────── FAQ ────────── */
+  .faq { padding: 110px 0 140px; }
+  .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px 80px; }
+  .faq-item h5 {
+    font-family: var(--display); font-weight: 400;
+    font-size: 24px; line-height: 1.15;
+    color: var(--bone); letter-spacing: -0.01em; margin-bottom: 12px;
+  }
+  .faq-item h5 em { font-style: italic; color: var(--ember); }
+  .faq-item p { color: var(--bone-mist); font-size: 15.5px; line-height: 1.6; }
+
+  /* ────────── STICKY RESERVE BAR ────────── */
+  .reserve-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    z-index: 80;
+    backdrop-filter: blur(14px);
+    background: rgba(7,8,12,0.82);
+    border-top: 1px solid var(--line);
+    padding: 16px 36px;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 24px;
+    align-items: center;
+    transform: translateY(110%);
+    transition: transform .5s cubic-bezier(.16,1,.3,1);
+  }
+  .reserve-bar.show { transform: translateY(0); }
+  .reserve-bar .summary-text {
+    font-family: var(--display); font-size: 18px; color: var(--bone);
+    letter-spacing: -0.005em;
+  }
+  .reserve-bar .summary-text em { font-style: italic; color: var(--ember); }
+  .reserve-bar .summary-text .meta {
+    display: block;
+    font-family: var(--mono); font-size: 10.5px; color: var(--bone-low);
+    letter-spacing: 0.14em; text-transform: uppercase; margin-top: 4px;
+  }
+  .reserve-bar .price {
+    font-family: var(--display); font-size: 32px; color: var(--bone); letter-spacing: -0.01em;
+  }
+  .reserve-bar .price em { font-style: italic; color: var(--ember); }
+
+  /* ── footer ── */
+  footer {
+    position: relative; z-index: 3;
+    padding: 80px 5vw 40px;
+    border-top: 1px solid var(--line);
+  }
+  .footer-grid {
+    max-width: 1340px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 60px;
+  }
+  .footer-grid h5 {
+    font-family: var(--mono); font-size: 10.5px;
+    text-transform: uppercase; letter-spacing: 0.18em; color: var(--ember);
+    margin-bottom: 22px; font-weight: 500;
+  }
+  .footer-grid ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-grid a {
+    color: var(--bone-mist); text-decoration: none; font-size: 15.5px;
+    transition: color .3s ease; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .footer-grid a:hover { color: var(--ember); }
+  .footer-grid a::before {
+    content: ""; display: inline-block; width: 4px; height: 4px; background: var(--bone-faint); border-radius: 50%;
+    transition: background .3s ease;
+  }
+  .footer-grid a:hover::before { background: var(--ember); }
+  .colophon .mark-big { font-family: var(--display); font-size: 64px; line-height: 0.9; color: var(--bone); letter-spacing: -0.03em; margin-bottom: 14px; }
+  .colophon .mark-big em { font-style: italic; color: var(--ember); }
+  .colophon p { color: var(--bone-mist); font-size: 15px; max-width: 36ch; font-family: var(--display); font-style: italic; line-height: 1.45; }
+  .footer-foot {
+    max-width: 1340px; margin: 80px auto 0;
+    padding-top: 24px; border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 10px; color: var(--bone-low);
+    letter-spacing: 0.18em; text-transform: uppercase;
+  }
+
+  /* ── RESERVE MODAL ── */
+  .modal-bg {
+    position: fixed; inset: 0;
+    background: rgba(6,7,11,0.75);
+    backdrop-filter: blur(12px);
+    z-index: 1050;
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-bg.show { display: flex; }
+  .modal {
+    width: 100%; max-width: 540px;
+    background: var(--ink);
+    border: 1px solid var(--ember);
+    padding: 48px 44px 44px;
+    position: relative;
+  }
+  .modal .modal-kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ember); margin-bottom: 16px; }
+  .modal h3 { font-family: var(--display); font-weight: 400; font-size: 38px; line-height: 1.05; color: var(--bone); margin-bottom: 20px; letter-spacing: -0.015em; }
+  .modal h3 em { font-style: italic; color: var(--ember); }
+  .modal p { color: var(--bone-mist); font-size: 16px; margin-bottom: 28px; line-height: 1.55; }
+  .modal .position {
+    padding: 22px;
+    border: 1px solid var(--line);
+    background: rgba(255,111,71,0.04);
+    margin-bottom: 26px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  .modal .position .k { font-family: var(--mono); font-size: 10px; color: var(--bone-low); letter-spacing: 0.16em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+  .modal .position .v { font-family: var(--display); font-size: 22px; color: var(--bone); letter-spacing: -0.01em; }
+  .modal .position .v em { font-style: italic; color: var(--ember); }
+  .modal .close-btn {
+    width: 100%; padding: 16px; background: transparent;
+    border: 1px solid var(--bone-faint); color: var(--bone);
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    cursor: none; transition: border-color .3s ease;
+  }
+  .modal .close-btn:hover { border-color: var(--bone); }
+  .modal .x {
+    position: absolute; top: 16px; right: 16px;
+    width: 32px; height: 32px;
+    border: 1px solid var(--bone-faint); background: transparent; color: var(--bone);
+    cursor: none; font-family: var(--mono); font-size: 16px;
+  }
+
+  /* ────────── RESPONSIVE ────────── */
+  @media (max-width: 1100px) {
+    .product-hero-grid { grid-template-columns: 1fr; gap: 50px; }
+    .config-grid { grid-template-columns: 1fr; gap: 50px; }
+    .summary { position: static; }
+    .section-head { grid-template-columns: 1fr; gap: 20px; }
+    .kit-grid, .timeline-grid { grid-template-columns: 1fr 1fr; }
+    .timeline-grid .tl-step:nth-child(2) { border-right: 0; }
+    .swatch-row, .lens-row { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .spec-row { grid-template-columns: 1fr; gap: 8px; }
+    .faq-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    nav.top { grid-template-columns: 1fr auto; padding: 16px 20px; }
+    nav.top ul { display: none; }
+    .product-hero, .configurator, .kit, .specs, .timeline, .faq { padding-left: 22px; padding-right: 22px; }
+    .container { padding: 0; }
+    .kit-grid, .timeline-grid { grid-template-columns: 1fr; }
+    .timeline-grid .tl-step { border-right: 0; border-bottom: 1px solid var(--line); }
+    .timeline-grid .tl-step:last-child { border-bottom: 0; }
+    .size-row { grid-template-columns: 1fr; }
+    .reserve-bar { grid-template-columns: 1fr; padding: 14px 18px; gap: 12px; }
+    .reserve-bar .summary-text { font-size: 15px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 40px; padding: 0 22px; }
+    .footer-foot { flex-direction: column; gap: 10px; padding: 24px 22px 0; }
+    .colophon .mark-big { font-size: 44px; }
+    .modal { padding: 36px 26px 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-ring" id="ring"></div>
+<div class="cursor-dot"  id="dot"></div>
+
+<!-- ── NAV ── -->
+<nav class="top">
+  <a href="index.html" class="wordmark">
+    <span class="mark">ogi</span>
+    <span class="dot"></span>
+    <span class="ext">/ space</span>
+  </a>
+  <ul>
+    <li><a href="index.html#layer">What it is</a></li>
+    <li><a href="index.html#signal">Why</a></li>
+    <li><a href="index.html#three">How</a></li>
+    <li><a href="index.html#object">Mk I</a></li>
+    <li><a href="whitepaper.html">White paper</a></li>
+    <li><a href="preorder.html" class="active">Pre-order</a></li>
+  </ul>
+  <div class="telemetry">
+    <span class="pulse"></span>
+    <span>Cohort A · <b>open</b> · <span id="clock">2150 · 04:11 UTC</span></span>
+  </div>
+</nav>
+
+<!-- ── PRODUCT HERO ── -->
+<section class="product-hero">
+  <div class="product-hero-grid">
+
+    <!-- Product Stage -->
+    <div class="product-stage">
+      <span class="bracket tl"></span><span class="bracket tr"></span>
+      <span class="bracket bl"></span><span class="bracket br"></span>
+      <div class="stage-head">
+        <span>OBJECT · <b>OGI MK I</b></span>
+        <span>VIEW · <b>FRONT 3/4</b></span>
+      </div>
+
+      <!-- Apple-glass-style sunglasses SVG -->
+      <svg class="glasses-svg" id="glasses" viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- frame gradients (will be swapped via JS) -->
+          <linearGradient id="frame-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#F5EBD8"/>
+            <stop offset="55%" stop-color="#C9B58E"/>
+            <stop offset="100%" stop-color="#6B5A3A"/>
+          </linearGradient>
+          <linearGradient id="lens-base" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"   stop-color="#15192A" stop-opacity="0.98"/>
+            <stop offset="50%"  stop-color="#0A0D15" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#241A2C" stop-opacity="0.98"/>
+          </linearGradient>
+          <linearGradient id="lens-tint" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"   stop-color="#FF6F47" stop-opacity="0.32"/>
+            <stop offset="50%"  stop-color="#FF6F47" stop-opacity="0.10"/>
+            <stop offset="100%" stop-color="#B8EBD0" stop-opacity="0.15"/>
+          </linearGradient>
+          <linearGradient id="lens-shine" x1="0" y1="0" x2="0.4" y2="1">
+            <stop offset="0%"  stop-color="rgba(255,255,255,0.55)" stop-opacity="0.55"/>
+            <stop offset="60%" stop-color="rgba(255,255,255,0)" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+
+        <!-- temple arms (with hinges) -->
+        <g stroke="url(#frame-grad)" stroke-width="3" fill="none" stroke-linecap="round">
+          <!-- left arm -->
+          <path d="M 30 240 Q 90 220 158 218"/>
+          <!-- right arm -->
+          <path d="M 870 240 Q 810 220 742 218"/>
+          <!-- hinges -->
+          <circle cx="156" cy="220" r="3" fill="url(#frame-grad)" stroke="none"/>
+          <circle cx="744" cy="220" r="3" fill="url(#frame-grad)" stroke="none"/>
+        </g>
+
+        <!-- LEFT LENS (modern, rounded-rectangular, sleek) -->
+        <g>
+          <!-- frame -->
+          <path id="left-lens-shape"
+                d="M 158 218
+                   Q 158 175 200 168
+                   Q 280 158 360 168
+                   Q 400 175 400 218
+                   Q 400 286 360 312
+                   Q 290 326 240 322
+                   Q 175 310 158 218 Z"
+                fill="url(#lens-base)"
+                stroke="url(#frame-grad)"
+                stroke-width="2.4"/>
+          <!-- tint layer -->
+          <path d="M 158 218
+                   Q 158 175 200 168
+                   Q 280 158 360 168
+                   Q 400 175 400 218
+                   Q 400 286 360 312
+                   Q 290 326 240 322
+                   Q 175 310 158 218 Z"
+                fill="url(#lens-tint)" opacity="0.85"/>
+          <!-- shine -->
+          <path d="M 170 188
+                   Q 178 174 210 172
+                   Q 280 168 320 172
+                   Q 340 174 348 188
+                   L 320 198
+                   Q 280 196 250 198
+                   L 170 200 Z"
+                fill="url(#lens-shine)" opacity="0.5"/>
+          <!-- internal sensor dot -->
+          <circle cx="385" cy="200" r="2.2" fill="#FF6F47"/>
+          <circle cx="385" cy="200" r="6" fill="rgba(255,111,71,0.25)"/>
+        </g>
+
+        <!-- BRIDGE — Apple-like minimal -->
+        <path d="M 400 200 Q 420 192 440 200" stroke="url(#frame-grad)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <path d="M 400 218 Q 420 230 440 218" stroke="url(#frame-grad)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+
+        <!-- RIGHT LENS -->
+        <g>
+          <path d="M 742 218
+                   Q 742 175 700 168
+                   Q 620 158 540 168
+                   Q 500 175 500 218
+                   Q 500 286 540 312
+                   Q 610 326 660 322
+                   Q 725 310 742 218 Z"
+                fill="url(#lens-base)"
+                stroke="url(#frame-grad)"
+                stroke-width="2.4"/>
+          <path d="M 742 218
+                   Q 742 175 700 168
+                   Q 620 158 540 168
+                   Q 500 175 500 218
+                   Q 500 286 540 312
+                   Q 610 326 660 322
+                   Q 725 310 742 218 Z"
+                fill="url(#lens-tint)" opacity="0.85"/>
+          <path d="M 552 188
+                   Q 560 174 580 172
+                   Q 650 168 690 172
+                   Q 722 174 730 188
+                   L 700 198
+                   Q 650 196 600 198
+                   L 552 200 Z"
+                fill="url(#lens-shine)" opacity="0.5"/>
+          <!-- right lens engraving placeholder -->
+          <text id="engrave-target" x="620" y="246" text-anchor="middle"
+                font-family="Instrument Serif, serif" font-style="italic"
+                font-size="22" fill="rgba(255,255,255,0.32)" letter-spacing="2"></text>
+
+          <!-- inner soft reflection -->
+          <ellipse cx="620" cy="234" rx="90" ry="44" stroke="rgba(255,255,255,0.06)" stroke-width="0.6" fill="none"/>
+        </g>
+
+        <!-- subtle reflection beneath -->
+        <ellipse cx="450" cy="395" rx="320" ry="14" fill="rgba(255,111,71,0.18)" opacity="0.5" filter="url(#blur)"/>
+      </svg>
+
+      <div class="stage-foot">
+        <span>SCALE 1 : 1 · <b>METRIC</b></span>
+        <span>MK01 · <b id="finish-readout">SOLAR BRONZE</b></span>
+      </div>
+    </div>
+
+    <!-- Hero Copy -->
+    <div class="hero-copy">
+      <div class="crumbs">
+        <a href="index.html">ogi.space</a>
+        <span class="sep">→</span>
+        <span>Pre-order · Mk I</span>
+      </div>
+
+      <div class="badge"><span class="dot"></span>Cohort A · open until winter</div>
+
+      <h1>Reserve the <em>first</em> Mk&nbsp;I.</h1>
+
+      <p class="lede">
+        A hand-built pair of glasses that, at any moment, draws the only three actions worth taking onto the inside of a lens. Shipping in cohorts of three. The first ones leave the studio in <em>Q4</em>.
+      </p>
+
+      <div class="price-block">
+        <div>
+          <span class="label">Price</span>
+          <span class="val">$2,<em>150</em></span>
+          <div class="sub">Lifetime calibration<br/>included</div>
+        </div>
+        <div>
+          <span class="label">Reserve with</span>
+          <span class="val"><em>$215</em></span>
+          <div class="sub">Fully refundable<br/>until kit dispatch</div>
+        </div>
+      </div>
+
+      <div class="hero-cta-row">
+        <a class="cta primary" href="#configure">
+          <span>Configure &amp; reserve</span>
+          <span class="arrow"></span>
+        </a>
+        <a class="cta" href="#specs">
+          <span>Read the specs</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CONFIGURATOR ── -->
+<section class="configurator" id="configure">
+  <div class="container">
+
+    <div class="section-head">
+      <div class="index">§ A — Configure<span>Make it yours</span></div>
+      <h2>Six hands, <em>your</em> instrument.</h2>
+      <div class="lede">
+        Every Mk I is finished by the same six hands in the studio. Choose its frame, lens, and a small engraved mark — your true name, or the initials of whoever you wish to walk with.
+      </div>
+    </div>
+
+    <div class="config-grid">
+
+      <div class="config-controls">
+
+        <!-- FRAME FINISH -->
+        <div class="config-group">
+          <div class="group-head">
+            <span class="label">A · Frame finish</span>
+            <span class="selected" id="finish-name">Solar bronze</span>
+          </div>
+          <div class="swatch-row" id="finish-row">
+            <button class="swatch active" data-finish="bronze"
+                    data-name="Solar bronze"
+                    data-hex0="#F5EBD8" data-hex1="#C9B58E" data-hex2="#6B5A3A">
+              <div class="chip" style="background: linear-gradient(135deg, #F5EBD8, #C9B58E 55%, #6B5A3A);"></div>
+              <span class="name">Solar <em>bronze</em></span>
+              <span class="meta">Default · warm</span>
+            </button>
+            <button class="swatch" data-finish="graphite"
+                    data-name="Pearl graphite"
+                    data-hex0="#D2D4DA" data-hex1="#7B8090" data-hex2="#2C2F38">
+              <div class="chip" style="background: linear-gradient(135deg, #D2D4DA, #7B8090 55%, #2C2F38);"></div>
+              <span class="name">Pearl graphite</span>
+              <span class="meta">Cool · architectural</span>
+            </button>
+            <button class="swatch" data-finish="salt"
+                    data-name="Salt glass"
+                    data-hex0="#FAF4E5" data-hex1="#E3D9C0" data-hex2="#B6A77F">
+              <div class="chip" style="background: linear-gradient(135deg, #FAF4E5, #E3D9C0 55%, #B6A77F);"></div>
+              <span class="name">Salt glass</span>
+              <span class="meta">Pale · matte</span>
+            </button>
+            <button class="swatch" data-finish="iron"
+                    data-name="Iron black"
+                    data-hex0="#3A3D45" data-hex1="#1B1D24" data-hex2="#000307">
+              <div class="chip" style="background: linear-gradient(135deg, #3A3D45, #1B1D24 55%, #000307);"></div>
+              <span class="name">Iron <em>black</em></span>
+              <span class="meta">Stealth · deep</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- LENS TINT -->
+        <div class="config-group">
+          <div class="group-head">
+            <span class="label">B · Lens tint</span>
+            <span class="selected" id="tint-name">Ember glow</span>
+          </div>
+          <div class="lens-row" id="tint-row">
+            <button class="lens-swatch active" data-tint="ember"
+                    data-name="Ember glow"
+                    data-c0="#FF6F47" data-c1="#FF6F47" data-c2="#B8EBD0">
+              <div class="ring" style="background: radial-gradient(circle at 35% 30%, #FF8966, #C44A2C 70%);"></div>
+              <span class="name">Ember</span>
+              <span class="meta">warm overlay</span>
+            </button>
+            <button class="lens-swatch" data-tint="aurora"
+                    data-name="Aurora mint"
+                    data-c0="#B8EBD0" data-c1="#7BCBA9" data-c2="#FF6F47">
+              <div class="ring" style="background: radial-gradient(circle at 35% 30%, #DCFAEC, #7BCBA9 70%);"></div>
+              <span class="name">Aurora</span>
+              <span class="meta">cool overlay</span>
+            </button>
+            <button class="lens-swatch" data-tint="crystal"
+                    data-name="Crystal clear"
+                    data-c0="#FFFFFF" data-c1="#FFFFFF" data-c2="#FFFFFF">
+              <div class="ring" style="background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.3) 70%);"></div>
+              <span class="name">Crystal</span>
+              <span class="meta">no overlay</span>
+            </button>
+            <button class="lens-swatch" data-tint="eclipse"
+                    data-name="Eclipse"
+                    data-c0="#0A0D15" data-c1="#0A0D15" data-c2="#0A0D15">
+              <div class="ring" style="background: radial-gradient(circle at 35% 30%, #2A2D38, #07080C 70%);"></div>
+              <span class="name">Eclipse</span>
+              <span class="meta">solid · deep</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SIZE -->
+        <div class="config-group">
+          <div class="group-head">
+            <span class="label">C · Size</span>
+            <span class="selected" id="size-name">Mk I · Standard</span>
+          </div>
+          <div class="size-row" id="size-row">
+            <button class="size-pill active" data-size="standard" data-name="Mk I · Standard">
+              <span class="name">Mk I · <em>Standard</em></span>
+              <span class="dim">54 × 38 mm · bridge 18</span>
+            </button>
+            <button class="size-pill" data-size="narrow" data-name="Mk I · Narrow">
+              <span class="name">Mk I · <em>Narrow</em></span>
+              <span class="dim">50 × 36 mm · bridge 16</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ENGRAVING -->
+        <div class="config-group">
+          <div class="group-head">
+            <span class="label">D · Engraving</span>
+            <span class="selected" id="engrave-name">— none —</span>
+          </div>
+          <input class="engraving-input" id="engrave-input"
+                 maxlength="3" placeholder="optional · up to three letters" />
+          <div class="engraving-hint">
+            <b>Etched</b> by hand on the inner right lens · <b>complimentary</b>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SUMMARY -->
+      <aside class="summary">
+        <div class="kicker">Your configuration</div>
+        <h3>ogi <em>Mk I</em></h3>
+
+        <div class="config-readout">
+          <div class="row"><span class="l">Frame</span><span class="v" id="r-finish"><em>Solar bronze</em></span></div>
+          <div class="row"><span class="l">Lens</span><span class="v" id="r-tint">Ember glow</span></div>
+          <div class="row"><span class="l">Size</span><span class="v" id="r-size">Standard</span></div>
+          <div class="row"><span class="l">Engraving</span><span class="v" id="r-engrave">—</span></div>
+        </div>
+
+        <div class="price-row">
+          <span class="label">Total</span>
+          <span class="price">$2,<em>150</em></span>
+        </div>
+
+        <button class="reserve-btn" id="reserve-btn">
+          Reserve for $215
+          <span style="font-size: 14px;">→</span>
+        </button>
+
+        <div class="ship-line">
+          <span class="dot"></span>
+          <span>Ships <b>Q4</b> · cohort A</span>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT'S IN THE KIT ── -->
+<section class="kit">
+  <div class="container">
+    <div class="section-head">
+      <div class="index">§ B — The Kit<span>What arrives at your door</span></div>
+      <h2>One small <em>box.</em></h2>
+      <div class="lede">
+        Hand-wrapped in undyed paper, tied with single black cord. No screens, no instruction sheets, no apps to install. The instrument is calibrated to you before it leaves the studio.
+      </div>
+    </div>
+
+    <div class="kit-grid">
+
+      <div class="kit-item">
+        <div class="icon">
+          <svg width="70" height="44" viewBox="0 0 70 44" fill="none">
+            <path d="M 4 24 Q 4 14 14 14 L 30 14 Q 36 16 36 24 Q 36 32 28 34 Q 18 35 12 34 Q 6 32 4 24 Z"
+                  stroke="#FF6F47" stroke-width="1" fill="none"/>
+            <path d="M 34 22 Q 36 18 40 18 L 56 18 Q 66 18 66 24 Q 66 30 60 32 Q 50 33 44 32 Q 36 30 34 22 Z"
+                  stroke="#FF6F47" stroke-width="1" fill="none"/>
+            <path d="M 36 18 Q 38 17 40 18" stroke="#FF6F47" stroke-width="1" fill="none"/>
+          </svg>
+        </div>
+        <h4>ogi Mk I <em>eyewear</em></h4>
+        <p>The instrument itself. Hand-built. Pre-calibrated to your gait, posture, and resting attention.</p>
+        <div class="footer">Item · 01 / 05</div>
+      </div>
+
+      <div class="kit-item">
+        <div class="icon">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <rect x="12" y="20" width="40" height="28" stroke="#FF6F47" stroke-width="1" fill="none"/>
+            <line x1="12" y1="30" x2="52" y2="30" stroke="#FF6F47" stroke-width="0.6" opacity="0.6"/>
+            <circle cx="32" cy="40" r="3" stroke="#FF6F47" stroke-width="1" fill="none"/>
+            <line x1="32" y1="14" x2="32" y2="20" stroke="#FF6F47" stroke-width="1"/>
+          </svg>
+        </div>
+        <h4>Brass <em>charging</em> dock</h4>
+        <p>A small honed-brass cradle. Wireless. Quiet. Sits beside the bed; charges in 38 minutes.</p>
+        <div class="footer">Item · 02 / 05</div>
+      </div>
+
+      <div class="kit-item">
+        <div class="icon">
+          <svg width="64" height="44" viewBox="0 0 64 44" fill="none">
+            <path d="M 6 8 L 58 8 L 54 36 L 10 36 Z" stroke="#FF6F47" stroke-width="1" fill="none"/>
+            <line x1="14" y1="14" x2="50" y2="14" stroke="#FF6F47" stroke-width="0.6" opacity="0.5"/>
+            <line x1="14" y1="22" x2="50" y2="22" stroke="#FF6F47" stroke-width="0.6" opacity="0.5"/>
+            <line x1="14" y1="30" x2="50" y2="30" stroke="#FF6F47" stroke-width="0.6" opacity="0.5"/>
+          </svg>
+        </div>
+        <h4>Felt travel <em>sleeve</em></h4>
+        <p>Slow-felted Himalayan wool, dyed with iron oxide. Pocket-sized. No closure but its own weight.</p>
+        <div class="footer">Item · 03 / 05</div>
+      </div>
+
+      <div class="kit-item">
+        <div class="icon">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="32" r="22" stroke="#FF6F47" stroke-width="1" fill="none"/>
+            <circle cx="32" cy="32" r="12" stroke="#FF6F47" stroke-width="1" fill="none" opacity="0.7"/>
+            <circle cx="32" cy="32" r="2"  fill="#FF6F47"/>
+            <line x1="32" y1="6" x2="32" y2="14" stroke="#FF6F47" stroke-width="1"/>
+            <line x1="32" y1="50" x2="32" y2="58" stroke="#FF6F47" stroke-width="1"/>
+          </svg>
+        </div>
+        <h4>Lifetime <em>calibration</em></h4>
+        <p>Send the lens back any year, any reason. We adjust the inference to who you've become since.</p>
+        <div class="footer">Item · 04 / 05</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SPECS ── -->
+<section class="specs" id="specs">
+  <div class="container">
+    <div class="section-head">
+      <div class="index">§ C — Specs<span>The honest measurements</span></div>
+      <h2>What the lens<br/><em>actually is.</em></h2>
+      <div class="lede">
+        The instrument is not modest. But it has nothing to hide either. Every figure listed below is from a real Mk I, pulled at random from the second studio batch.
+      </div>
+    </div>
+
+    <div class="specs-table">
+      <div class="spec-row">
+        <span class="key">Material</span>
+        <span class="val"><em>Solar bronze</em> · single arc</span>
+        <span class="note">A single recovered alloy of copper and tin, drawn at low temperature into one continuous form — no welds.</span>
+      </div>
+      <div class="spec-row">
+        <span class="key">Mass</span>
+        <span class="val">22.4 g</span>
+        <span class="note">Lighter than your last decision. Disappears within an hour of wear.</span>
+      </div>
+      <div class="spec-row">
+        <span class="key">Lens</span>
+        <span class="val">Sapphire glass · prism-coated</span>
+        <span class="note">Scratch-resistant to anything you would willingly do to it. Coated for retinal-glyph projection at 0.06 lumen.</span>
+      </div>
+      <div class="spec-row">
+        <span class="key">Inference</span>
+        <span class="val"><em>On-temple</em> · never sent skyward</span>
+        <span class="note">A custom 4 nm silicon-photonic core, behind the temple. No cloud. No telemetry. No advertising surface.</span>
+      </div>
+      <div class="spec-row">
+        <span class="key">Audio</span>
+        <span class="val">Bone whisper</span>
+        <span class="note">Two micro-actuators in the temple. Audible only to you. Inaudible at 4 cm.</span>
+      </div>
+      <div class="spec-row">
+        <span class="key">Power</span>
+        <span class="val">9.3 hrs continuous</span>
+        <span class="note">Solar-trickle bridge along the brow bar contributes ~22% on a clear day.</span>
+      </div>
+      <div class="spec-row">
+        <span class="key">Connectivity</span>
+        <span class="val">UWB · LE Audio · paired pair</span>
+        <span class="note">Pairs only with its sibling lens (every Mk I ships with a partner unit to give to someone you love).</span>
+      </div>
+      <div class="spec-row">
+        <span class="key">Stewardship</span>
+        <span class="val"><em>Lifetime</em></span>
+        <span class="note">Calibration, repair, and lens exchange — for as long as you wear the instrument or wish to pass it on.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TIMELINE ── -->
+<section class="timeline">
+  <div class="container">
+    <div class="section-head">
+      <div class="index">§ D — Timeline<span>From reserve → wear</span></div>
+      <h2>From reserve to <em>wear</em>,<br/>in four quiet steps.</h2>
+      <div class="lede">
+        We move at the slow tempo of hand-built things. No drip emails, no dispatch surveys, no "your order is preparing" theatre — only four genuine letters, each at a real threshold.
+      </div>
+    </div>
+
+    <div class="timeline-grid">
+      <div class="tl-step">
+        <span class="pulse"></span>
+        <span class="when">Step 01 · Now</span>
+        <h4>Reserve your <em>Mk I</em></h4>
+        <p>$215 holds your place in cohort A. Fully refundable until the kit leaves the studio. No payment instrument is stored.</p>
+      </div>
+      <div class="tl-step future">
+        <span class="pulse"></span>
+        <span class="when">Step 02 · Q3</span>
+        <h4>The <em>fitting</em> letter</h4>
+        <p>A short, paper letter arrives asking for three measurements and one quiet hour with a hand-mirror. No selfie required.</p>
+      </div>
+      <div class="tl-step future">
+        <span class="pulse"></span>
+        <span class="when">Step 03 · Q4 · early</span>
+        <h4>The <em>finishing</em> dispatch</h4>
+        <p>Your remaining balance settles. The six hands finish your specific Mk I — engraving, lens calibration, final inspection.</p>
+      </div>
+      <div class="tl-step future">
+        <span class="pulse"></span>
+        <span class="when">Step 04 · Q4 · ships</span>
+        <h4>The <em>box</em> arrives</h4>
+        <p>Hand-wrapped, hand-delivered where possible. One slow afternoon with the instrument before it asks anything of you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="faq">
+  <div class="container">
+    <div class="section-head">
+      <div class="index">§ E — Honest questions<span>Asked by early wearers</span></div>
+      <h2>The questions<br/>we've actually <em>been asked.</em></h2>
+      <div class="lede">
+        Pulled, verbatim, from letters and conversations with cohort A members. We will keep adding to this list as honest questions arrive.
+      </div>
+    </div>
+
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h5>Is this an AR <em>display</em>?</h5>
+        <p>No. The lens does not overlay video on the world. It draws — sparingly, in a soft retinal glyph — only the next three actions and only when asked. The world remains the world.</p>
+      </div>
+      <div class="faq-item">
+        <h5>Does it record me?</h5>
+        <p>No camera. No microphone for the cloud. The temple contains only inward-facing sensors (gaze, gait, micro-tremor, breath). No recording leaves the lens.</p>
+      </div>
+      <div class="faq-item">
+        <h5>Do you store any of <em>my data</em>?</h5>
+        <p>The instrument processes everything on the temple and forgets each session at sundown. Anonymous, opt-in field reports are the only thing that ever reach the studio.</p>
+      </div>
+      <div class="faq-item">
+        <h5>What if it gives me a bad <em>action</em>?</h5>
+        <p>Then you ignore it. The lens proposes; it never compels. We measure ourselves by the proportion of proposals you reject — a healthy wearer rejects roughly one in four.</p>
+      </div>
+      <div class="faq-item">
+        <h5>Why ship in <em>pairs</em>?</h5>
+        <p>Coherence is a two-body problem before it is a many-body one. Every Mk I ships with a partner unit to give to someone you wish to walk more clearly beside.</p>
+      </div>
+      <div class="faq-item">
+        <h5>What does <em>"Q4"</em> mean for you?</h5>
+        <p>October through December · 2150. We do not split this further until we know which afternoon the six hands will finish your specific instrument.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STICKY RESERVE BAR ── -->
+<div class="reserve-bar" id="reserve-bar">
+  <div class="summary-text">
+    ogi Mk I · <em><span id="bar-finish">Solar bronze</span></em> · <span id="bar-tint">Ember</span> · <span id="bar-size">Standard</span>
+    <span class="meta" id="bar-ship">Ships Q4 · cohort A</span>
+  </div>
+  <div class="price">$2,<em>150</em></div>
+  <button class="cta primary" id="bar-reserve" style="border:0;">
+    <span>Reserve · $215</span>
+    <span class="arrow"></span>
+  </button>
+</div>
+
+<!-- ── RESERVE MODAL ── -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <button class="x" id="modal-close">×</button>
+    <div class="modal-kicker">Reservation · received</div>
+    <h3>Welcome to <em>cohort A.</em></h3>
+    <p>
+      A short paper letter is on its way. You will not hear from a machine again — only from one of the six hands, at the next genuine threshold of your instrument.
+    </p>
+    <div class="position">
+      <div>
+        <span class="k">Your number</span>
+        <span class="v">№ <em id="num">042</em></span>
+      </div>
+      <div>
+        <span class="k">Estimated wear</span>
+        <span class="v">Q4 · <em>2150</em></span>
+      </div>
+    </div>
+    <button class="close-btn" id="modal-ok">Close · go quietly</button>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div class="colophon">
+      <div class="mark-big">ogi<em>.</em>space</div>
+      <p>A small studio of optical instruments and orthogonal intelligences, working in the long, slow afternoon of the post-acceleration.</p>
+    </div>
+    <div>
+      <h5>The site</h5>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#layer">What it is</a></li>
+        <li><a href="index.html#signal">Why · first contact</a></li>
+        <li><a href="whitepaper.html">White paper</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>The Object</h5>
+      <ul>
+        <li><a href="preorder.html">Mk I — pre-order</a></li>
+        <li><a href="#specs">Specs</a></li>
+        <li><a href="#">Care &amp; passage</a></li>
+        <li><a href="#">Repair</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Reserve</h5>
+      <ul>
+        <li><a href="#configure">Configure</a></li>
+        <li><a href="#">Cohort A status</a></li>
+        <li><a href="#">Letters &amp; ledger</a></li>
+        <li><a href="#">Press the bell</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-foot">
+    <span>© 2150 · ogi.space · all signals returned to source</span>
+    <span>orthogonal · general · intelligence</span>
+  </div>
+</footer>
+
+<script>
+  // ── cursor ──
+  const dot = document.getElementById('dot');
+  const ring = document.getElementById('ring');
+  let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+  addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top  = my + 'px';
+  });
+  (function tick() {
+    rx += (mx - rx) * 0.16;
+    ry += (my - ry) * 0.16;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(tick);
+  })();
+  document.querySelectorAll('a, button, input, .swatch, .lens-swatch, .size-pill').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width='52px'; ring.style.height='52px'; ring.style.borderColor='#FF8966'; });
+    el.addEventListener('mouseleave', () => { ring.style.width='32px'; ring.style.height='32px'; ring.style.borderColor='rgba(255,111,71,0.5)'; });
+  });
+
+  // ── clock ──
+  const clock = document.getElementById('clock');
+  function ticktock() {
+    const d = new Date();
+    const hh = String(d.getUTCHours()).padStart(2,'0');
+    const mm = String(d.getUTCMinutes()).padStart(2,'0');
+    clock.textContent = `2150 · ${hh}:${mm} UTC`;
+  }
+  ticktock(); setInterval(ticktock, 30000);
+
+  // ── CONFIGURATOR ──
+  const state = {
+    finish: { id: 'bronze', name: 'Solar bronze' },
+    tint:   { id: 'ember',  name: 'Ember glow' },
+    size:   { id: 'standard', name: 'Standard' },
+    engrave: ''
+  };
+
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => document.querySelectorAll(sel);
+
+  // Swatch click logic
+  function bindGroup(rowSel, cb) {
+    $$(rowSel + ' button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $$(rowSel + ' button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        cb(btn);
+      });
+    });
+  }
+
+  bindGroup('#finish-row', btn => {
+    state.finish.id = btn.dataset.finish;
+    state.finish.name = btn.dataset.name;
+    // update frame gradient stops
+    const grad = document.querySelector('#frame-grad');
+    grad.children[0].setAttribute('stop-color', btn.dataset.hex0);
+    grad.children[1].setAttribute('stop-color', btn.dataset.hex1);
+    grad.children[2].setAttribute('stop-color', btn.dataset.hex2);
+    render();
+  });
+
+  bindGroup('#tint-row', btn => {
+    state.tint.id = btn.dataset.tint;
+    state.tint.name = btn.dataset.name;
+    const grad = document.querySelector('#lens-tint');
+    const c0 = btn.dataset.c0, c1 = btn.dataset.c1, c2 = btn.dataset.c2;
+    // tint opacity profile depends on which tint
+    let o0 = 0.32, o1 = 0.10, o2 = 0.15;
+    if (state.tint.id === 'crystal') { o0 = 0.02; o1 = 0.0; o2 = 0.02; }
+    if (state.tint.id === 'eclipse') { o0 = 0.85; o1 = 0.9; o2 = 0.85; }
+    if (state.tint.id === 'aurora')  { o0 = 0.30; o1 = 0.10; o2 = 0.25; }
+    grad.children[0].setAttribute('stop-color', c0);
+    grad.children[0].setAttribute('stop-opacity', o0);
+    grad.children[1].setAttribute('stop-color', c1);
+    grad.children[1].setAttribute('stop-opacity', o1);
+    grad.children[2].setAttribute('stop-color', c2);
+    grad.children[2].setAttribute('stop-opacity', o2);
+    render();
+  });
+
+  bindGroup('#size-row', btn => {
+    state.size.id = btn.dataset.size;
+    state.size.name = btn.dataset.name.replace('Mk I · ', '');
+    render();
+  });
+
+  // Engraving live update
+  const engInput = document.getElementById('engrave-input');
+  engInput.addEventListener('input', () => {
+    state.engrave = engInput.value.toUpperCase().slice(0, 3);
+    engInput.value = state.engrave;
+    document.getElementById('engrave-target').textContent = state.engrave;
+    render();
+  });
+
+  function render() {
+    // headline summary
+    document.getElementById('finish-name').textContent = state.finish.name;
+    document.getElementById('tint-name').textContent = state.tint.name;
+    document.getElementById('size-name').textContent = 'Mk I · ' + state.size.name;
+    document.getElementById('engrave-name').textContent = state.engrave ? `“${state.engrave}”` : '— none —';
+
+    // summary panel
+    document.getElementById('r-finish').innerHTML = `<em>${state.finish.name}</em>`;
+    document.getElementById('r-tint').textContent = state.tint.name;
+    document.getElementById('r-size').textContent = state.size.name;
+    document.getElementById('r-engrave').innerHTML = state.engrave ? `<em>${state.engrave}</em>` : '—';
+
+    // stage foot readout
+    document.getElementById('finish-readout').textContent = state.finish.name.toUpperCase();
+
+    // sticky bar readout
+    document.getElementById('bar-finish').textContent = state.finish.name;
+    document.getElementById('bar-tint').textContent = state.tint.name.split(' ')[0];
+    document.getElementById('bar-size').textContent = state.size.name;
+  }
+  render();
+
+  // ── STICKY BAR show on scroll past hero ──
+  const bar = document.getElementById('reserve-bar');
+  const heroBottom = () => document.querySelector('.product-hero').getBoundingClientRect().bottom + window.scrollY - 100;
+  addEventListener('scroll', () => {
+    if (window.scrollY > heroBottom()) bar.classList.add('show');
+    else bar.classList.remove('show');
+  });
+
+  // ── RESERVE flow ──
+  const modal = document.getElementById('modal-bg');
+  const num = document.getElementById('num');
+  function reserve() {
+    num.textContent = String(40 + Math.floor(Math.random() * 60)).padStart(3, '0');
+    modal.classList.add('show');
+  }
+  document.getElementById('reserve-btn').addEventListener('click', reserve);
+  document.getElementById('bar-reserve').addEventListener('click', reserve);
+  document.getElementById('modal-close').addEventListener('click', () => modal.classList.remove('show'));
+  document.getElementById('modal-ok').addEventListener('click', () => modal.classList.remove('show'));
+  modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('show'); });
+
+  // ── reveal-on-scroll ──
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.transition = 'opacity 1.0s ease, transform 1.0s cubic-bezier(.16,1,.3,1)';
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.kit-item, .tl-step, .spec-row, .faq-item, .config-group, .summary').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(22px)';
+    el.style.transitionDelay = (i * 0.03) + 's';
+    io.observe(el);
+  });
+</script>
+
+</body>
+</html>
