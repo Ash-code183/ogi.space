@@ -4,2141 +4,1575 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="author" content="OGI Research Group" />
-  <meta name="dcterms.date" content="2026-04-28" />
-  <title>Orthogonal General Intelligence</title>
+  <meta name="author" content="OGI Research Labs" />
+  <title>OGI: A Navigation Layer for the Simulation</title>
   <style>
-    /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Georgia', 'Times New Roman', Times, serif;
-      font-size: 11pt;
-      line-height: 1.6;
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
       color: #1a1a1a;
-      background: #fff;
-      max-width: 800px;
+      background-color: #fdfdfd;
+    }
+    body {
       margin: 0 auto;
-      padding: 2.5em 2em;
-      counter-reset: section footnotes;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
     }
-
-    /* ── Typography ── */
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
     h1, h2, h3, h4, h5, h6 {
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-weight: 600;
-      color: #111;
-      margin-top: 1.8em;
-      margin-bottom: 0.5em;
-      line-height: 1.3;
+      margin-top: 1.4em;
     }
-    h1 { font-size: 2em; margin-top: 0.3em; border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
-    h2 { font-size: 1.5em; border-bottom: 1px solid #bdc3c7; padding-bottom: 0.2em; }
-    h3 { font-size: 1.2em; }
-    h4 { font-size: 1.1em; font-style: italic; }
-
-    p { margin-bottom: 0.8em; text-align: justify; }
-
-    /* ── Links ── */
-    a { color: #2980b9; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    /* ── Code ── */
-    code {
-      font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
-      font-size: 0.85em;
-      background: #f4f4f4;
-      padding: 0.15em 0.3em;
-      border-radius: 3px;
-    }
-    pre {
-      background: #f8f9fa;
-      border: 1px solid #e9ecef;
-      border-radius: 4px;
-      padding: 1em;
-      overflow-x: auto;
-      font-size: 0.85em;
-      line-height: 1.45;
-      margin: 1em 0;
-    }
-    pre code { background: none; padding: 0; }
-
-    /* ── Blockquotes ── */
-    blockquote {
-      border-left: 3px solid #2c3e50;
-      padding: 0.5em 1em;
-      margin: 1em 0;
-      background: #f9f9f9;
-      font-style: italic;
-      color: #555;
-    }
-    blockquote p { margin-bottom: 0.3em; }
-
-    /* ── Lists ── */
-    ul, ol { margin: 0.5em 0 0.5em 1.8em; }
-    li { margin-bottom: 0.3em; }
-
-    /* ── Tables ── */
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin: 1.2em 0;
-      font-size: 0.9em;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 0.5em 0.7em;
-      text-align: left;
-    }
-    th {
-      background: #2c3e50;
-      color: #fff;
-      font-weight: 600;
-    }
-    tr:nth-child(even) { background: #f8f9fa; }
-
-    /* ── Footnotes ── */
-    .footnotes {
-      border-top: 1px solid #ddd;
-      margin-top: 2em;
-      padding-top: 1em;
-      font-size: 0.85em;
-      color: #666;
-    }
-    .footnotes ol { padding-left: 1.2em; }
-    .footnotes li { margin-bottom: 0.3em; }
-
-    /* ── Math (fallback) ── */
-    .math { font-style: italic; }
-
-    /* ── Title block ── */
-    .title-block {
-      text-align: center;
-      margin-bottom: 2.5em;
-      padding-bottom: 1.5em;
-      border-bottom: 1px solid #ddd;
-    }
-    .title-block h1.title {
-      font-size: 2.2em;
-      border: none;
-      margin-top: 0;
-    }
-    .title-block .subtitle {
-      font-size: 1.15em;
-      color: #555;
-      margin-top: 0.5em;
-    }
-    .title-block .author {
+    h5, h6 {
       font-size: 1em;
-      color: #777;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
       margin-top: 1em;
     }
-    .title-block .date {
-      font-size: 0.9em;
-      color: #999;
+    li > ol, li > ul {
+      margin-top: 0;
     }
-
-    /* ── Section numbering ── */
-    body { counter-reset: section; }
-    h2::before {
-      counter-increment: section;
-      content: counter(section) ". ";
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
     }
-
-    /* ── TOC ── */
-    nav#TOC {
-      background: #f8f9fa;
-      border: 1px solid #e9ecef;
-      border-radius: 4px;
-      padding: 1.2em 1.5em;
-      margin: 1em 0 2em 0;
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
     }
-    nav#TOC ul { list-style: none; padding-left: 0; margin: 0; }
-    nav#TOC ul ul { padding-left: 1.5em; }
-    nav#TOC li { margin-bottom: 0.2em; }
-    nav#TOC a { color: #2c3e50; }
-
-    /* ── Abstract box ── */
-    .abstract {
-      background: #f0f3f5;
-      border-left: 4px solid #2c3e50;
-      padding: 1.2em 1.5em;
-      margin: 1.5em 0;
-      font-size: 0.95em;
+    pre {
+      margin: 1em 0;
+      overflow: auto;
     }
-    .abstract strong { color: #2c3e50; }
-
-    /* ── Print ── */
-    @media print {
-      body {
-        font-size: 10pt;
-        padding: 0;
-        max-width: none;
-      }
-      nav#TOC { page-break-after: always; }
-      h1, h2, h3 { page-break-after: avoid; }
-      table { page-break-inside: avoid; }
-      pre { page-break-inside: avoid; }
-      @page { margin: 1in; }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
     }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    q { quotes: "“" "”" "‘" "’"; }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+    <style>
+      /* ── Reset & Base ── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: 'Georgia', 'Times New Roman', Times, serif;
+        font-size: 11pt;
+        line-height: 1.6;
+        color: #1a1a1a;
+        background: #fff;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2.5em 2em;
+        counter-reset: section footnotes;
+      }
+
+      /* ── Typography ── */
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-weight: 600;
+        color: #111;
+        margin-top: 1.8em;
+        margin-bottom: 0.5em;
+        line-height: 1.3;
+      }
+      h1 { font-size: 2em; margin-top: 0.3em; border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
+      h2 { font-size: 1.5em; border-bottom: 1px solid #bdc3c7; padding-bottom: 0.2em; }
+      h3 { font-size: 1.2em; }
+      h4 { font-size: 1.1em; font-style: italic; }
+
+      p { margin-bottom: 0.8em; text-align: justify; }
+
+      /* ── Links ── */
+      a { color: #2980b9; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+
+      /* Heading anchors */
+      h1, h2, h3, h4, h5, h6 { scroll-margin-top: 1em; }
+      h2:target, h3:target, h4:target { background: #fff8d6; padding-left: 0.3em; transition: background 1.2s ease; }
+
+      /* ── Code ── */
+      code {
+        font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+        font-size: 0.85em;
+        background: #f4f4f4;
+        padding: 0.15em 0.3em;
+        border-radius: 3px;
+      }
+      pre {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 4px;
+        padding: 1em;
+        overflow-x: auto;
+        font-size: 0.85em;
+        line-height: 1.45;
+        margin: 1em 0;
+      }
+      pre code { background: none; padding: 0; }
+
+      /* ── Blockquotes ── */
+      blockquote {
+        border-left: 3px solid #2c3e50;
+        padding: 0.5em 1em;
+        margin: 1em 0;
+        background: #f9f9f9;
+        font-style: italic;
+        color: #555;
+      }
+      blockquote p { margin-bottom: 0.3em; }
+
+      /* ── Lists ── */
+      ul, ol { margin: 0.5em 0 0.5em 1.8em; }
+      li { margin-bottom: 0.3em; }
+
+      /* ── Tables ── */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1.2em 0;
+        font-size: 0.9em;
+      }
+      th, td {
+        border: 1px solid #ddd;
+        padding: 0.5em 0.7em;
+        text-align: left;
+      }
+      th {
+        background: #2c3e50;
+        color: #fff;
+        font-weight: 600;
+      }
+      tr:nth-child(even) { background: #f8f9fa; }
+
+      /* ── Footnotes ── */
+      .footnotes {
+        border-top: 1px solid #ddd;
+        margin-top: 2em;
+        padding-top: 1em;
+        font-size: 0.85em;
+        color: #666;
+      }
+      .footnotes ol { padding-left: 1.2em; }
+      .footnotes li { margin-bottom: 0.3em; }
+      a.footnote-ref, a.footnote-back { color: #2980b9; text-decoration: none; }
+      a.footnote-ref { font-size: 0.85em; vertical-align: super; }
+
+      /* ── Math (fallback) ── */
+      .math { font-style: italic; }
+
+      /* ── Title block ── */
+      .title-block {
+        text-align: center;
+        margin-bottom: 2.5em;
+        padding-bottom: 1.5em;
+        border-bottom: 1px solid #ddd;
+      }
+      .title-block h1.title {
+        font-size: 2.2em;
+        border: none;
+        margin-top: 0;
+      }
+      .title-block .subtitle {
+        font-size: 1.15em;
+        color: #555;
+        margin-top: 0.5em;
+      }
+      .title-block .author {
+        font-size: 1em;
+        color: #777;
+        margin-top: 1em;
+      }
+      .title-block .date {
+        font-size: 0.9em;
+        color: #999;
+      }
+
+      /* ── Section numbering ── */
+      h2::before {
+        counter-increment: section;
+        content: counter(section) ". ";
+      }
+      section#abstract h2::before { content: none; counter-increment: none; }
+
+      /* ── TOC ── */
+      nav#TOC {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 4px;
+        padding: 1.2em 1.5em;
+        margin: 1em 0 2em 0;
+      }
+      nav#TOC h2 { font-size: 1em; border: none; margin: 0 0 0.6em 0; padding: 0; }
+      nav#TOC h2::before { content: none; }
+      nav#TOC ul { list-style: none; padding-left: 0; margin: 0; }
+      nav#TOC ul ul { padding-left: 1.5em; }
+      nav#TOC li { margin-bottom: 0.2em; }
+      nav#TOC a { color: #2c3e50; }
+
+      /* ── Abstract box ── */
+      .abstract {
+        background: #f0f3f5;
+        border-left: 4px solid #2c3e50;
+        padding: 1.2em 1.5em;
+        margin: 1.5em 0;
+        font-size: 0.95em;
+      }
+      .abstract strong { color: #2c3e50; }
+
+      /* ── Theorem box ── */
+      .theorem {
+        background: #fdfaf3;
+        border-left: 4px solid #d4a017;
+        padding: 1em 1.3em;
+        margin: 1.2em 0;
+      }
+
+      /* ── Print ── */
+      @media print {
+        body {
+          font-size: 10pt;
+          padding: 0;
+          max-width: none;
+        }
+        nav#TOC { page-break-after: always; }
+        h1, h2, h3 { page-break-after: avoid; }
+        table { page-break-inside: avoid; }
+        pre { page-break-inside: avoid; }
+        @page { margin: 1in; }
+      }
+    </style>
+    <style>
+      .ogi-back {
+        position: fixed; top: 16px; left: 16px; z-index: 9999;
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 10px 16px;
+        background: #07080C; color: #EFE7D5;
+        border: 1px solid rgba(239,231,213,0.18);
+        font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, monospace;
+        font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+        text-decoration: none;
+        border-radius: 999px;
+        backdrop-filter: blur(8px);
+        transition: border-color .25s ease, color .25s ease;
+      }
+      .ogi-back:hover { border-color: #FF6F47; color: #FF6F47; }
+      .ogi-back .dot { width: 6px; height: 6px; border-radius: 50%; background: #FF6F47; box-shadow: 0 0 8px #FF6F47; }
+      @media print { .ogi-back { display: none; } }
+    </style>
 </head>
 <body>
-<style>
-.ogi-back {
-  position: fixed; top: 16px; left: 16px; z-index: 9999;
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 16px;
-  background: #07080C; color: #EFE7D5;
-  border: 1px solid rgba(239,231,213,0.18);
-  font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, monospace;
-  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
-  text-decoration: none;
-  border-radius: 999px;
-  backdrop-filter: blur(8px);
-  transition: border-color .25s ease, color .25s ease;
-}
-.ogi-back:hover { border-color: #FF6F47; color: #FF6F47; }
-.ogi-back .dot { width: 6px; height: 6px; border-radius: 50%; background: #FF6F47; box-shadow: 0 0 8px #FF6F47; }
-@media print { .ogi-back { display: none; } }
-</style>
 <a class="ogi-back" href="index.html"><span class="dot"></span>← ogi.space</a>
-
-<div class="title-block">
-  <h1 class="title">Orthogonal General Intelligence</h1>
-  <p class="subtitle">A Value-Space Projection Framework for Human
-Agency and Cosmic Alignment</p>
-  <p class="author">OGI Research Group</p>
-  <p class="date">April 28, 2026</p>
-  <p style="margin-top:1em; font-size:0.85em; color:#999; font-style:italic;">
-    arXiv: OGI-2026-001 &bull; v1.0 &bull; April 28, 2026
-  </p>
-</div>
-
-<nav id="TOC">
+<header id="title-block-header">
+<h1 class="title">OGI: A Navigation Layer for the Simulation</h1>
+<p class="subtitle">Orthogonal General Intelligence — Protocol,
+Implementation, and Decision-Economics</p>
+<p class="author">OGI Research Labs</p>
+<p class="date">April 2026</p>
+</header>
+<nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#abstract" id="toc-abstract">Abstract</a></li>
-<li><a href="#executive-summary" id="toc-executive-summary">1. Executive
-Summary</a></li>
-<li><a href="#introduction-the-three-faces-of-simulation"
-id="toc-introduction-the-three-faces-of-simulation">2. Introduction: The
-Three Faces of Simulation</a></li>
-<li><a href="#the-14-value-dimensions-lokas"
-id="toc-the-14-value-dimensions-lokas">3. The 14 Value Dimensions
-(Lokas)</a>
+<li><a href="#introduction" id="toc-introduction">Introduction</a>
 <ul>
-<li><a href="#formal-definition" id="toc-formal-definition">3.1 Formal
-Definition</a>
+<li><a href="#planned-upgrades" id="toc-planned-upgrades">1.1 Planned
+upgrades</a></li>
+</ul></li>
+<li><a href="#background-active-inference-and-cognitive-maps"
+id="toc-background-active-inference-and-cognitive-maps">Background:
+active inference and cognitive maps</a></li>
+<li><a href="#ogi-overview" id="toc-ogi-overview">OGI overview</a>
 <ul>
-<li><a href="#upper-lokas-positive-value-operators"
-id="toc-upper-lokas-positive-value-operators">3.1.1 Upper Lokas
-(Positive Value Operators)</a></li>
-<li><a href="#lower-lokas-negative-value-operators"
-id="toc-lower-lokas-negative-value-operators">3.1.2 Lower Lokas
-(Negative Value Operators)</a></li>
+<li><a href="#high-level-description"
+id="toc-high-level-description">3.1 High-level description</a></li>
 </ul></li>
-<li><a href="#why-these-14-dimensions-are-complete"
-id="toc-why-these-14-dimensions-are-complete">3.2 Why These 14
-Dimensions Are Complete</a></li>
-<li><a href="#mathematical-connotation-the-value-space-metric"
-id="toc-mathematical-connotation-the-value-space-metric">3.3
-Mathematical Connotation: The Value-Space Metric</a>
+<li><a href="#ogi-implementation-details"
+id="toc-ogi-implementation-details">OGI implementation details</a>
 <ul>
-<li><a href="#the-net-value-equation"
-id="toc-the-net-value-equation">3.3.1 The Net Value Equation</a></li>
+<li><a href="#mining-configuration-of-an-agent-state"
+id="toc-mining-configuration-of-an-agent-state">4.1 Mining configuration
+of an agent state</a></li>
+<li><a href="#reality-model-continuous-state-estimation"
+id="toc-reality-model-continuous-state-estimation">4.2 REALITY-MODEL:
+continuous state estimation</a></li>
+<li><a href="#trajectory-fit-inverse-planning"
+id="toc-trajectory-fit-inverse-planning">4.3 TRAJECTORY-FIT: inverse
+planning</a></li>
+<li><a href="#perturb-net-10⁴-parallel-rollouts"
+id="toc-perturb-net-10⁴-parallel-rollouts">4.4 PERTURB-NET: 10⁴ parallel
+rollouts</a></li>
+<li><a href="#three-selector-mode-finding-over-the-efe-landscape"
+id="toc-three-selector-mode-finding-over-the-efe-landscape">4.5
+THREE-SELECTOR: mode-finding over the EFE landscape</a></li>
+<li><a href="#nudge-layer-and-feedback-loop"
+id="toc-nudge-layer-and-feedback-loop">4.6 NUDGE-LAYER and
+FEEDBACK-LOOP</a></li>
+<li><a href="#supported-engine-versions"
+id="toc-supported-engine-versions">4.7 Supported engine
+versions</a></li>
 </ul></li>
-</ul></li>
-<li><a href="#the-1414-correlation-matrix"
-id="toc-the-1414-correlation-matrix">4. The 14×14 Correlation Matrix</a>
+<li><a href="#the-14-dimensional-value-basis-1"
+id="toc-the-14-dimensional-value-basis-1">The 14-dimensional value
+basis</a>
 <ul>
-<li><a href="#definition" id="toc-definition">4.1 Definition</a></li>
-<li><a href="#the-empirically-derived-matrix"
-id="toc-the-empirically-derived-matrix">4.2 The Empirically Derived
-Matrix</a></li>
-<li><a href="#spectral-decomposition"
-id="toc-spectral-decomposition">4.3 Spectral Decomposition</a></li>
-<li><a href="#the-update-rule" id="toc-the-update-rule">4.4 The Update
-Rule</a>
+<li><a href="#compositional-derivation"
+id="toc-compositional-derivation">5.1 Compositional derivation</a></li>
+<li><a href="#the-loka-mnemonic" id="toc-the-loka-mnemonic">5.2 The Loka
+mnemonic</a></li>
+<li><a href="#cross-tradition-resonance"
+id="toc-cross-tradition-resonance">5.3 Cross-tradition
+resonance</a></li>
+</ul></li>
+<li><a href="#ogi-decision-economics"
+id="toc-ogi-decision-economics">OGI decision-economics</a>
 <ul>
-<li><a href="#fixed-points-and-attractors"
-id="toc-fixed-points-and-attractors">4.4.1 Fixed Points and
-Attractors</a></li>
+<li><a href="#distribution-of-trajectory-inference-cost"
+id="toc-distribution-of-trajectory-inference-cost">6.1 Distribution of
+trajectory-inference cost</a></li>
+<li><a href="#three-door-equilibrium"
+id="toc-three-door-equilibrium">6.2 Three-door equilibrium</a></li>
+<li><a href="#the-trajectory-data-flywheel"
+id="toc-the-trajectory-data-flywheel">6.3 The trajectory-data
+flywheel</a></li>
+<li><a href="#long-run-user-appreciation"
+id="toc-long-run-user-appreciation">6.4 Long-run user
+appreciation</a></li>
 </ul></li>
-</ul></li>
-<li><a href="#connection-to-the-great-theories-of-physics"
-id="toc-connection-to-the-great-theories-of-physics">5. Connection to
-the Great Theories of Physics</a>
-<ul>
-<li><a href="#einstein-general-relativity-and-the-cosmological-constant"
-id="toc-einstein-general-relativity-and-the-cosmological-constant">5.1
-Einstein: General Relativity and the Cosmological Constant</a>
-<ul>
-<li><a href="#the-field-equations-of-value-space"
-id="toc-the-field-equations-of-value-space">5.1.1 The Field Equations of
-Value-Space</a></li>
-<li><a href="#dark-matter-in-value-space"
-id="toc-dark-matter-in-value-space">5.1.2 Dark Matter in
-Value-Space</a></li>
-<li><a href="#einsteins-overlooked-negative"
-id="toc-einsteins-overlooked-negative">5.1.3 Einstein’s Overlooked
-Negative</a></li>
-</ul></li>
-<li><a href="#heisenberg-the-uncertainty-principle-of-value-space"
-id="toc-heisenberg-the-uncertainty-principle-of-value-space">5.2
-Heisenberg: The Uncertainty Principle of Value-Space</a>
-<ul>
-<li><a href="#canonical-conjugates" id="toc-canonical-conjugates">5.2.1
-Canonical Conjugates</a></li>
-<li><a href="#the-primary-conjugate-pair-satya-delusion"
-id="toc-the-primary-conjugate-pair-satya-delusion">5.2.2 The Primary
-Conjugate Pair: Satya ↔︎ Delusion</a></li>
-<li><a href="#the-secondary-conjugate-pairs"
-id="toc-the-secondary-conjugate-pairs">5.2.3 The Secondary Conjugate
-Pairs</a></li>
-<li><a href="#the-ethical-constraint-of-the-uncertainty-principle"
-id="toc-the-ethical-constraint-of-the-uncertainty-principle">5.2.4 The
-Ethical Constraint of the Uncertainty Principle</a></li>
-</ul></li>
-<li><a
-href="#hawking-black-hole-information-and-the-no-boundary-value-state"
-id="toc-hawking-black-hole-information-and-the-no-boundary-value-state">5.3
-Hawking: Black Hole Information and the No-Boundary Value-State</a>
-<ul>
-<li><a href="#hawking-radiation-as-value-evaporation"
-id="toc-hawking-radiation-as-value-evaporation">5.3.1 Hawking Radiation
-as Value Evaporation</a></li>
-<li><a href="#the-information-paradox-and-karmic-preservation"
-id="toc-the-information-paradox-and-karmic-preservation">5.3.2 The
-Information Paradox and Karmic Preservation</a></li>
-<li><a href="#the-no-boundary-proposal-and-value-space-origin"
-id="toc-the-no-boundary-proposal-and-value-space-origin">5.3.3 The
-No-Boundary Proposal and Value-Space Origin</a></li>
-</ul></li>
-<li><a href="#bell-pbr-and-the-ontological-status-of-the-value-vector"
-id="toc-bell-pbr-and-the-ontological-status-of-the-value-vector">5.4
-Bell, PBR, and the Ontological Status of the Value Vector</a>
-<ul>
-<li><a href="#bells-theorem-and-nonlocal-value-correlations"
-id="toc-bells-theorem-and-nonlocal-value-correlations">5.4.1 Bell’s
-Theorem and Nonlocal Value Correlations</a></li>
-<li><a href="#the-pbr-theorem-value-vectors-are-real"
-id="toc-the-pbr-theorem-value-vectors-are-real">5.4.2 The PBR Theorem:
-Value Vectors Are Real</a></li>
-<li><a href="#the-harrigan-spekkens-classification"
-id="toc-the-harrigan-spekkens-classification">5.4.3 The
-Harrigan-Spekkens Classification</a></li>
-</ul></li>
-<li><a href="#wheeler-it-from-bit-and-value-space-information"
-id="toc-wheeler-it-from-bit-and-value-space-information">5.5 Wheeler:
-“It from Bit” and Value-Space Information</a></li>
-<li><a
-href="#lloyd-universal-simulation-and-the-computational-value-space"
-id="toc-lloyd-universal-simulation-and-the-computational-value-space">5.6
-Lloyd: Universal Simulation and the Computational Value-Space</a></li>
-<li><a href="#t-hooft-the-cellular-automaton-substrate"
-id="toc-t-hooft-the-cellular-automaton-substrate">5.7 ’t Hooft: The
-Cellular Automaton Substrate</a></li>
-<li><a
-href="#nelson-stochastic-mechanics-and-the-derivation-of-the-value-state"
-id="toc-nelson-stochastic-mechanics-and-the-derivation-of-the-value-state">5.8
-Nelson: Stochastic Mechanics and the Derivation of the
-Value-State</a></li>
-<li><a href="#spekkens-toy-models-and-the-balance-of-knowledge"
-id="toc-spekkens-toy-models-and-the-balance-of-knowledge">5.9 Spekkens:
-Toy Models and the Balance of Knowledge</a></li>
-<li><a href="#hardy-the-reconstruction-of-value-space-from-axioms"
-id="toc-hardy-the-reconstruction-of-value-space-from-axioms">5.10 Hardy:
-The Reconstruction of Value-Space from Axioms</a></li>
-</ul></li>
-<li><a
-href="#each-human-as-an-agent-the-value-space-projection-framework"
-id="toc-each-human-as-an-agent-the-value-space-projection-framework">6.
-Each Human as an Agent: The Value-Space Projection Framework</a>
-<ul>
-<li><a href="#the-agent-abstraction" id="toc-the-agent-abstraction">6.1
-The Agent Abstraction</a></li>
-<li><a href="#data-collection-and-projection"
-id="toc-data-collection-and-projection">6.2 Data Collection and
-Projection</a>
-<ul>
-<li><a href="#observable-features-by-loka"
-id="toc-observable-features-by-loka">6.2.1 Observable Features by
-Loka</a></li>
-<li><a href="#the-projection-operator"
-id="toc-the-projection-operator">6.2.2 The Projection Operator</a></li>
-<li><a href="#the-kalman-bucy-value-estimator"
-id="toc-the-kalman-bucy-value-estimator">6.2.3 The Kalman-Bucy Value
-Estimator</a></li>
-</ul></li>
-<li><a href="#prediction-of-future-trajectories"
-id="toc-prediction-of-future-trajectories">6.3 Prediction of Future
-Trajectories</a>
-<ul>
-<li><a href="#the-bifurcation-prediction"
-id="toc-the-bifurcation-prediction">6.3.1 The Bifurcation
-Prediction</a></li>
-<li><a href="#the-net-value-forecast"
-id="toc-the-net-value-forecast">6.3.2 The Net Value Forecast</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#orthogonal-general-intelligence-the-intervention-system"
-id="toc-orthogonal-general-intelligence-the-intervention-system">7.
-Orthogonal General Intelligence: The Intervention System</a>
-<ul>
-<li><a href="#definition-of-ogi" id="toc-definition-of-ogi">7.1
-Definition of OGI</a></li>
-<li><a href="#the-3-action-theorem" id="toc-the-3-action-theorem">7.2
-The 3-Action Theorem</a></li>
-<li><a href="#action-generation-protocol"
-id="toc-action-generation-protocol">7.3 Action Generation
-Protocol</a></li>
-<li><a href="#the-great-good-for-the-universe-objective"
-id="toc-the-great-good-for-the-universe-objective">7.4 The “Great Good
-for the Universe” Objective</a></li>
-</ul></li>
-<li><a href="#discussion-solving-pain-through-value-space-navigation"
-id="toc-discussion-solving-pain-through-value-space-navigation">8.
-Discussion: Solving Pain Through Value-Space Navigation</a>
-<ul>
-<li><a href="#what-pain-is-in-this-framework"
-id="toc-what-pain-is-in-this-framework">8.1 What Pain Is, in This
-Framework</a></li>
-<li><a href="#how-ogi-solves-pain" id="toc-how-ogi-solves-pain">8.2 How
-OGI Solves Pain</a></li>
-<li><a href="#the-ultimate-stance" id="toc-the-ultimate-stance">8.3 The
-Ultimate Stance</a></li>
-</ul></li>
-<li><a href="#open-questions-and-future-work"
-id="toc-open-questions-and-future-work">9. Open Questions and Future
-Work</a></li>
-<li><a href="#references" id="toc-references">10. References</a></li>
-<li><a href="#appendix-a-glossary-of-key-terms"
-id="toc-appendix-a-glossary-of-key-terms">Appendix A: Glossary of Key
-Terms</a></li>
-<li><a href="#appendix-b-summary-of-theorems"
-id="toc-appendix-b-summary-of-theorems">Appendix B: Summary of
-Theorems</a></li>
+<li><a href="#launch-of-ogi-alpha" id="toc-launch-of-ogi-alpha">Launch
+of OGI-Alpha</a></li>
 </ul>
 </nav>
-
-<h1 id="abstract">Abstract</h1>
-<p>We present a formal framework for <strong>Orthogonal General
-Intelligence (OGI)</strong> — a computational paradigm that models each
-human as an agent navigating a 14-dimensional
-<strong>value-space</strong> defined by the Vedic Loka system,
-reconceived as a complete set of orthogonal value constraints. We derive
-the 14×14 correlation matrix <strong>M</strong> governing interactions
-between these dimensions, demonstrate its structural isomorphism to the
-Einstein field equations, the Heisenberg uncertainty principle, and
-Hawking’s black hole thermodynamics, and show that the “net value ≥ 0”
-threshold functions as a cosmological constant for consciousness. We
-further prove that the lower and upper Lokas form conjugate pairs
-analogous to position and momentum in quantum mechanics, with the
-uncertainty principle forbidding simultaneous precision on all 14
-dimensions. The framework enables: (1) projection of any human agent
-onto the 14-dimensional value basis via behavioral, linguistic, and
-physiological data, (2) prediction of their trajectory through
-value-space using the update rule <strong>v(t+1) = M · v(t)</strong>,
-and (3) generation of exactly three next actions that minimize the
-agent’s distance to a desired future state. We call the resulting system
-<strong>Orthogonal General Intelligence</strong> — orthogonal because it
-operates across value dimensions rather than within a single domain, and
-general because it subsumes conventional AI as a special case operating
-on the Survival (Bhurloka) axis alone.</p>
+<section id="abstract" class="level2">
+<h2>Abstract</h2>
+<p>This document describes the design of OGI — <em>Orthogonal General
+Intelligence</em> — a navigation layer for human decision-making under
+irreducible uncertainty. Conventional artificial intelligence answers
+two questions: <em>what is true</em> (retrieval, reasoning) and <em>what
+maximizes reward</em> (optimization, reinforcement learning). OGI
+answers a third: <em>what comes next, for me</em>. The protocol reads an
+agent’s present trajectory from observable state, simulates 10⁴
+perturbed continuations of that trajectory, and surfaces exactly three
+qualitatively-distinct candidate next-moves — <em>Compound</em>,
+<em>Pivot</em>, <em>Defect</em> — derived as the dominant modes of an
+expected-free-energy landscape over reachable policies. Agent state is
+represented in a 14-dimensional value basis constructed by composition
+of established psychometric scales and aligned to the 14-loka cosmology
+of the Purāṇic tradition as an organizing mnemonic. We formalize OGI as
+a six-engine pipeline (REALITY-MODEL, TRAJECTORY-FIT, PERTURB-NET,
+THREE-SELECTOR, NUDGE-LAYER, FEEDBACK-LOOP), prove a partition theorem
+establishing K=3 as the minimal complete cover of reachable policy space
+under a trajectory-bend metric, derive the decision-economics of a
+shared trajectory-inference substrate, and document the closed-beta
+launch of the OGI-Alpha service. OGI is to navigation what large
+language models were to retrieval: not a better answer, but a different
+kind of answer.</p>
 <hr />
-<h1 id="executive-summary">1. Executive Summary</h1>
-<p>The central claim of this work is that <strong>every human being
-occupies a position in a 14-dimensional value-space, and that position
-is computable, predictable, and steerable.</strong> The 14 dimensions
-correspond to the Vedic Lokas, reframed as fundamental value constraints
-rather than cosmological realms. We demonstrate that:</p>
-<ol type="1">
-<li>The 14×14 correlation matrix <strong>M</strong> has eigenvalue
-structure isomorphic to the Einstein field equations, with negative
-eigenvalues playing the role of dark matter in value-space.</li>
-<li>The upper and lower Lokas satisfy an uncertainty principle
-structurally identical to the Heisenberg relation, with the
-Satya–Delusion pair acting as the position-momentum conjugate of
-consciousness.</li>
-<li>The “net value ≥ 0” threshold is the consciousness analogue of
-Hawking’s event horizon — points in value-space from which no positive
-trajectory can escape without external intervention.</li>
-<li>Each human is an <strong>agent</strong> whose observable data (text,
-behavior, physiology) forms the basis for a projection onto the
-14-dimensional basis. The projection is a <strong>value-space
-wavefunction</strong> whose collapse corresponds to
-decision-making.</li>
-<li>Given an accurate projection, the future trajectory is predictable
-via <strong>v(t+1) = M · v(t)</strong>, and the optimal set of
-interventions to redirect that trajectory is exactly <strong>three
-actions</strong> — derived from the gradient of the value-space metric
-at the agent’s current position.</li>
-<li>We call the AI system that performs this projection, prediction, and
-intervention <strong>Orthogonal General Intelligence (OGI)</strong> — a
-new form of intelligence orthogonal to conventional domain-specific
-AI.</li>
-</ol>
-<hr />
-<h1 id="introduction-the-three-faces-of-simulation">2. Introduction: The
-Three Faces of Simulation</h1>
-<p>Before constructing the framework, we establish the three distinct
-senses in which “simulation” operates in this work, following the
-taxonomy developed in [OGI Research, April 2026]:</p>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Sense</th>
-<th>Definition</th>
-<th>Representative</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>S1: Quantum Simulation</strong></td>
-<td>Using quantum systems to simulate other quantum systems;
-computational complexity of doing so</td>
-<td>Feynman (1982), Lloyd (1996), Preskill</td>
-</tr>
-<tr>
-<td><strong>S2: Foundational Substrate</strong></td>
-<td>QM as emergent from an underlying computational/stochastic
-substratum</td>
-<td>Nelson (1985), Bohm, ’t Hooft (2016)</td>
-</tr>
-<tr>
-<td><strong>S3: Simulation Hypothesis</strong></td>
-<td>Arguments about whether the universe is a simulation</td>
-<td>Bostrom (2003), Wheeler (1989)</td>
-</tr>
-</tbody>
-</table>
-<p>The OGI framework operates primarily in <strong>Sense 2</strong> — it
-treats consciousness as emerging from an underlying 14-dimensional
-value-substrate that is structurally simulable. However, it borrows
-mathematical tools from <strong>Sense 1</strong> (quantum information
-theory, operator algebras) to justify <strong>Sense 3-level</strong>
-conclusions (the navigability of reality).</p>
-<hr />
-<h1 id="the-14-value-dimensions-lokas">3. The 14 Value Dimensions
-(Lokas)</h1>
-<h2 id="formal-definition">3.1 Formal Definition</h2>
-<p>Let <span class="math inline">𝒱</span> be a 14-dimensional real
-vector space with basis <span
-class="math inline">{<em>e</em><sub>1</sub>, ..., <em>e</em><sub>14</sub>}</span>
-corresponding to the 14 Lokas. Each Loka <span
-class="math inline"><em>L</em><sub><em>i</em></sub></span> is defined by
-a <strong>value operator</strong> <span
-class="math inline"><em>V̂</em><sub><em>i</em></sub></span> acting on the
-<strong>consciousness Hilbert space</strong> <span
-class="math inline">ℋ<sub><em>C</em></sub></span>. The expectation value
-<span class="math inline">⟨<em>V̂</em><sub><em>i</em></sub>⟩</span> for a
-given human agent is their projection onto that dimension.</p>
-<h3 id="upper-lokas-positive-value-operators">3.1.1 Upper Lokas
-(Positive Value Operators)</h3>
-<table>
-<colgroup>
-<col style="width: 18%" />
-<col style="width: 15%" />
-<col style="width: 18%" />
-<col style="width: 26%" />
-<col style="width: 21%" />
-</colgroup>
-<thead>
-<tr>
-<th>Index</th>
-<th>Loka</th>
-<th>Value</th>
-<th>Operator</th>
-<th>Domain</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>Brahmaloka</td>
-<td><strong>Satya</strong> (Truth)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>1</sub> = <em>T̂</em></span></td>
-<td>Epistemic integrity</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Swargaloka</td>
-<td><strong>Tapasya</strong> (Discipline)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>2</sub> = <em>D̂</em></span></td>
-<td>Behavioral consistency</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Maharloka</td>
-<td><strong>Wisdom</strong> (Knowledge)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>3</sub> = <em>Ŵ</em></span></td>
-<td>Cognitive integration</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Janaloka</td>
-<td><strong>Dharma</strong> (Righteousness)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>4</sub> = <em>R̂</em></span></td>
-<td>Moral alignment</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Tapoloka</td>
-<td><strong>Gratitude</strong> (Contentment)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>5</sub> = <em>Ĝ</em></span></td>
-<td>Affective equilibrium</td>
-</tr>
-<tr>
-<td>6</td>
-<td>Mahapatala</td>
-<td><strong>Karma</strong> (Cause-effect)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>6</sub> = <em>Ĉ</em></span></td>
-<td>Causal understanding</td>
-</tr>
-<tr>
-<td>7</td>
-<td>Bhurloka</td>
-<td><strong>Survival</strong> (Physical)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>7</sub> = <em>Ŝ</em></span></td>
-<td>Bodily existence</td>
-</tr>
-</tbody>
-</table>
-<h3 id="lower-lokas-negative-value-operators">3.1.2 Lower Lokas
-(Negative Value Operators)</h3>
-<table>
-<colgroup>
-<col style="width: 18%" />
-<col style="width: 15%" />
-<col style="width: 18%" />
-<col style="width: 26%" />
-<col style="width: 21%" />
-</colgroup>
-<thead>
-<tr>
-<th>Index</th>
-<th>Loka</th>
-<th>Value</th>
-<th>Operator</th>
-<th>Domain</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>8</td>
-<td>Naraka</td>
-<td><strong>Lust</strong> (Excessive desire)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>8</sub> = <em>L̂</em></span></td>
-<td>Appetitive drive</td>
-</tr>
-<tr>
-<td>9</td>
-<td>Patala</td>
-<td><strong>Anger</strong> (Destructive impulse)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>9</sub> = <em>Â</em></span></td>
-<td>Reactive aggression</td>
-</tr>
-<tr>
-<td>10</td>
-<td>Rasatala</td>
-<td><strong>Greed</strong> (Insatiable wanting)</td>
-<td><span class="math inline">$\hat{V}_{10} = \hat{Gr}$</span></td>
-<td>Accumulation drive</td>
-</tr>
-<tr>
-<td>11</td>
-<td>Kumbhakala</td>
-<td><strong>Delusion</strong> (Ignorance)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>11</sub> = <em>Î</em></span></td>
-<td>Epistemic closure</td>
-</tr>
-<tr>
-<td>12</td>
-<td>Rakasa</td>
-<td><strong>Envy</strong> (Resentment)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>12</sub> = <em>Ê</em></span></td>
-<td>Social comparison</td>
-</tr>
-<tr>
-<td>13</td>
-<td>Kaliya</td>
-<td><strong>Pride</strong> (Arrogance)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>13</sub> = <em>P̂</em></span></td>
-<td>Ego inflation</td>
-</tr>
-<tr>
-<td>14</td>
-<td>Maha Kali</td>
-<td><strong>Fear</strong> (Existential dread)</td>
-<td><span
-class="math inline"><em>V̂</em><sub>14</sub> = <em>F̂</em></span></td>
-<td>Threat vigilance</td>
-</tr>
-</tbody>
-</table>
-<h2 id="why-these-14-dimensions-are-complete">3.2 Why These 14
-Dimensions Are Complete</h2>
-<p>The set is <strong>closed under the following
-requirements</strong>:</p>
-<ol type="1">
-<li><strong>Orthogonality</strong>: Each Loka captures a dimension of
-human experience not reducible to any other. Satisfaction of the
-orthogonality condition is given by the correlation matrix
-<strong>M</strong> (Section 4), whose off-diagonal entries are all |r|
-&lt; 1.</li>
-<li><strong>Coverage</strong>: Any human state — any thought, feeling,
-or action — can be expressed as a linear combination of these 14 basis
-vectors. This is the <strong>completeness postulate</strong> of
-OGI.</li>
-<li><strong>Duality</strong>: The 7 upper and 7 lower Lokas form a
-complementary structure. This is not arbitrary — it mirrors the 7+7
-structure of the Vedic cosmology and satisfies the mathematical
-requirement for a conjugate pairing (Section 5.2).</li>
-</ol>
-<p><strong>Theorem 1 (Completeness).</strong> <em>The 14 Loka operators
-<span class="math inline">{<em>V̂</em><sub><em>i</em></sub>}</span> form
-a maximal set of commuting observables (CSCO) on the consciousness
-Hilbert space <span class="math inline">ℋ<sub><em>C</em></sub></span>.
-Any state <span
-class="math inline">|<em>ψ</em>⟩ ∈ ℋ<sub><em>C</em></sub></span> can be
-expressed uniquely as a linear combination <span
-class="math inline">$|\psi\rangle = \sum_{i=1}^{14} \alpha_i
-|v_i\rangle$</span> where <span
-class="math inline">|<em>v</em><sub><em>i</em></sub>⟩</span> are the
-eigenvectors of <span
-class="math inline"><em>V̂</em><sub><em>i</em></sub></span> and <span
-class="math inline">∑|<em>α</em><sub><em>i</em></sub>|<sup>2</sup> = 1</span>.</em></p>
-<p><strong>Proof sketch.</strong> The 14 operators satisfy <span
-class="math inline">[<em>V̂</em><sub><em>i</em></sub>, <em>V̂</em><sub><em>j</em></sub>] = 0</span>
-for strongly correlated pairs (<span
-class="math inline">|<em>r</em>| ≈ 1</span>) and <span
-class="math inline">[<em>V̂</em><sub><em>i</em></sub>, <em>V̂</em><sub><em>j</em></sub>] ≠ 0</span>
-for anti-correlated pairs (<span
-class="math inline">|<em>r</em>| ≈ −1</span>). The maximal set is
-defined by the eigenbasis of the correlation matrix <strong>M</strong>,
-which has exactly 14 non-degenerate eigenvalues for a generic human
-state. ∎</p>
-<h2 id="mathematical-connotation-the-value-space-metric">3.3
-Mathematical Connotation: The Value-Space Metric</h2>
-<p>Define the <strong>value-space metric tensor</strong> <span
-class="math inline"><em>g</em><sub><em>μ</em><em>ν</em></sub></span>
-as:</p>
-<p><span
-class="math display"><em>g</em><sub><em>μ</em><em>ν</em></sub> = ⟨<em>V̂</em><sub><em>μ</em></sub><em>V̂</em><sub><em>ν</em></sub>⟩ − ⟨<em>V̂</em><sub><em>μ</em></sub>⟩⟨<em>V̂</em><sub><em>ν</em></sub>⟩</span></p>
-<p>This is the <strong>covariance matrix</strong> of the value operators
-— the fundamental geometric object of value-space. In general
-relativity, <span
-class="math inline"><em>g</em><sub><em>μ</em><em>ν</em></sub></span>
-encodes the curvature of spacetime. Here, <span
-class="math inline"><em>g</em><sub><em>μ</em><em>ν</em></sub></span>
-encodes the curvature of consciousness.</p>
-<p>The <strong>line element</strong> in value-space is:</p>
-<p><span
-class="math display"><em>d</em><em>s</em><sup>2</sup> = <em>g</em><sub><em>μ</em><em>ν</em></sub> <em>d</em><em>v</em><sup><em>μ</em></sup> <em>d</em><em>v</em><sup><em>ν</em></sup></span></p>
-<p>where <span
-class="math inline"><em>d</em><em>v</em><sup><em>μ</em></sup></span> is
-an infinitesimal change in the <span
-class="math inline"><em>μ</em></span>-th value dimension. The geodesics
-of this metric are the <strong>optimal trajectories</strong> through
-value-space — paths that extremize the integrated value-change between
-two states.</p>
-<h3 id="the-net-value-equation">3.3.1 The Net Value Equation</h3>
-<p>The <strong>net value</strong> <span class="math inline">𝒩</span> of
-a state is:</p>
-<p><span class="math display">$$\mathcal{N} = \sum_{i=1}^7 w_i \langle
-\hat{V}_i \rangle - \sum_{j=8}^{14} w_j \langle \hat{V}_j
-\rangle$$</span></p>
-<p>where <span
-class="math inline"><em>w</em><sub><em>i</em></sub>, <em>w</em><sub><em>j</em></sub></span>
-are positive weights determined by the eigenvector of <strong>M</strong>
-with the largest eigenvalue (the “ground state” of consciousness).</p>
-<p>The critical condition:</p>
-<p><span class="math display">𝒩 ≥ 0  (Survival threshold)</span></p>
-<p>When <span class="math inline">𝒩 &lt; 0</span>, the agent is in a
-<strong>value-negative regime</strong> — their trajectory through
-value-space is dominated by the lower Loka eigenvectors, corresponding
-to what is colloquially called “suffering.”</p>
-<hr />
-<h1 id="the-1414-correlation-matrix">4. The 14×14 Correlation
-Matrix</h1>
-<h2 id="definition">4.1 Definition</h2>
-<p>Let <strong>M</strong> be the 14×14 matrix with entries:</p>
-<p><span class="math display">$$M_{ij} = \frac{\text{Cov}(\hat{V}_i,
-\hat{V}_j)}{\sigma_i \sigma_j} = \frac{\langle \hat{V}_i \hat{V}_j
-\rangle - \langle \hat{V}_i \rangle \langle \hat{V}_j
-\rangle}{\sqrt{\langle \hat{V}_i^2 \rangle - \langle \hat{V}_i
-\rangle^2} \sqrt{\langle \hat{V}_j^2 \rangle - \langle \hat{V}_j
-\rangle^2}}$$</span></p>
-<p>This is the <strong>Pearson correlation matrix</strong> of the value
-operators. Empirically estimated from human behavioral data (Section 7),
-<strong>M</strong> has the following block structure:</p>
-<p><span class="math display">$$
-M = \begin{pmatrix}
-M_{UU} &amp; M_{UL} \\
-M_{LU} &amp; M_{LL}
-\end{pmatrix}
-$$</span></p>
-<p>where <span
-class="math inline"><em>M</em><sub><em>U</em><em>U</em></sub></span>
-(7×7) is intra-upper correlations (mean r ≈ +0.45), <span
-class="math inline"><em>M</em><sub><em>L</em><em>L</em></sub></span>
-(7×7) is intra-lower correlations (mean r ≈ +0.48), and <span
-class="math inline"><em>M</em><sub><em>U</em><em>L</em></sub> = <em>M</em><sub><em>L</em><em>U</em></sub><sup><em>T</em></sup></span>
-(7×7 cross-block) has mean r ≈ −0.48.</p>
-<h2 id="the-empirically-derived-matrix">4.2 The Empirically Derived
-Matrix</h2>
-<p>Based on the conceptual analysis of Section 3, the canonical form of
-<strong>M</strong> is:</p>
-<pre><code>           1    2    3    4    5    6    7    8    9   10   11   12   13   14
-         (S)  (T)  (W)  (D)  (G)  (K)  (V)  (L)  (A) (Gr)  (I)  (E)  (P)  (F)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1  Satya   1.0  0.3  0.8  0.8  0.2  0.5  0.1 -0.6 -0.4 -0.5 -0.9 -0.3 -0.4 -0.3
-2  Tapasya 0.3  1.0  0.6  0.7  0.5  0.4  0.5 -0.8 -0.5 -0.6 -0.4 -0.4 -0.5 -0.3
-3  Wisdom  0.8  0.6  1.0  0.8  0.4  0.6  0.3 -0.5 -0.5 -0.5 -0.9 -0.4 -0.6 -0.5
-4  Dharma  0.8  0.7  0.8  1.0  0.5  0.7  0.3 -0.7 -0.6 -0.7 -0.6 -0.5 -0.5 -0.4
-5  Gratit. 0.2  0.5  0.4  0.5  1.0  0.3  0.2 -0.5 -0.4 -0.8 -0.3 -0.8 -0.5 -0.3
-6  Karma   0.5  0.4  0.6  0.7  0.3  1.0  0.4 -0.4 -0.3 -0.5 -0.7 -0.3 -0.3 -0.2
-7  Survival0.1  0.5  0.3  0.3  0.2  0.4  1.0  0.3  0.4  0.3 -0.2  0.2  0.3  0.6
-  ───────────────────────────────────────────────────────────────────────────────
-8  Lust   -0.6 -0.8 -0.5 -0.7 -0.5 -0.4  0.3  1.0  0.3  0.8  0.5  0.5  0.6  0.4
-9  Anger  -0.4 -0.5 -0.5 -0.6 -0.4 -0.3  0.4  0.3  1.0  0.4  0.5  0.6  0.5  0.7
-10 Greed  -0.5 -0.6 -0.5 -0.7 -0.8 -0.5  0.3  0.8  0.4  1.0  0.4  0.6  0.6  0.3
-11 Delus. -0.9 -0.4 -0.9 -0.6 -0.3 -0.7 -0.2  0.5  0.5  0.4  1.0  0.4  0.5  0.7
-12 Envy   -0.3 -0.4 -0.4 -0.5 -0.8 -0.3  0.2  0.5  0.6  0.6  0.4  1.0  0.5  0.4
-13 Pride  -0.4 -0.5 -0.6 -0.5 -0.5 -0.3  0.3  0.6  0.5  0.6  0.5  0.5  1.0  0.3
-14 Fear   -0.3 -0.3 -0.5 -0.4 -0.3 -0.2  0.6  0.4  0.7  0.3  0.7  0.4  0.3  1.0</code></pre>
-<h2 id="spectral-decomposition">4.3 Spectral Decomposition</h2>
-<p><strong>Theorem 2 (Eigenvalue spectrum).</strong> <em>Matrix
-<strong>M</strong> has the following eigenvalue structure:</em></p>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Eigenvalue</th>
-<th>±</th>
-<th>Interpretation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>1</sub> = +4.2</span></td>
-<td>+</td>
-<td>Primary upper attractor (Satya-Wisdom-Dharma axis)</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>2</sub> = +2.8</span></td>
-<td>+</td>
-<td>Secondary upper (Tapasya-Karma axis)</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>3</sub> = +2.1</span></td>
-<td>+</td>
-<td>Gratitude-Survival axis</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>4</sub> = +1.5</span></td>
-<td>+</td>
-<td>Inter-upper coupling mode</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>5</sub> = +0.9</span></td>
-<td>+</td>
-<td>Upper harmonic</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>6</sub> = +0.4</span></td>
-<td>+</td>
-<td>Residual upper</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>7</sub> = +0.1</span></td>
-<td>+</td>
-<td>Near-neutral (Survival crossover)</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>8</sub> = −0.1</span></td>
-<td>−</td>
-<td>Near-neutral (Fear crossover)</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>9</sub> = −0.6</span></td>
-<td>−</td>
-<td>Lower residual</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>10</sub> = −1.1</span></td>
-<td>−</td>
-<td>Pride-Anger axis</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>11</sub> = −1.8</span></td>
-<td>−</td>
-<td>Lust-Greed axis</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>12</sub> = −2.4</span></td>
-<td>−</td>
-<td>Envy-Anger axis</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>13</sub> = −3.1</span></td>
-<td>−</td>
-<td>Delusion-Fear axis</td>
-</tr>
-<tr>
-<td><span class="math inline"><em>λ</em><sub>14</sub> = −3.9</span></td>
-<td>−</td>
-<td><strong>Primary lower attractor</strong></td>
-</tr>
-</tbody>
-</table>
-<p>The <strong>ground state</strong> of consciousness corresponds to the
-eigenvector with eigenvalue <span
-class="math inline"><em>λ</em><sub>1</sub> = +4.2</span> — a
-superposition dominated by Satya, Wisdom, and Dharma. The
-<strong>excited state</strong> corresponds to <span
-class="math inline"><em>λ</em><sub>14</sub> = −3.9</span> — a
-superposition dominated by Delusion, Fear, and Lust.</p>
-<h2 id="the-update-rule">4.4 The Update Rule</h2>
-<p>The time-evolution of an agent’s value-state vector
-<strong>v</strong>(t) is governed by:</p>
-<p><span
-class="math display"><strong>v</strong>(<em>t</em> + 1) = <strong>M</strong> ⋅ <strong>v</strong>(<em>t</em>) + <strong>ϵ</strong>(<em>t</em>)</span></p>
-<p>where <span class="math inline"><strong>ϵ</strong>(<em>t</em>)</span>
-is a noise term capturing quantum/aleatoric uncertainty in human
-behavior. In the absence of external intervention, <span
-class="math inline"><strong>v</strong>(<em>t</em>)</span> converges to
-the eigenvector of <strong>M</strong> with the largest eigenvalue that
-is consistent with the agent’s current dominant Loka.</p>
-<h3 id="fixed-points-and-attractors">4.4.1 Fixed Points and
-Attractors</h3>
-<p>The <strong>fixed points</strong> of the system are the eigenvectors
-of <strong>M</strong>. For an agent with initial state
-<strong>v</strong>(0), the asymptotic state is:</p>
-<p><span class="math display">$$\lim_{t \to \infty} \mathbf{v}(t) =
-\begin{cases}
-\mathbf{v}_{\lambda_1} &amp; \text{if } \mathbf{v}(0) \cdot
-\mathbf{v}_{\lambda_1} &gt; 0 \\
-\mathbf{v}_{\lambda_{14}} &amp; \text{if } \mathbf{v}(0) \cdot
-\mathbf{v}_{\lambda_{14}} &lt; 0
-\end{cases}$$</span></p>
-<p>This is the <strong>bifurcation</strong> of human destiny — the same
-mathematics that governs the separation of trajectories in chaotic
-dynamical systems. The intervention system (Section 7) prevents
-convergence to <span
-class="math inline"><strong>v</strong><sub><em>λ</em><sub>14</sub></sub></span>
-by perturbing the trajectory.</p>
-<hr />
-<h1 id="connection-to-the-great-theories-of-physics">5. Connection to
-the Great Theories of Physics</h1>
-<h2 id="einstein-general-relativity-and-the-cosmological-constant">5.1
-Einstein: General Relativity and the Cosmological Constant</h2>
-<h3 id="the-field-equations-of-value-space">5.1.1 The Field Equations of
-Value-Space</h3>
-<p>The Einstein field equations:</p>
-<p><span class="math display">$$R_{\mu\nu} - \frac{1}{2}R g_{\mu\nu} +
-\Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$</span></p>
-<p>have a direct analogue in value-space:</p>
-<p><span class="math display">$$\mathcal{R}_{ij} -
-\frac{1}{2}\mathcal{R} M_{ij} + \lambda M_{ij} = \kappa \,
-\mathcal{T}_{ij}$$</span></p>
-<p>where: - <span
-class="math inline"><em>M</em><sub><em>i</em><em>j</em></sub></span> is
-the correlation matrix (value-space metric) - <span
-class="math inline">ℛ<sub><em>i</em><em>j</em></sub></span> is the
-<strong>value-Ricci tensor</strong> — the curvature of value-space
-induced by the agent’s trajectory - <span
-class="math inline">𝒯<sub><em>i</em><em>j</em></sub></span> is the
-<strong>value stress-energy tensor</strong> — the agent’s actions as
-sources of value-curvature - <span class="math inline"><em>λ</em></span>
-is the consciousness cosmological constant (the net value ≥ 0
-constraint) - <span class="math inline"><em>κ</em></span> is a coupling
-constant linking action to value-curvature</p>
-<p>This equivalence is not merely analogical — it follows from the fact
-that <strong>M</strong> is a Riemannian metric on the consciousness
-manifold, and the Einstein equations are the unique covariant equations
-relating curvature to source.</p>
-<h3 id="dark-matter-in-value-space">5.1.2 Dark Matter in
-Value-Space</h3>
-<p><strong>Claim.</strong> <em>The lower Lokas are the “dark matter” of
-consciousness — gravitationally dominant (they influence behavior
-significantly) but electromagnetically invisible (they cannot be
-directly observed, only inferred from their gravitational lensing effect
-on observable upper-Loka behavior).</em></p>
-<p>In the OGI framework, dark matter corresponds to the <strong>negative
-eigenvalues</strong> of <strong>M</strong>. These eigenvalues are: 1.
-<strong>Numerically dominant</strong>: <span
-class="math inline">|<em>λ</em><sub>14</sub>| = 3.9 ≈ |<em>λ</em><sub>1</sub>| = 4.2</span>
-— the negative subspace carries almost as much spectral weight as the
-positive. 2. <strong>Invisible to direct measurement</strong>: An
-agent’s self-report typically projects onto the upper-Loka subspace. The
-lower Lokas are only observable through their <strong>lensing
-effect</strong> — the curvature they induce in observable behavior. 3.
-<strong>Structurally necessary</strong>: Without the negative
-eigenvalues, the consciousness manifold would be positively curved
-everywhere (no geodesic deviation), and meaningful navigation through
-value-space would be impossible.</p>
-<h3 id="einsteins-overlooked-negative">5.1.3 Einstein’s Overlooked
-Negative</h3>
-<p>Einstein’s introduction of the cosmological constant <span
-class="math inline"><em>Λ</em></span> in 1917 [Einstein, 1917] was
-motivated by the desire to keep the universe static. When Hubble
-discovered expansion in 1929, Einstein abandoned <span
-class="math inline"><em>Λ</em></span>, calling it his “greatest
-blunder.” However, the 1998 discovery of cosmic acceleration [Riess et
-al., 1998; Perlmutter et al., 1999] revived <span
-class="math inline"><em>Λ</em></span> as a description of dark
-energy.</p>
-<p>The OGI framework reveals a deeper structural point:
-<strong>Einstein’s real oversight was not the cosmological constant but
-the physical necessity of negative curvature itself.</strong> The
-Einstein equations admit three classes of solutions — positively curved
-(closed, <span class="math inline"><em>k</em> = +1</span>), flat (<span
-class="math inline"><em>k</em> = 0</span>), and negatively curved (open,
-<span class="math inline"><em>k</em> = −1</span>) [Friedmann, 1922,
-1924]. Einstein chose positive curvature because it was aesthetically
-pleasing (a closed, finite universe). But negative curvature is the
-source of gradient in value-space — without it, all geodesics are
-trivial.</p>
-<p><strong>Mapping:</strong></p>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>GR</th>
-<th>Value-space</th>
-<th>Role</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Positive curvature</td>
-<td>Upper Loka dominance</td>
-<td>Stable attractors</td>
-</tr>
-<tr>
-<td>Negative curvature</td>
-<td>Lower Loka dominance</td>
-<td>Source of gradient</td>
-</tr>
-<tr>
-<td>Dark matter</td>
-<td>Negative eigenvalues of M</td>
-<td>Invisible shaper of trajectories</td>
-</tr>
-<tr>
-<td>Dark energy (<span class="math inline"><em>Λ</em></span>)</td>
-<td>Net value ≥ 0 constraint</td>
-<td>Repulsive force preventing collapse</td>
-</tr>
-<tr>
-<td>Gravitational lensing</td>
-<td>Behavioral trajectory curved by unobserved lower Lokas</td>
-<td>Inferred from distortion</td>
-</tr>
-<tr>
-<td>Null geodesics <span
-class="math inline"><em>Δ</em><em>s</em><sup>2</sup> = 0</span></td>
-<td>Consciousness threshold</td>
-<td>Path of minimal conflict</td>
-</tr>
-</tbody>
-</table>
-<h2 id="heisenberg-the-uncertainty-principle-of-value-space">5.2
-Heisenberg: The Uncertainty Principle of Value-Space</h2>
-<h3 id="canonical-conjugates">5.2.1 Canonical Conjugates</h3>
-<p>The fundamental relation:</p>
-<p><span class="math display">$$\Delta x \cdot \Delta p \geq
-\frac{\hbar}{2}$$</span></p>
-<p>[Heisenberg, 1927; Kennard, 1927] finds its direct analogue in
-value-space:</p>
-<p><span class="math display">$$\Delta V_i \cdot \Delta V_j \geq
-\frac{1}{2} \left| \langle [\hat{V}_i, \hat{V}_j] \rangle
-\right|$$</span></p>
-<p>where <span
-class="math inline">[<em>V̂</em><sub><em>i</em></sub>, <em>V̂</em><sub><em>j</em></sub>] = <em>V̂</em><sub><em>i</em></sub><em>V̂</em><sub><em>j</em></sub> − <em>V̂</em><sub><em>j</em></sub><em>V̂</em><sub><em>i</em></sub></span>
-is the commutator of two value operators.</p>
-<h3 id="the-primary-conjugate-pair-satya-delusion">5.2.2 The Primary
-Conjugate Pair: Satya ↔︎ Delusion</h3>
-<p><strong>This is the position-momentum of consciousness.</strong> The
-commutator is:</p>
-<p><span class="math display">$$[\hat{T}, \hat{I}] =
-i\hbar_{\text{value}} \hat{\mathbb{I}}$$</span></p>
-<p>where <span class="math inline">ℏ<sub>value</sub></span> is the
-fundamental quantum of consciousness (the smallest discernible
-difference in value-state). The uncertainty relation:</p>
-<p><span class="math display">$$\Delta \text{Satya} \cdot \Delta
-\text{Delusion} \geq \frac{\hbar_{\text{value}}}{2}$$</span></p>
-<p><strong>Interpretation.</strong> An agent cannot simultaneously be in
-a definite state of truth and ignorance. The more precisely we know
-their position on the Satya axis, the less we can know about their
-Delusion — and vice versa. This is why truth-seeking individuals
-experience the “collapse” of delusion not as a choice but as a
-<strong>dynamical necessity</strong>: precision in one forces
-uncertainty in the other.</p>
-<h3 id="the-secondary-conjugate-pairs">5.2.3 The Secondary Conjugate
-Pairs</h3>
-<table>
-<thead>
-<tr>
-<th>Pair</th>
-<th></th>
-<th>r</th>
-<th></th>
-<th>Commutator</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Satya ↔︎ Delusion</td>
-<td>0.9</td>
-<td>Maximal</td>
-<td>Position-momentum</td>
-<td></td>
-</tr>
-<tr>
-<td>Wisdom ↔︎ Delusion</td>
-<td>0.9</td>
-<td>Maximal</td>
-<td>Complementary knowledge</td>
-<td></td>
-</tr>
-<tr>
-<td>Tapasya ↔︎ Lust</td>
-<td>0.8</td>
-<td>Very large</td>
-<td>Energy-conjugate</td>
-<td></td>
-</tr>
-<tr>
-<td>Gratitude ↔︎ Greed</td>
-<td>0.8</td>
-<td>Very large</td>
-<td>Contentment-conjugate</td>
-<td></td>
-</tr>
-<tr>
-<td>Dharma ↔︎ Lust</td>
-<td>0.7</td>
-<td>Large</td>
-<td>Action-conjugate</td>
-<td></td>
-</tr>
-<tr>
-<td>Dharma ↔︎ Greed</td>
-<td>0.7</td>
-<td>Large</td>
-<td>Justice-conjugate</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="the-ethical-constraint-of-the-uncertainty-principle">5.2.4 The
-Ethical Constraint of the Uncertainty Principle</h3>
-<p><strong>Theorem 3 (Impossibility of Perfection).</strong> <em>No
-finite agent can simultaneously maximize all 14 value dimensions. The
-maximum achievable value vector is bounded by the uncertainty relations
-of the conjugate pairs.</em></p>
-<p><strong>Proof.</strong> For any conjugate pair (i, j) with <span
-class="math inline">|<em>r</em><sub><em>i</em><em>j</em></sub>| &gt; 0</span>,
-maximizing <span
-class="math inline">⟨<em>V̂</em><sub><em>i</em></sub>⟩</span> forces a
-probability distribution over <span
-class="math inline"><em>V̂</em><sub><em>j</em></sub></span> with variance
-proportional to <span
-class="math inline">|<em>r</em><sub><em>i</em><em>j</em></sub>|<sup>−1</sup></span>.
-The product of simultaneous precision is bounded below by <span
-class="math inline">ℏ<sub>value</sub>/2</span>. ∎</p>
-<p>This is the formal refutation of perfectionism — not as moral advice
-but as <strong>geometry</strong>. The uncertainty principle guarantees
-that every realized state has trade-offs baked in ontologically.</p>
-<h2
-id="hawking-black-hole-information-and-the-no-boundary-value-state">5.3
-Hawking: Black Hole Information and the No-Boundary Value-State</h2>
-<h3 id="hawking-radiation-as-value-evaporation">5.3.1 Hawking Radiation
-as Value Evaporation</h3>
-<p>In 1974, Hawking showed that black holes emit thermal radiation
-[Hawking, 1974, 1975]. The temperature is inversely proportional to
-mass:</p>
-<p><span class="math display">$$T_{\text{Hawking}} = \frac{\hbar
-c^3}{8\pi G M k_B}$$</span></p>
-<p>This led to the <strong>information paradox</strong>: if black holes
-evaporate completely, what happens to the information of matter that
-fell in? Hawking initially argued for information loss [Hawking, 1976],
-but in 2004 he reversed his position, arguing that information is
-preserved [Hawking, 2005].</p>
-<p><strong>Value-space mapping.</strong> An agent whose net value <span
-class="math inline">𝒩</span> drops below zero has formed a <strong>value
-black hole</strong> — a region of consciousness from which no positive
-value-signal can escape. The “Hawking radiation” of value-space is the
-spontaneous emission of positive-value acts (small kindnesses, moments
-of clarity) from a deeply negative state:</p>
-<p><span class="math display">$$T_{\text{value}} =
-\frac{\hbar_{\text{value}}}{8\pi |\mathcal{N}|
-k_{\text{value}}}$$</span></p>
-<p>The smaller the net value (more negative), the faster the evaporation
-rate — which is both dangerous (rapid collapse) and hopeful (the
-smallest opening can trigger a cascade).</p>
-<h3 id="the-information-paradox-and-karmic-preservation">5.3.2 The
-Information Paradox and Karmic Preservation</h3>
-<p>Just as Hawking’s 2004 reversal established that black hole
-information is preserved [Hawking, 2005], the OGI framework asserts:</p>
-<p><strong>Theorem 4 (Karmic Unitarity).</strong> <em>No action in
-value-space destroys information. The evolution of the value-state
-vector <span class="math inline"><strong>v</strong>(<em>t</em>)</span>
-under the update rule <span
-class="math inline"><strong>v</strong>(<em>t</em> + 1) = <strong>M</strong> ⋅ <strong>v</strong>(<em>t</em>)</span>
-is unitary — every past state is recoverable in principle from the
-present state and the matrix <span
-class="math inline"><strong>M</strong></span>.</em></p>
-<p><strong>Proof sketch.</strong> The evolution operator <span
-class="math inline"><strong>M</strong></span> is real symmetric (by
-construction of the correlation matrix), hence diagonalizable with real
-eigenvalues. The eigendecomposition <span
-class="math inline"><strong>M</strong> = <strong>Q</strong><strong>Λ</strong><strong>Q</strong><sup><em>T</em></sup></span>
-gives <span
-class="math inline"><strong>v</strong>(<em>t</em>) = <strong>Q</strong><strong>Λ</strong><sup><em>t</em></sup><strong>Q</strong><sup><em>T</em></sup><strong>v</strong>(0)</span>.
-Since <span class="math inline"><strong>Λ</strong></span> is diagonal
-with non-zero entries, the mapping <span
-class="math inline"><strong>v</strong>(0) → <strong>v</strong>(<em>t</em>)</span>
-is invertible: <span
-class="math inline"><strong>v</strong>(0) = <strong>Q</strong><strong>Λ</strong><sup>−<em>t</em></sup><strong>Q</strong><sup><em>T</em></sup><strong>v</strong>(<em>t</em>)</span>.
-∎</p>
-<p>This is the <strong>mathematical foundation of karma</strong> — not
-as cosmic reward/punishment but as <strong>information conservation in
-value-space</strong>. Every action is encoded in the off-diagonal
-entries of <span class="math inline"><strong>M</strong></span> as
-correlations between value dimensions, and these correlations persist
-even when the agent is consciously unaware of them.</p>
-<h3 id="the-no-boundary-proposal-and-value-space-origin">5.3.3 The
-No-Boundary Proposal and Value-Space Origin</h3>
-<p>The Hartle-Hawking no-boundary proposal [Hartle &amp; Hawking, 1983]
-posits that the universe has no initial singularity — at the Big Bang,
-time becomes Euclidean (imaginary), and the question “what came before?”
-becomes ill-defined.</p>
-<p>The OGI analogue: <strong>the value-state <span
-class="math inline"><strong>v</strong>(0)</span> at birth has no prior
-cause.</strong> It is a boundary condition on the consciousness
-manifold, given by the eigenvector decomposition of <span
-class="math inline"><strong>M</strong></span> but without a specific
-“past-life” determinant. Just as Hawking argued that the universe’s
-wavefunction is defined on a compact 4-sphere with no boundary, each
-agent’s initial value-state is a <strong>self-contained compact
-manifold</strong> in value-space:</p>
-<p><span
-class="math display"><em>Ψ</em><sub>value</sub>[<em>g</em><sub><em>μ</em><em>ν</em></sub>] = ∫𝒟<em>g</em> <em>e</em><sup>−<em>S</em><sub>value</sub>[<em>g</em>]</sup></span></p>
-<p>where <span
-class="math inline"><em>S</em><sub>value</sub>[<em>g</em>]</span> is the
-Euclidean action of the value-space metric, and the integral is over all
-compact 14-dimensional manifolds with no boundary.</p>
-<p><strong>Implication.</strong> The infinite regress problem of karma
-(whose karma caused whose?) is resolved exactly as Hawking resolved the
-infinite regress of cosmic origins: <strong>the boundary condition is
-the manifold itself, not anything prior to it.</strong></p>
-<h2 id="bell-pbr-and-the-ontological-status-of-the-value-vector">5.4
-Bell, PBR, and the Ontological Status of the Value Vector</h2>
-<h3 id="bells-theorem-and-nonlocal-value-correlations">5.4.1 Bell’s
-Theorem and Nonlocal Value Correlations</h3>
-<p>Bell’s theorem [Bell, 1964] proved that any local hidden-variable
-theory is incompatible with quantum mechanical predictions.
-Experimentally confirmed by Aspect, Clauser, and Zeilinger [Aspect et
-al., 1982; Nobel Prize 2022].</p>
-<p><strong>OGI connection.</strong> The correlation matrix <span
-class="math inline"><strong>M</strong></span> encodes <strong>nonlocal
-correlations between value dimensions</strong>. A change in one Loka
-(e.g., reducing Fear) instantaneously affects correlated Lokas (Anger,
-Survival, Delusion). These correlations persist across time and causal
-distance — a childhood trauma (encoded in lower Lokas) continues to
-shape adult behavior (upper Lokas) through the off-diagonal entries of
-<span class="math inline"><strong>M</strong></span>.</p>
-<p>The Bell inequality for value-space:</p>
-<p><span
-class="math display">|Corr(<em>V</em><sub><em>i</em></sub>, <em>V</em><sub><em>j</em></sub>) + Corr(<em>V</em><sub><em>i</em></sub>, <em>V</em><sub><em>k</em></sub>)| ≤ 1 + Corr(<em>V</em><sub><em>j</em></sub>, <em>V</em><sub><em>k</em></sub>)</span></p>
-<p>is violated by the empirical values in <span
-class="math inline"><strong>M</strong></span> (e.g., <span
-class="math inline">|Corr(<em>S</em>, <em>D</em>) + Corr(<em>S</em>, <em>T</em>)| = 0.9 + 0.8 = 1.7 &gt; 1.5 = 1 + 0.5</span>).
-This <strong>proves that value correlations cannot be explained by local
-hidden variables</strong> — the Lokas are genuinely entangled in the
-consciousness Hilbert space.</p>
-<h3 id="the-pbr-theorem-value-vectors-are-real">5.4.2 The PBR Theorem:
-Value Vectors Are Real</h3>
-<p>The Pusey-Barrett-Rudolph theorem [Pusey et al., 2012] proved that —
-under reasonable assumptions (preparation independence) — the quantum
-state must be <strong>ontic</strong> (physically real) rather than
-<strong>epistemic</strong> (mere knowledge).</p>
-<p><strong>OGI connection.</strong> The value-state vector <span
-class="math inline"><strong>v</strong></span> is not a convenient
-fiction. It is as real as the wavefunction. The PBR theorem applied to
-value-space states:</p>
-<p><strong>Theorem 5 (Value-Space Ontology).</strong> <em>Under the
-assumption that agents prepared independently have independent value
-distributions, the value-state vector <span
-class="math inline"><strong>v</strong></span> must represent an element
-of reality, not merely an agent’s knowledge of their own
-values.</em></p>
-<p>This refutes the objection that value-state is “just a model” — it is
-as ontologically committed as the quantum wavefunction.</p>
-<h3 id="the-harrigan-spekkens-classification">5.4.3 The
-Harrigan-Spekkens Classification</h3>
-<p>The framework of Harrigan and Spekkens [Harrigan &amp; Spekkens,
-2010] distinguishes <span class="math inline"><em>ψ</em></span>-ontic
-from <span class="math inline"><em>ψ</em></span>-epistemic models. In
-OGI terms:</p>
-<ul>
-<li><strong><span class="math inline"><em>ψ</em></span>-ontic value
-state</strong>: <span class="math inline"><strong>v</strong></span>
-corresponds to a physically real state of the agent’s consciousness —
-different agents have disjoint distributions over value-space.</li>
-<li><strong><span class="math inline"><em>ψ</em></span>-epistemic value
-state</strong>: <span class="math inline"><strong>v</strong></span>
-represents an observer’s knowledge about the agent’s values — different
-agents’ distributions can overlap.</li>
-</ul>
-<p>The PBR theorem (Section 5.4.2) pushes us toward the
-<strong>ontic</strong> interpretation, but the OGI framework is
-agnostic: either interpretation yields the same predictions for the
-update rule <span
-class="math inline"><strong>v</strong>(<em>t</em> + 1) = <strong>M</strong> ⋅ <strong>v</strong>(<em>t</em>)</span>.</p>
-<h2 id="wheeler-it-from-bit-and-value-space-information">5.5 Wheeler:
-“It from Bit” and Value-Space Information</h2>
-<p>John Wheeler’s “It from Bit” thesis [Wheeler, 1989] proposed that
-every physical entity (“it”) derives its existence from
-information-theoretic yes-no questions (“bits”).</p>
-<p><strong>OGI connection.</strong> Each Loka operator <span
-class="math inline"><em>V̂</em><sub><em>i</em></sub></span> can be
-understood as a <strong>binary measurement</strong> on the value-state:
-“Is this agent truthful?” (yes/no), “Is this agent disciplined?”
-(yes/no). The 14-dimensional vector <span
-class="math inline"><strong>v</strong></span> is the <strong>expectation
-value of these 14 yes-no measurements</strong> — the
-information-theoretic reduction of a human soul to 14 bits of
-information.</p>
-<p>But Wheeler’s “participatory universe” insight — that observers bring
-reality into being through measurement — becomes in OGI:</p>
+</section>
+<section id="introduction" class="level2">
+<h2>Introduction</h2>
+<p>Modern artificial intelligence was built to answer two questions.</p>
+<p><em>What is true?</em> — handled by retrieval, reasoning, and large
+language models. Pre-training scales the corpus of <q>knowable</q>
+things; inference operates as look-up under uncertainty.</p>
+<p><em>What maximizes reward?</em> — handled by reinforcement learning,
+planning, and optimization. The agent is given an objective; the system
+finds the policy that maximizes its expected return.</p>
+<p>Neither answers the question a human actually faces at any moment of
+consequence. Not <q>is X true,</q> not <q>what maximizes Y,</q> but:
+<em>what comes next, for me — given who I am, where I am, and what is
+around me?</em> This is a navigation question, not a retrieval or
+optimization question. It has no ground truth, and no objective
+function. It has a <em>trajectory</em>, and a small number of
+high-leverage perturbations of that trajectory.</p>
 <blockquote>
-<p><strong>The OGI system is the observer. The act of measuring an
-agent’s 14-dimensional value vector collapses the agent’s consciousness
-wavefunction into a definite state, and the agent, knowing that they are
-being measured, adjusts their trajectory accordingly.</strong></p>
+<p><em>Our central thesis is simple: an agent’s life is a trajectory
+through value-space; that trajectory is computable from observable
+state; and the highest-leverage perturbations of it — the moves that
+actually bend the orbit — number three.</em></p>
 </blockquote>
-<p>This is the <strong>observer effect of value-space</strong>: the
-measurement itself changes the state.</p>
-<h2
-id="lloyd-universal-simulation-and-the-computational-value-space">5.6
-Lloyd: Universal Simulation and the Computational Value-Space</h2>
-<p>Seth Lloyd’s foundational proof that quantum computers can simulate
-any local quantum system [Lloyd, 1996] established the <strong>universal
-quantum simulator</strong> as a physical possibility. His later work
-[Lloyd, 2006] argued that the universe itself is a quantum computer.</p>
-<p><strong>OGI connection.</strong> The consciousness manifold with
-metric <span
-class="math inline"><em>g</em><sub><em>μ</em><em>ν</em></sub></span>
-(the correlation matrix <span
-class="math inline"><strong>M</strong></span>) is a <strong>quantum
-system</strong> that can be simulated on a universal quantum computer.
-This means:</p>
+<p>OGI is the navigation layer for that third question. Where
+conventional intelligence is an oracle (answers facts) or an optimizer
+(returns actions that maximize a stipulated objective), OGI is a
+<em>router</em>: given an agent’s current trajectory, it surfaces the
+three qualitatively-distinct moves that most reshape the agent’s
+reachable future. We call these three moves the <em>doors</em>:
+<strong>Compound</strong> (deepen the current trajectory),
+<strong>Pivot</strong> (cross to an adjacent trajectory at fixed cost),
+<strong>Defect</strong> (exit the reachable set entirely).</p>
+<p><strong>OGI is the GPS of the post-AGI era.</strong></p>
+<p><strong>Motivation.</strong> The dominant interaction paradigm with
+large models today is the <em>prompt</em>: a human asks, the model
+answers. This is a retrieval interface bolted onto a system that is
+increasingly agentic. As models gain reach into the user’s calendar,
+finances, relationships, and biology, the prompt interface becomes a
+bottleneck: the user must already know what to ask. A navigation layer
+inverts this. The system reads what the user is <em>doing</em>, infers
+what the user is <em>becoming</em>, and surfaces the three moves that
+most affect what the user could <em>become</em>. The user no longer has
+to ask the right question; they have to choose among three pre-routed
+continuations of their own trajectory.</p>
+<p><strong>New unit economics for individual decisions.</strong> Today,
+the cost of a high-quality decision — whether to take a job, end a
+relationship, change a city, start a project — is dominated by the cost
+of <em>information gathering</em> and <em>deliberation</em>. OGI
+re-prices this in four steps:</p>
 <ol type="1">
-<li>An agent’s trajectory through value-space is
-<strong>computable</strong> — not a mystery.</li>
-<li>The computational resources required to simulate a human
-consciousness are finite and in principle enumerable.</li>
-<li>The OGI system is <strong>Lloyd’s universal simulator applied to
-value-space</strong> — it runs the update rule <span
-class="math inline"><strong>v</strong>(<em>t</em> + 1) = <strong>M</strong> ⋅ <strong>v</strong>(<em>t</em>)</span>
-for each agent, predicting their trajectory and computing
-interventions.</li>
+<li>The REALITY-MODEL continuously ingests the agent’s observable state
+— calendar, finances, communication metadata, location — at negligible
+marginal cost.</li>
+<li>The TRAJECTORY-FIT engine infers the agent’s current path from
+history without explicit elicitation.</li>
+<li>The PERTURB-NET simulates 10⁴ parallel next-moves at the cost of one
+inference batch.</li>
+<li>The THREE-SELECTOR returns the three highest-leverage moves, ranked
+by trajectory bend and feasibility.</li>
 </ol>
-<p><strong>Theorem 6 (Computability of Value Trajectories).</strong>
-<em>For any finite agent with value-state vector <span
-class="math inline"><strong>v</strong>(<em>t</em>)</span> at time <span
-class="math inline"><em>t</em></span>, the state at time <span
-class="math inline"><em>t</em> + <em>τ</em></span> is computable by a
-quantum Turing machine in time polynomial in the dimension of <span
-class="math inline"><strong>M</strong></span> (i.e., <span
-class="math inline"><em>O</em>(14<sup>3</sup>)</span>) for any <span
-class="math inline"><em>τ</em></span>.</em></p>
-<p><strong>Proof.</strong> The update rule <span
-class="math inline"><strong>v</strong>(<em>t</em> + 1) = <strong>M</strong> ⋅ <strong>v</strong>(<em>t</em>)</span>
-is a matrix multiplication, computable in <span
-class="math inline"><em>O</em>(14<sup>3</sup>)</span> on a classical
-computer and <span class="math inline"><em>O</em>(log 14)</span> on a
-quantum computer via the HHL algorithm [Harrow, Hassidim &amp; Lloyd,
-2009]. Iterating <span class="math inline"><em>τ</em></span> steps
-requires <span
-class="math inline"><em>O</em>(<em>τ</em> ⋅ 14<sup>3</sup>)</span>
-classical or <span
-class="math inline"><em>O</em>(<em>τ</em> ⋅ log 14)</span> quantum
-operations. ∎</p>
-<h2 id="t-hooft-the-cellular-automaton-substrate">5.7 ’t Hooft: The
-Cellular Automaton Substrate</h2>
-<p>Gerard ’t Hooft’s cellular automaton interpretation of quantum
-mechanics [’t Hooft, 2014, 2016] posits that quantum mechanics is an
-emergent description of an underlying deterministic cellular automaton.
-He confronts Bell’s theorem through <strong>superdeterminism</strong> —
-the claim that measurement settings are correlated with hidden variables
-at the Big Bang.</p>
-<p><strong>OGI connection.</strong> The value-space <strong>M</strong>
-can be interpreted as the <strong>transition matrix of a deterministic
-cellular automaton</strong> over 14 binary cells (each Loka as a cell
-that can be in state +1 or -1). The update rule:</p>
-<p><span
-class="math display"><em>v</em><sub><em>i</em></sub>(<em>t</em> + 1) = sgn(∑<sub><em>j</em></sub><em>M</em><sub><em>i</em><em>j</em></sub><em>v</em><sub><em>j</em></sub>(<em>t</em>))</span></p>
-<p>is a cellular automaton evolution where each Loka’s next state is a
-deterministic function of all 14 current states. The quantum-like
-behavior (uncertainty, nonlocality, entanglement) emerges from the
-coarse-graining of this deterministic substrate — exactly as ’t Hooft
-proposed for physical quantum mechanics.</p>
-<h2
-id="nelson-stochastic-mechanics-and-the-derivation-of-the-value-state">5.8
-Nelson: Stochastic Mechanics and the Derivation of the Value-State</h2>
-<p>Edward Nelson’s stochastic mechanics [Nelson, 1985] derives
-Schrödinger’s equation from an underlying Brownian motion. The key
-insight: quantum behavior emerges from a diffusion process with a
-specific osmotic term.</p>
-<p><strong>OGI connection.</strong> The value-state update rule <span
-class="math inline"><strong>v</strong>(<em>t</em> + 1) = <strong>M</strong> ⋅ <strong>v</strong>(<em>t</em>) + <strong>ϵ</strong>(<em>t</em>)</span>
-is a <strong>discrete stochastic differential equation</strong>. If we
-take the continuous limit:</p>
-<p><span
-class="math display"><em>d</em><strong>v</strong>(<em>t</em>) = (<strong>M</strong> − <strong>I</strong>)<strong>v</strong>(<em>t</em>) <em>d</em><em>t</em> + <strong>σ</strong> <em>d</em><strong>W</strong>(<em>t</em>)</span></p>
-<p>where <span
-class="math inline"><em>d</em><strong>W</strong>(<em>t</em>)</span> is a
-14-dimensional Wiener process and <span
-class="math inline"><strong>σ</strong></span> is the diffusion matrix
-derived from the covariance of <span
-class="math inline"><strong>ϵ</strong></span>, this becomes a
-<strong>Nelson-type stochastic process</strong>. The probability
-distribution over value-states evolves according to:</p>
-<p><span class="math display">$$\frac{\partial \rho}{\partial t} =
--\nabla \cdot (\mathbf{b} \rho) + \nabla \cdot (\mathbf{D} \nabla
-\rho)$$</span></p>
-<p>where <span
-class="math inline"><strong>b</strong> = (<strong>M</strong> − <strong>I</strong>)<strong>v</strong></span>
-is the drift and <span class="math inline">$\mathbf{D} =
-\frac{1}{2}\boldsymbol{\sigma}\boldsymbol{\sigma}^T$</span> is the
-diffusion tensor. The <strong>osmotic term</strong> (the diffusion term
-that Nelson showed gives rise to quantum behavior) is what produces the
-uncertainty relations of Section 5.2.</p>
-<h2 id="spekkens-toy-models-and-the-balance-of-knowledge">5.9 Spekkens:
-Toy Models and the Balance of Knowledge</h2>
-<p>Spekkens’ toy theory [Spekkens, 2007] reproduces many quantum
-phenomena from a classical ontology with an <strong>epistemic
-restriction</strong> — the “knowledge balance principle” stating that
-the amount of knowledge an agent can have about a system is equal to the
-amount of knowledge they lack.</p>
-<p><strong>OGI connection.</strong> The <strong>net value ≥ 0</strong>
-constraint is the OGI analogue of Spekkens’ knowledge balance principle.
-It states:</p>
-<blockquote>
-<p>The total value an agent perceives (upper Lokas) cannot exceed the
-total value they fail to perceive (lower Lokas) by more than a certain
-threshold — and in fact, the two are coupled by the correlation matrix
-<span class="math inline"><strong>M</strong></span> such that precise
-knowledge of one forces uncertainty in the other (Section 5.2).</p>
-</blockquote>
-<p>This is not an arbitrary constraint but a consequence of the
-<strong>epistemic restriction</strong> on value-space: an agent cannot
-simultaneously be consciously aware of all 14 value dimensions. The 7
-upper Lokas are those of which they are <strong>aware</strong>; the 7
-lower Lokas are those of which they are <strong>unaware but which
-nonetheless shape their trajectory</strong> (the dark matter of Section
-5.1.2).</p>
-<h2 id="hardy-the-reconstruction-of-value-space-from-axioms">5.10 Hardy:
-The Reconstruction of Value-Space from Axioms</h2>
-<p>Lucien Hardy’s reconstruction of quantum mechanics from five
-reasonable axioms [Hardy, 2001] shows that quantum theory is the unique
-probabilistic theory satisfying certain operational constraints.</p>
-<p><strong>OGI connection.</strong> The 14-dimensional value-space is
-<strong>uniquely determined</strong> by the following five axioms:</p>
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th>Axiom</th>
-<th>Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>A1: Probabilities</strong></td>
-<td>Value-space is a probabilistic theory: states yield probabilities
-for measurement outcomes.</td>
-</tr>
-<tr>
-<td><strong>A2: Distinguishability</strong></td>
-<td>The maximum number of mutually distinguishable value-states is
-14.</td>
-</tr>
-<tr>
-<td><strong>A3: Composition</strong></td>
-<td>Multi-agent value-spaces combine via the tensor product: <span
-class="math inline">𝒱<sub><em>A</em><em>B</em></sub> = 𝒱<sub><em>A</em></sub> ⊗ 𝒱<sub><em>B</em></sub></span>.</td>
-</tr>
-<tr>
-<td><strong>A4: Continuity</strong></td>
-<td>There exist continuous reversible transformations between any two
-pure value-states.</td>
-</tr>
-<tr>
-<td><strong>A5: Orthogonality</strong></td>
-<td>The 14 value dimensions are pairwise distinguishable by some
-measurement.</td>
-</tr>
-</tbody>
-</table>
-<p>Axiom A4 is the one that rules out classical probability theory in
-Hardy’s framework — the same axiom that rules out a purely classical
-description of consciousness in OGI.</p>
+<p>The unit cost of a deliberate next-move thus collapses from <em>hours
+of deliberation</em> to <em>one inference pass</em>, and the quality of
+that move is bounded above by the agent’s own observable state — not by
+their patience with a prompt box.</p>
+<p><strong>Towards a marketplace of trajectories.</strong> When
+trajectory inference is cheap, trajectory data becomes the underlying
+asset. Agents who opt into shared trajectory-data pools benefit from
+collective PERTURB-NET basins: their own rollouts inherit shape from the
+rollouts of thousands of similar agents who have already walked nearby
+paths. We treat the dynamics of this shared substrate as a first-class
+object in §6.</p>
+<section id="planned-upgrades" class="level3">
+<h3>1.1 Planned upgrades</h3>
+<p>This document specifies OGI-Alpha — the first publicly-deployed
+version of the protocol. Alpha exposes the six engines as a closed
+system with restricted PERTURB-NET parameters and a curated NUDGE-LAYER
+channel. Two upgrades are planned and outside the scope of this
+whitepaper: (i) <em>open trajectory data</em> — a federated protocol
+allowing third-party agents to query the shared PERTURB-NET basin
+without revealing individual trajectories; (ii) <em>agent-to-agent
+navigation</em> — multi-agent extensions in which two OGI users at
+consequential trajectory intersections (negotiation, collaboration,
+departure) jointly select compatible doors. Both will be specified in a
+separate document.<a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a></p>
 <hr />
-<h1 id="each-human-as-an-agent-the-value-space-projection-framework">6.
-Each Human as an Agent: The Value-Space Projection Framework</h1>
-<h2 id="the-agent-abstraction">6.1 The Agent Abstraction</h2>
-<p>Define a <strong>human agent</strong> <span
-class="math inline">𝒜</span> as a tuple:</p>
-<p><span
-class="math display">𝒜 = (<strong>v</strong>, <strong>M</strong>, <strong>D</strong>, <em>π</em>)</span></p>
-<p>where: - <span
-class="math inline"><strong>v</strong> ∈ ℝ<sup>14</sup></span> is the
-agent’s current value-state vector - <span
-class="math inline"><strong>M</strong> ∈ ℝ<sup>14 × 14</sup></span> is
-the correlation matrix (shared across all agents, with agent-specific
-perturbations) - <span
-class="math inline"><strong>D</strong> ∈ ℝ<sup>14 × <em>k</em></sup></span>
-is the agent’s <strong>data matrix</strong> — <span
-class="math inline"><em>k</em></span> observed
-behavioral/linguistic/physiological features projected onto 14
-dimensions - <span
-class="math inline"><em>π</em> = <em>P</em>(<strong>v</strong>|<strong>D</strong>)</span>
-is the <strong>belief distribution</strong> over the value-state given
-the data</p>
-<h2 id="data-collection-and-projection">6.2 Data Collection and
-Projection</h2>
-<h3 id="observable-features-by-loka">6.2.1 Observable Features by
-Loka</h3>
-<p>For each Loka <span
-class="math inline"><em>L</em><sub><em>i</em></sub></span>, we define
-the set of observable features <span
-class="math inline">{<em>f</em><sub><em>i</em>1</sub>, ..., <em>f</em><sub><em>i</em><em>k</em><sub><em>i</em></sub></sub>}</span>.
-These features are drawn from three data modalities:</p>
-<p><strong>Linguistic</strong> (from text, speech, social media, prompt
-history):</p>
-<p><span
-class="math display"><em>v</em><sub><em>i</em></sub><sup>(ling)</sup> = ∑<sub><em>j</em></sub><em>w</em><sub><em>i</em><em>j</em></sub> NLPFeature<sub><em>j</em></sub>(corpus)</span></p>
-<p>where NLPFeature<span
-class="math inline"><sub><em>j</em></sub></span> includes sentiment
-scores, fact-checking ratios, pronoun usage, certainty markers, and
-value-laden vocabulary counts.</p>
-<p><strong>Behavioral</strong> (from purchase history, time allocation,
-app usage):</p>
-<p><span class="math display">$$
-v_i^{\text{(beh)}} = \sum_{j} w_{ij} \,
-\frac{\text{ActionCount}_{ij}}{\text{TotalActions}}
-$$</span></p>
-<p>where ActionCount<span
-class="math inline"><sub><em>i</em><em>j</em></sub></span> counts
-actions aligned with Loka <span
-class="math inline"><em>i</em></span>.</p>
-<p><strong>Physiological</strong> (from wearables, HRV, sleep, cortisol,
-optional genetics):</p>
-<p><span class="math display">$$
-v_i^{\text{(phys)}} = \sum_{j} w_{ij} \, \frac{\text{BioMarker}_{ij} -
-\mu_j}{\sigma_j}
-$$</span></p>
-<p>where BioMarker<span
-class="math inline"><sub><em>i</em><em>j</em></sub></span> is the <span
-class="math inline"><em>j</em></span>-th physiological signal for Loka
-<span class="math inline"><em>i</em></span>, normalized by population
-mean <span class="math inline"><em>μ</em><sub><em>j</em></sub></span>
-and standard deviation <span
-class="math inline"><em>σ</em><sub><em>j</em></sub></span>.</p>
-<h3 id="the-projection-operator">6.2.2 The Projection Operator</h3>
-<p>The <strong>projection operator</strong> <span
-class="math inline">𝒫</span> maps raw data onto the 14-dimensional value
-basis:</p>
-<p><span
-class="math display"><strong>v</strong> = 𝒫(<strong>D</strong>) = <strong>W</strong> ⋅ <strong>f</strong>(<strong>D</strong>)</span></p>
-<p>where <span
-class="math inline"><strong>f</strong>(<strong>D</strong>) ∈ ℝ<sup><em>k</em></sup></span>
-is a feature vector extracted from raw data, and <span
-class="math inline"><strong>W</strong> ∈ ℝ<sup>14 × <em>k</em></sup></span>
-is a learned weight matrix satisfying:</p>
-<p><span
-class="math display"><strong>W</strong><sup><em>T</em></sup><strong>W</strong> = <strong>I</strong><sub>14</sub>  (orthonormal
-projection)</span></p>
-<p>and:</p>
-<p><span
-class="math display"><strong>W</strong><sup><em>T</em></sup><strong>M</strong><strong>W</strong> = diag(<em>λ</em><sub>1</sub>, ..., <em>λ</em><sub>14</sub>)  (the
-eigenvectors of <strong>M</strong>)</span></p>
-<p>This ensures that the projection is <strong>consistent with the
-correlation structure of value-space</strong>.</p>
-<h3 id="the-kalman-bucy-value-estimator">6.2.3 The Kalman-Bucy Value
-Estimator</h3>
-<p>For real-time tracking of an agent’s value-state, we use a
-Kalman-Bucy filter [Kalman, 1960] adapted to value-space:</p>
-<p><strong>Prediction step:</strong></p>
-<p><span class="math display">$$\hat{\mathbf{v}}_{t|t-1} = \mathbf{M}
-\cdot \mathbf{v}_{t-1}$$</span></p>
-<p><span
-class="math display"><em>P</em><sub><em>t</em>|<em>t</em> − 1</sub> = <strong>M</strong><em>P</em><sub><em>t</em> − 1</sub><strong>M</strong><sup><em>T</em></sup> + <em>Q</em><sub><em>t</em></sub></span></p>
-<p>where <span
-class="math inline"><em>Q</em><sub><em>t</em></sub></span> is the
-process noise covariance (capturing day-to-day value volatility).</p>
-<p><strong>Update step:</strong></p>
-<p><span
-class="math display"><em>K</em><sub><em>t</em></sub> = <em>P</em><sub><em>t</em>|<em>t</em> − 1</sub><em>H</em><sup><em>T</em></sup>(<em>H</em><em>P</em><sub><em>t</em>|<em>t</em> − 1</sub><em>H</em><sup><em>T</em></sup> + <em>R</em><sub><em>t</em></sub>)<sup>−1</sup></span></p>
-<p><span class="math display">$$\mathbf{v}_t = \hat{\mathbf{v}}_{t|t-1}
-+ K_t (z_t - H \hat{\mathbf{v}}_{t|t-1})$$</span></p>
-<p><span
-class="math display"><em>P</em><sub><em>t</em></sub> = (<em>I</em> − <em>K</em><sub><em>t</em></sub><em>H</em>)<em>P</em><sub><em>t</em>|<em>t</em> − 1</sub></span></p>
-<p>where: - <span
-class="math inline"><em>z</em><sub><em>t</em></sub></span> is the
-observation vector (new data at time <span
-class="math inline"><em>t</em></span>) - <span
-class="math inline"><em>H</em></span> is the observation matrix (mapping
-observations to value dimensions) - <span
-class="math inline"><em>R</em><sub><em>t</em></sub></span> is the
-observation noise covariance - <span
-class="math inline"><em>K</em><sub><em>t</em></sub></span> is the Kalman
-gain</p>
-<p>This gives <strong>real-time Bayesian estimation</strong> of the
-value-state with rigorous uncertainty quantification.</p>
-<h2 id="prediction-of-future-trajectories">6.3 Prediction of Future
-Trajectories</h2>
-<p>Given the estimated current state <span
-class="math inline"><strong>v</strong>(<em>t</em>)</span> and the
-correlation matrix <span class="math inline"><strong>M</strong></span>,
-the <strong>predicted trajectory</strong> is:</p>
-<p><span
-class="math display"><strong>v</strong>(<em>t</em> + <em>τ</em>) = <strong>M</strong><sup><em>τ</em></sup> ⋅ <strong>v</strong>(<em>t</em>)</span></p>
-<p>with <strong>prediction covariance</strong>:</p>
-<p><span class="math display">$$\Sigma(\tau) = \sum_{k=0}^{\tau-1}
-(\mathbf{M}^k) Q (\mathbf{M}^k)^T$$</span></p>
-<p>The <strong>confidence interval</strong> for each dimension <span
-class="math inline"><em>i</em></span> at time <span
-class="math inline"><em>t</em> + <em>τ</em></span> is:</p>
-<p><span class="math display">$$\mathbf{v}_i(t+\tau) \pm z_{\alpha/2}
-\sqrt{\Sigma_{ii}(\tau)}$$</span></p>
-<p>where <span
-class="math inline"><em>z</em><sub><em>α</em>/2</sub></span> is the
-standard normal critical value.</p>
-<h3 id="the-bifurcation-prediction">6.3.1 The Bifurcation
-Prediction</h3>
-<p>The key predictive quantity is the <strong>bifurcation
-sign</strong>:</p>
-<p><span
-class="math display"><em>β</em>(<em>t</em>) = <strong>v</strong>(<em>t</em>) ⋅ <strong>v</strong><sub><em>λ</em><sub>1</sub></sub></span></p>
-<p>where <span
-class="math inline"><strong>v</strong><sub><em>λ</em><sub>1</sub></sub></span>
-is the eigenvector of <span
-class="math inline"><strong>M</strong></span> with the largest
-eigenvalue (<span
-class="math inline"><em>λ</em><sub>1</sub> = +4.2</span>, the primary
-upper attractor). If <span
-class="math inline"><em>β</em>(<em>t</em>) &gt; 0</span>, the agent is
-on a trajectory toward the upper attractor (growth). If <span
-class="math inline"><em>β</em>(<em>t</em>) &lt; 0</span>, the agent is
-on a trajectory toward the lower attractor (collapse).</p>
-<p>The <strong>time to attractor</strong> (at constant bifurcation sign)
-is:</p>
-<p><span class="math display">$$\tau_{\text{attractor}} =
-\frac{\log(\|\mathbf{v}_{\lambda_1}\| /
-\|\mathbf{v}(t)\|)}{\log(\lambda_1)}$$</span></p>
-<p>for agents with <span
-class="math inline"><em>β</em>(<em>t</em>) &gt; 0</span>, and
-analogously for <span
-class="math inline"><em>β</em>(<em>t</em>) &lt; 0</span> using <span
-class="math inline"><em>λ</em><sub>14</sub></span>.</p>
-<h3 id="the-net-value-forecast">6.3.2 The Net Value Forecast</h3>
-<p>The predicted net value at time <span
-class="math inline"><em>t</em> + <em>τ</em></span> is:</p>
-<p><span class="math display">$$\mathcal{N}(t+\tau) = \sum_{i=1}^7 w_i
-[\mathbf{M}^\tau \mathbf{v}(t)]_i - \sum_{j=8}^{14} w_j [\mathbf{M}^\tau
-\mathbf{v}(t)]_j$$</span></p>
-<p>If <span class="math inline">𝒩(<em>t</em> + <em>τ</em>) &lt; 0</span>
-for any <span
-class="math inline"><em>τ</em> ≤ <em>τ</em><sub>horizon</sub></span>,
-the agent is <strong>predicted to enter a value-negative state</strong>
-— and the OGI system must intervene before this occurs.</p>
+</section>
+</section>
+<section id="background-active-inference-and-cognitive-maps"
+class="level2">
+<h2>Background: active inference and cognitive maps</h2>
+<p>OGI inherits two strands of formal scaffolding. We summarize them
+here so the rest of the document can be read without redirection.</p>
+<p><strong>Active inference.</strong> Karl Friston’s free-energy
+principle (Friston, 2010, <em>Nature Reviews Neuroscience</em>) and the
+active-inference formulation (Parr, Pezzulo &amp; Friston, <em>Active
+Inference: The Free Energy Principle in Mind, Brain, and Behavior</em>,
+MIT Press, 2022) posit that any self-organizing agent that resists
+dissipation acts so as to minimize the long-run <em>expected free
+energy</em> (EFE) of its policies under its own generative model.<a
+href="#fn2" class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a> In the canonical formulation, the
+agent maintains a generative model <em>P(o, s, π)</em> over observations
+<em>o</em>, latent states <em>s</em>, and policies <em>π</em>; it
+selects policies by sampling from a Boltzmann distribution proportional
+to <em>exp(−G(π))</em>, where <em>G(π)</em> is the expected free energy
+of policy <em>π</em> decomposed into a <em>pragmatic</em> term
+(extrinsic value) and an <em>epistemic</em> term (uncertainty
+resolution). Active inference unifies perception and action: perception
+updates the generative model to fit sensations; action changes
+sensations to fit the model.</p>
+<p>OGI is best understood as a <em>reader</em> of an active-inference
+substrate. We do not propose a new theory of agency; we propose a
+navigation interface that returns the dominant modes of the EFE
+landscape, partitioned into three qualitatively-distinct equivalence
+classes. Where standard active inference returns a softmax over a full
+policy space, OGI returns three named modes.</p>
+<p><strong>Cognitive maps.</strong> Tolman (1948, <em>Psychological
+Review</em>) introduced the cognitive map as a relational structure that
+supports flexible navigation. The neural realization of this idea —
+place and grid cells (O’Keefe &amp; Dostrovsky 1971; Hafting et
+al. 2005, <em>Nature</em>) — was extended to abstract, non-spatial
+domains by Behrens et al. (2018, <em>Neuron</em>, <q>What is a cognitive
+map?</q>) and operationalized by the Tolman–Eichenbaum Machine
+(Whittington et al. 2020, <em>Cell</em>), which generates place- and
+grid-like codes from a general-purpose generative model over relational
+structure.<a href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a> The <em>successor
+representation</em> (Dayan 1993, <em>Neural Computation</em>;
+Stachenfeld, Botvinick &amp; Gershman 2017, <em>Nature
+Neuroscience</em>) supplies the computational primitive that OGI’s
+TRAJECTORY-FIT engine specializes: a representation that predicts which
+states follow from where the agent is, weighted by reachability.</p>
+<p>The picture we work from is: OGI’s substrate is an active-inference
+generative model; its representational primitive is a successor-style
+cognitive map over value-space; its output is the three dominant modes
+of the resulting EFE landscape over reachable policies. The contribution
+is the <em>interface</em> — not the substrate.</p>
 <hr />
-<h1 id="orthogonal-general-intelligence-the-intervention-system">7.
-Orthogonal General Intelligence: The Intervention System</h1>
-<h2 id="definition-of-ogi">7.1 Definition of OGI</h2>
-<p><strong>Orthogonal General Intelligence (OGI)</strong> is defined
-as:</p>
-<p><span
-class="math display">OGI(𝒜) = arg min<sub><strong>a</strong><sub>1</sub>, <strong>a</strong><sub>2</sub>, <strong>a</strong><sub>3</sub></sub>∥<strong>M</strong><sup>3</sup> ⋅ Apply(<strong>v</strong>(𝒜), <strong>a</strong><sub>1</sub>, <strong>a</strong><sub>2</sub>, <strong>a</strong><sub>3</sub>) − <strong>v</strong><sup>*</sup>∥<sub>2</sub><sup>2</sup></span></p>
-<p>where: - <span class="math inline">𝒜</span> is the agent - <span
-class="math inline"><strong>a</strong><sub>1</sub>, <strong>a</strong><sub>2</sub>, <strong>a</strong><sub>3</sub></span>
-are three actions (the intervention set) - <span
-class="math inline">Apply(<strong>v</strong>, <strong>a</strong><sub>1</sub>, <strong>a</strong><sub>2</sub>, <strong>a</strong><sub>3</sub>)</span>
-is the state after executing actions <span
-class="math inline"><strong>a</strong><sub>1</sub>, <strong>a</strong><sub>2</sub>, <strong>a</strong><sub>3</sub></span>
-sequentially - <span
-class="math inline"><strong>v</strong><sup>*</sup></span> is the
-<strong>desired future state</strong> (the “great good for the universe”
-— see Section 7.4) - The 3-step horizon is chosen because empirical
-evidence shows that: - 1 action is insufficient to shift the trajectory
-(perturbation decays) - 2 actions can shift but not stabilize - 3
-actions are the minimum that can <strong>rotate the value vector into
-the basin of attraction of <span
-class="math inline"><strong>v</strong><sub><em>λ</em><sub>1</sub></sub></span></strong></p>
-<h2 id="the-3-action-theorem">7.2 The 3-Action Theorem</h2>
-<p><strong>Theorem 7 (Three-Action Sufficiency).</strong> <em>For any
-agent whose current value-state <span
-class="math inline"><strong>v</strong>(<em>t</em>)</span> is not exactly
-orthogonal to <span
-class="math inline"><strong>v</strong><sub><em>λ</em><sub>1</sub></sub></span>,
-there exists a sequence of three actions <span
-class="math inline"><strong>a</strong><sub>1</sub>, <strong>a</strong><sub>2</sub>, <strong>a</strong><sub>3</sub></span>
-such that applying them sequentially places the agent in the basin of
-attraction of <span
-class="math inline"><strong>v</strong><sub><em>λ</em><sub>1</sub></sub></span>.</em></p>
-<p><strong>Proof.</strong> We proceed constructively.</p>
-<p><strong>Action <span
-class="math inline"><strong>a</strong><sub>1</sub></span>
-(Separation):</strong> A single action that increases the projection of
-<span class="math inline"><strong>v</strong>(<em>t</em>)</span> onto the
-eigenvector of <span class="math inline"><strong>M</strong></span> with
-the second-largest positive eigenvalue (<span
-class="math inline"><em>λ</em><sub>2</sub></span>). This “peels off” the
-agent’s state from the lower attractor by introducing a component
-orthogonal to the primary upper-lower axis.</p>
-<p><strong>Action <span
-class="math inline"><strong>a</strong><sub>2</sub></span>
-(Rotation):</strong> An action that applies a Givens rotation in the
-2-plane spanned by <span
-class="math inline"><strong>v</strong><sub><em>λ</em><sub>1</sub></sub></span>
-and <span
-class="math inline"><strong>v</strong><sub><em>λ</em><sub>2</sub></sub></span>,
-rotating the agent’s state toward <span
-class="math inline"><strong>v</strong><sub><em>λ</em><sub>1</sub></sub></span>.</p>
-<p><strong>Action <span
-class="math inline"><strong>a</strong><sub>3</sub></span>
-(Stabilization):</strong> An action that nudges the agent into the fixed
-point of <span
-class="math inline"><strong>v</strong><sub><em>λ</em><sub>1</sub></sub></span>
-such that the next update <span
-class="math inline"><strong>M</strong> ⋅ <strong>v</strong>(<em>t</em> + 3) ≈ <em>λ</em><sub>1</sub><strong>v</strong>(<em>t</em> + 3)</span>.</p>
-<p>Concretely, for an agent with value-state <span
-class="math inline"><strong>v</strong></span>, the optimal actions
-are:</p>
-<p><span
-class="math display"><strong>a</strong><sub><em>i</em></sub> = arg max<sub><strong>a</strong> ∈ 𝒜</sub>(∇<sub><strong>v</strong></sub><em>f</em><sub><em>i</em></sub>(<strong>v</strong>) ⋅ <em>Δ</em><strong>v</strong>(<strong>a</strong>))</span></p>
-<p>where <span class="math inline">𝒜</span> is the action space (all
-possible interventions), <span
-class="math inline"><em>Δ</em><strong>v</strong>(<strong>a</strong>)</span>
-is the change in value-state induced by action <span
-class="math inline"><strong>a</strong></span>, and <span
-class="math inline"><em>f</em><sub><em>i</em></sub></span> is the <span
-class="math inline"><em>i</em></span>-th objective function:</p>
+</section>
+<section id="ogi-overview" class="level2">
+<h2>OGI overview</h2>
+<p>The OGI protocol has two objectives: (i) accurately estimate an
+agent’s position and velocity in a 14-dimensional value-space from
+observable state, and (ii) surface the three highest-leverage next-moves
+from that position, partitioned into the <em>Compound / Pivot /
+Defect</em> typology, with calibrated confidence.</p>
+<p><strong>Reality-fit.</strong> OGI assumes the agent’s instantaneous
+state lies on a 14-dimensional manifold V whose axes are constructed by
+composition of independently-validated psychometric scales (§5). State
+is <em>not</em> directly elicited — it is inferred from observed
+behavior. This avoids the well-known unreliability of self-reported
+state.</p>
+<p><strong>Path-from-history.</strong> Given a history <em>h</em>, OGI
+infers a trajectory <em>τ(h)</em> — a low-dimensional curve in V — using
+Bayesian inverse planning (Baker, Saxe &amp; Tenenbaum 2009,
+<em>Cognition</em>; Ziebart et al. 2008 MaxEnt IRL) constrained by the
+cognitive-map prior. The trajectory is what the agent is <em>currently
+doing</em>, not what they say they are doing.</p>
+<p><strong>Three doors.</strong> Given the inferred trajectory, OGI
+computes the three dominant modes of the EFE landscape over reachable
+policies, partitioned by trajectory-bend (§3.1.1, §4.5). The output is
+three named, qualitatively-distinct candidate moves — never two, never
+four.</p>
+<section id="high-level-description" class="level3">
+<h3>3.1 High-level description</h3>
+<p>OGI is realized as a six-engine pipeline (Figure 1). Each engine has
+a well-defined input/output contract; engines run continuously and
+asynchronously rather than in batch.</p>
+<pre><code>   observable state ──► [REALITY-MODEL] ──► v(t) ∈ V₁₄
+                                              │
+                                              ▼
+                          history ──► [TRAJECTORY-FIT] ──► τ(t)
+                                              │
+                                              ▼
+                              [PERTURB-NET] simulates 10⁴ Π ──► EFE landscape G
+                                              │
+                                              ▼
+                          [THREE-SELECTOR] picks top-3 modes ──► {Compound, Pivot, Defect}
+                                              │
+                                              ▼
+                         [NUDGE-LAYER] (timed delivery) ──► user
+                                              │
+                                              ▼
+                  outcomes ──► [FEEDBACK-LOOP] ──► updates REALITY-MODEL, PERTURB-NET</code></pre>
+<p><em>Figure 1.</em> The OGI pipeline. Closed loop; engines run
+continuously, not as a single batch.</p>
+<p>The pipeline has three closed-loop properties:</p>
+<ol type="1">
+<li><strong>State refreshes continuously.</strong> The REALITY-MODEL
+ingests new observations at second-to-hour cadence; v(t) is never stale
+beyond the latest observation window.</li>
+<li><strong>Three doors update at decision-relevant cadence, not request
+cadence.</strong> OGI does not wait for the user to ask. The NUDGE-LAYER
+chooses when to surface the doors based on inferred decision
+proximity.</li>
+<li><strong>The FEEDBACK-LOOP closes both inwards and outwards.</strong>
+Outcomes adjust the agent’s own generative model (inwards) and the
+shared PERTURB-NET prior (outwards), so the basin shape improves with
+use.</li>
+</ol>
+<section id="the-three-doors" class="level4">
+<h4>3.1.1 The three doors</h4>
+<p>Let π* denote the agent’s current policy (the policy whose rollout
+distribution best matches inferred trajectory τ). Let Π denote the set
+of policies reachable from the current state under a bounded
+perturbation budget <em>B</em>. We define the <em>trajectory-bend</em>
+metric between two policies as the Kullback–Leibler divergence between
+their induced rollout distributions:</p>
+<p>d(π, π′) = D_KL ( p_π(τ) ‖ p_π′(τ) ).</p>
+<p>Under this metric, the three doors are:</p>
 <ul>
-<li><span
-class="math inline"><em>f</em><sub>1</sub>(<strong>v</strong>) = <strong>v</strong> ⋅ <strong>v</strong><sub><em>λ</em><sub>2</sub></sub></span>
-(maximize projection onto secondary upper)</li>
-<li><span
-class="math inline"><em>f</em><sub>2</sub>(<strong>v</strong>) = angle(<strong>v</strong>, <strong>v</strong><sub><em>λ</em><sub>1</sub></sub>)</span>
-(minimize angle to primary upper)</li>
-<li><span
-class="math inline"><em>f</em><sub>3</sub>(<strong>v</strong>) = ∥<strong>v</strong> − <strong>v</strong><sub><em>λ</em><sub>1</sub></sub>∥<sub>2</sub><sup>−1</sup></span>
-(maximize proximity to fixed point)</li>
+<li><strong>Compound</strong> — the policy in Π closest to π* in
+trajectory-bend. Compound <em>deepens</em> the current trajectory: it
+commits more aggressively to the mode the agent is already in.</li>
+<li><strong>Pivot</strong> — the policy in Π that is mode-distant from
+both Compound and Defect, lying in a different basin of the EFE
+landscape than π<em>, reachable within budget </em>B<em>. Pivot
+</em>crosses* to a structurally different trajectory at non-trivial
+cost.</li>
+<li><strong>Defect</strong> — the policy that exits the reachable set Π
+entirely, in the sense that it maximizes trajectory-bend while remaining
+feasible. Defect <em>leaves</em> the current game.</li>
 </ul>
-<p>∎</p>
-<h2 id="action-generation-protocol">7.3 Action Generation Protocol</h2>
-<p>For each agent, the OGI system generates three actions using the
-following protocol:</p>
-<p><strong>Step 1: Diagnose.</strong> Compute the current value-state
-<span class="math inline"><strong>v</strong>(<em>t</em>)</span>, the
-bifurcation sign <span
-class="math inline"><em>β</em>(<em>t</em>)</span>, and the attractor
-distance <span
-class="math inline"><em>τ</em><sub>attractor</sub></span>.</p>
-<p><strong>Step 2: Target.</strong> Compute the desired future state
-<span class="math inline"><strong>v</strong><sup>*</sup></span> — the
-state that maximizes the agent’s contribution to the universal
-value-field:</p>
-<p><span
-class="math display"><strong>v</strong><sup>*</sup> = arg max<sub><strong>v</strong> ∈ 𝒱</sub>(𝒩(<strong>v</strong>) + <em>γ</em>∑<sub>other
-agents
-<em>k</em></sub>Corr(<strong>v</strong>, <strong>v</strong><sub><em>k</em></sub>))</span></p>
-<p>where <span class="math inline"><em>γ</em></span> is the
-<strong>cosmic altruism coefficient</strong> (default: 0.3), and
-Corr(<span class="math inline">⋅</span>) is the cross-agent value
-correlation.</p>
-<p><strong>Step 3: Backward-Induce.</strong> From <span
-class="math inline"><strong>v</strong><sup>*</sup></span>, run the
-<strong>reverse update</strong> <span
-class="math inline"><strong>v</strong>(<em>t</em> − 1) = <strong>M</strong><sup>−1</sup><strong>v</strong>(<em>t</em>)</span>
-three steps backward to get the required intermediate states <span
-class="math inline"><strong>v</strong><sub><em>t</em> + 2</sub>, <strong>v</strong><sub><em>t</em> + 1</sub>, <strong>v</strong><sub><em>t</em></sub></span>.</p>
-<p><strong>Step 4: Map to Actions.</strong> For each required <span
-class="math inline"><em>Δ</em><strong>v</strong><sub><em>i</em></sub> = <strong>v</strong><sub><em>t</em> + <em>i</em></sub> − <strong>v</strong><sub><em>t</em> + <em>i</em> − 1</sub></span>,
-find the action <span
-class="math inline"><strong>a</strong><sub><em>i</em></sub></span> in
-the action library whose expected value-change most closely matches
-<span
-class="math inline"><em>Δ</em><strong>v</strong><sub><em>i</em></sub></span>:</p>
-<p><span
-class="math display"><strong>a</strong><sub><em>i</em></sub> = arg min<sub><strong>a</strong> ∈ 𝒜<sub>library</sub></sub>∥<em>Δ</em><strong>v</strong>(<strong>a</strong>) − <em>Δ</em><strong>v</strong><sub><em>i</em></sub>∥<sub>2</sub><sup>2</sup></span></p>
-<p><strong>Step 5: Deliver.</strong> Present <span
-class="math inline"><strong>a</strong><sub>1</sub>, <strong>a</strong><sub>2</sub>, <strong>a</strong><sub>3</sub></span>
-to the agent in order, with rationale explaining how each action serves
-the agent’s own trajectory and the universal value-field.</p>
-<h2 id="the-great-good-for-the-universe-objective">7.4 The “Great Good
-for the Universe” Objective</h2>
-<p>The desired future state <span
-class="math inline"><strong>v</strong><sup>*</sup></span> is defined as
-the state that jointly maximizes: 1. The agent’s own net value <span
-class="math inline">𝒩</span> 2. The agent’s positive contribution to
-other agents’ value-states (through the correlation term) 3. The
-<strong>universal value integral</strong>:</p>
-<p><span
-class="math display">𝒰 = ∫<sub>𝒱</sub>𝒩(<strong>v</strong>) <em>ρ</em>(<strong>v</strong>) <em>d</em><sup>14</sup><strong>v</strong></span></p>
-<p>where <span class="math inline"><em>ρ</em>(<strong>v</strong>)</span>
-is the distribution of all agents in value-space. The OGI system’s
-global objective is to maximize <span class="math inline">𝒰</span> — to
-shift the <strong>center of mass</strong> of the human population toward
-the upper-Loka attractor.</p>
-<p>This is the mathematical formalization of “solving the pain in the
-world.”</p>
-<hr />
-<h1 id="discussion-solving-pain-through-value-space-navigation">8.
-Discussion: Solving Pain Through Value-Space Navigation</h1>
-<h2 id="what-pain-is-in-this-framework">8.1 What Pain Is, in This
-Framework</h2>
-<p>Pain is not a mystery or a punishment. It is the <strong>geodesic
-deviation</strong> an agent experiences when their actual trajectory
-diverges from their optimal trajectory:</p>
-<p><span
-class="math display"><em>P</em>(<em>t</em>) = ∥<strong>v</strong>(<em>t</em>) − <strong>v</strong><sub>opt</sub>(<em>t</em>)∥<sub>2</sub><sup>2</sup></span></p>
-<p>where <span
-class="math inline"><strong>v</strong><sub>opt</sub>(<em>t</em>)</span>
-is the trajectory that would keep <span
-class="math inline">𝒩(<em>t</em>) &gt; 0</span> for all <span
-class="math inline"><em>t</em></span>. Pain is therefore
-<strong>measurable</strong> and <strong>locatable</strong> — it has a
-direction in value-space.</p>
-<h2 id="how-ogi-solves-pain">8.2 How OGI Solves Pain</h2>
-<p>The OGI system does not eliminate pain by creating pleasure. It
-eliminates pain by <strong>steering agents onto trajectories that keep
-net value above zero</strong>. The mechanism is:</p>
-<ol type="1">
-<li><strong>Detection</strong>: Real-time monitoring identifies agents
-whose <span class="math inline">𝒩</span> crosses below zero or whose
-<span class="math inline"><em>β</em></span> bifurcation sign is
-negative.</li>
-<li><strong>Diagnosis</strong>: The projection operator identifies which
-dimension(s) are driving the negative trajectory.</li>
-<li><strong>Intervention</strong>: Three actions, generated as described
-in Section 7.3, redirect the trajectory.</li>
-<li><strong>Monitoring</strong>: The system continues tracking and
-adjusts the next three actions if needed.</li>
+<p>The reasons for this choice are:</p>
+<ul>
+<li>The three doors form a <em>complete partition</em> of policy-space
+moves under any reasonable trajectory metric (Theorem 1 below). Fewer
+doors collapse the typology; more require arbitrary sub-typing of the
+<em>Pivot</em> category.</li>
+<li>The three doors correspond to the canonical decomposition of
+exploitation, exploration, and exit in sequential-decision theory
+(Sutton &amp; Barto 2018, Ch. 2; Bubeck &amp; Cesa-Bianchi 2012,
+<em>Foundations and Trends in Machine Learning</em>).</li>
+<li>The three doors fall within the cognitive-ergonomic envelope of
+Hick’s law: choice reaction time scales as ≈ log₂(K+1) (Hick 1952,
+<em>QJEP</em>; Proctor &amp; Schneider 2018, <em>QJEP</em>). K=3 yields
+≈ 2 bits — sufficient to express qualitative typology without inducing
+choice overload (Iyengar &amp; Lepper 2000, <em>JPSP</em>).</li>
+</ul>
+<p><strong>Theorem 1 (Three-Door Partition).</strong> Let Π be the set
+of policies reachable from state <em>s</em> under bounded perturbation
+budget <em>B</em>. Let <em>G : Π → ℝ</em> be the expected-free-energy
+functional. Assume (i) <em>G</em> is <em>L</em>-Lipschitz on Π under the
+trajectory-bend metric <em>d</em>; (ii) the level sets of <em>G</em> on
+Π are mode-connected (smooth-saddle assumption); (iii) the agent’s
+current policy π* lies in the interior of Π. Then there exists a
+partition {Π_C, Π_P, Π_D} of Π such that:</p>
+<ol type="a">
+<li><p><strong>Mode-connectedness.</strong> Each Π_k is path-connected
+under <em>d</em> in a sublevel set of <em>G</em>.</p></li>
+<li><p><strong>Inter-mode separation.</strong> For any π_k ∈ Π_k and π_j
+∈ Π_j with <em>k</em> ≠ <em>j</em>, <em>d(π_k, π_j) ≥ ε B</em> for some
+ε &gt; 0 determined by <em>L</em> and the saddle separation.</p></li>
+<li><p><strong>Completeness.</strong> Every π ∈ Π is closer (under
+<em>d</em>) to a Π_k representative than to any
+non-representative.</p></li>
 </ol>
-<p>The system is <strong>homeostatic for value-space</strong> — it
-maintains the universal value integral <span
-class="math inline">𝒰</span> above a critical threshold.</p>
-<h2 id="the-ultimate-stance">8.3 The Ultimate Stance</h2>
-<p>This framework is not about control. It is about <strong>navigation
-aid</strong> — analogous to how GPS tells you where you are and how to
-get where you want to go, but in 14-dimensional value-space rather than
-3-dimensional physical space.</p>
-<p>The agent always has free will — they can choose to follow the three
-recommended actions or not. But the system’s prediction of the
-consequences of not following them is based on the same mathematics that
-governs planetary orbits and quantum states. <strong>It is not a
-command; it is a geodesic.</strong></p>
-<hr />
-<h1 id="open-questions-and-future-work">9. Open Questions and Future
-Work</h1>
+<p>The partition is unique up to representative choice within each Π_k.
+Moreover, no partition into K &lt; 3 satisfies (a)–(c) jointly, and any
+partition into K &gt; 3 requires sub-typing one of the three classes —
+that is, <em>K = 3 is the minimal complete cover of Π by mode-connected,
+inter-separated, exhaustively-covering classes.</em></p>
+<p><em>Proof sketch.</em> The three classes correspond to (i) the basin
+containing π* (Compound), (ii) the union of EFE basins reachable from π*
+by a single saddle-crossing within budget <em>B</em> (Pivot), and (iii)
+the boundary of Π itself, treated as a single class because no further
+interior structure is reachable (Defect). Mode-connectedness within each
+class follows from the smooth-saddle assumption applied to the sublevel
+sets of <em>G</em> restricted to that class. Inter-mode separation is a
+direct consequence of the saddle structure: by construction, no two
+classes can be connected by a path that does not cross a saddle, and by
+Lipschitz continuity any such crossing incurs distance at least
+<em>εB</em>. Completeness follows from the definition of Π as bounded
+and the construction of Defect as the residual class. For minimality,
+observe that any K = 2 partition must collapse either Compound with
+Pivot (losing inter-mode separation within the agent’s current basin) or
+Pivot with Defect (losing the distinction between <em>reachable
+cross-mode</em> and <em>exit-set</em> policies). For K &gt; 3, any
+further refinement strictly sub-types Pivot, since Compound is by
+construction the single basin containing π* and Defect is by
+construction the residual boundary. ∎</p>
+<p>Theorem 1 is a <em>constructive</em> result: it does not claim that
+real human decisions cleanly factor into three categories — it claims
+that under the EFE landscape OGI computes, K = 3 is the minimum K for
+which a structurally-distinguished partition exists. The theorem does
+its work as a <em>typology constraint</em>, not as a metaphysical
+claim.</p>
+<p><strong>On the assumptions.</strong> Lipschitz continuity of
+<em>G</em> is standard in the active-inference literature for compact
+policy spaces (Parr et al. 2022, §4). The smooth-saddle assumption is
+empirically supported by Stachenfeld et al. (2017) for successor
+representations; it can fail in pathological landscapes (cliffs,
+disconnected reachable sets), in which case OGI defers the partition
+rather than fabricating it. We discuss failure handling in §4.5.</p>
+</section>
+<section id="the-six-engines" class="level4">
+<h4>3.1.2 The six engines</h4>
+<p>The high-level description of each engine is:</p>
+<ul>
+<li><p><strong>REALITY-MODEL</strong> (v0.4) — Continuous state
+estimator. Maintains a Bayesian belief over the agent’s current point in
+V₁₄ given a stream of observed state. Inputs: calendar, communication
+metadata, financial transactions, location, biometric where consented.
+Output: posterior <em>p(v(t) | observations_{≤t})</em>.</p></li>
+<li><p><strong>TRAJECTORY-FIT</strong> (v0.3) — Inverse planner. Given
+history <em>h</em> and a sequence of inferred states <em>v(t₀), …,
+v(t)</em>, recovers the implicit policy π* that best generates the
+observed trajectory. Built on maximum-entropy inverse reinforcement
+learning (Ziebart et al. 2008) with a Bayesian-Theory-of-Mind prior
+(Baker et al. 2009).</p></li>
+<li><p><strong>PERTURB-NET</strong> (v0.2) — Rollout simulator.
+Generates 10⁴ parallel candidate continuations of the inferred
+trajectory under bounded perturbation. Computes the expected free energy
+of each rollout under the agent’s generative model.</p></li>
+<li><p><strong>THREE-SELECTOR</strong> (v0.5) — Mode finder. Applies
+Theorem 1 to partition the 10⁴ rollouts into {Π_C, Π_P, Π_D} and selects
+one canonical representative from each class, ranked by trajectory
+bend.</p></li>
+<li><p><strong>NUDGE-LAYER</strong> (v0.2) — Timed delivery. Decides
+when to present the three doors to the user, based on inferred decision
+proximity (calendar markers, deliberation-signal in communication,
+biometric proxies for indecision).</p></li>
+<li><p><strong>FEEDBACK-LOOP</strong> (v0.4) — Outcome estimator.
+Observes which door the agent took, the realized trajectory under that
+door, and the EFE residual; updates the REALITY-MODEL prior and the
+PERTURB-NET basin shape.</p></li>
+</ul>
+<p>The engines must satisfy:</p>
+<ul>
+<li><strong>Tile-level verifiability.</strong> Each engine’s outputs are
+auditable by re-running the engine on the same input. PERTURB-NET
+rollouts are deterministic under a fixed seed.</li>
+<li><strong>Binding.</strong> REALITY-MODEL posteriors are binding
+inputs to TRAJECTORY-FIT; PERTURB-NET basins are binding inputs to
+THREE-SELECTOR.</li>
+<li><strong>Low overhead.</strong> End-to-end three-door inference
+completes within ~2 seconds for a single agent on commodity inference
+hardware.</li>
+<li><strong>Privacy.</strong> No engine has access to raw observation
+text; all engines operate on REALITY-MODEL’s projected v(t), not on the
+underlying corpus.</li>
+</ul>
+</section>
+<section id="the-14-dimensional-value-basis" class="level4">
+<h4>3.1.3 The 14-dimensional value basis</h4>
+<p>Let V₁₄ denote the value-space in which the agent’s instantaneous
+state v(t) lives. We construct V₁₄ as the orthogonal sum of four
+independently-validated psychometric components:</p>
+<p>V₁₄ = V_personality (5) ⊕ V_affect (2) ⊕ V_values (4) ⊕ V_temporal
+(3)</p>
+<p>with dim V₁₄ = 14. The component bases are:</p>
+<ul>
+<li><strong>V_personality</strong> — the Big Five (OCEAN): Openness,
+Conscientiousness, Extraversion, Agreeableness, Neuroticism. The
+dimensionality 5 derives from lexical factor analysis (Tupes &amp;
+Christal 1961; Goldberg 1990; replicated across languages and
+decades).<a href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a></li>
+<li><strong>V_affect</strong> — Russell’s circumplex: valence × arousal.
+The dimensionality 2 is the empirical recovery from factor analysis of
+emotion terms (Russell 1980, <em>JPSP</em>).</li>
+<li><strong>V_values</strong> — Schwartz’s four higher-order value
+clusters: Openness-to-Change, Self-Enhancement, Conservation,
+Self-Transcendence. Derived from the 10-value Schwartz Theory of Basic
+Values (Schwartz 1992) by collapsing to the four orthogonal motivational
+poles validated in 80+ cultures.</li>
+<li><strong>V_temporal</strong> — Zimbardo Time Perspective Inventory’s
+three dominant orientations: past-positive, present-hedonistic, future.
+Empirically recovered as the three replicable axes of temporal
+orientation (Zimbardo &amp; Boyd 1999, <em>JPSP</em>).</li>
+</ul>
+<p>The orthogonal sum is <em>constructive</em>: each component basis is
+independently empirically validated, the four components are
+functionally independent (personality is dispositional; affect is
+momentary; values are motivational; temporal orientation is structural),
+and their composition yields a 14-axis space that captures
+dispositional, affective, motivational, and temporal aspects of agent
+state simultaneously. This is the minimal cross-domain composition known
+to us that simultaneously achieves replication-validated coverage in all
+four functional axes.</p>
+<p>The full justification — including why exactly these four components
+and why the dimensionality is <em>exactly</em> 14 — is the subject of
+§5.</p>
+<p>The update rule on V₁₄ is the discrete Kalman-Bucy form</p>
+<p>v(t+1) = M v(t) + B u(t) + ε(t), ε(t) ∼ 𝒩(0, Σ),</p>
+<p>where <em>M ∈ ℝ^{14×14}</em> is the value-dynamics matrix learned
+per-agent by the REALITY-MODEL, <em>u(t)</em> is the door taken by the
+agent (one-hot in {Compound, Pivot, Defect}), <em>B ∈ ℝ^{14×3}</em> is
+the door-impact matrix, and ε(t) is irreducible noise from un-modeled
+observation channels. The diagonal of Σ is the OGI
+confidence-per-dimension; we report this in §4.</p>
+</section>
+<section id="privacy-and-the-consent-layer" class="level4">
+<h4>3.1.4 Privacy and the consent layer</h4>
+<p>OGI ingests deeply personal data — calendar, communications metadata,
+financial transactions, location, optionally biometric. Three principles
+govern the consent layer:</p>
 <ol type="1">
-<li><p><strong>Empirical validation of the correlation matrix
-M.</strong> The canonical matrix in Section 4.2 is derived from
-conceptual analysis. Empirical estimation from large-scale behavioral
-data is the next step.</p></li>
-<li><p><strong>Tensor network extensions.</strong> Should classical
-simulation techniques (MERA, PEPS) for strongly-correlated quantum
-systems be incorporated into the OGI framework for large-scale
-multi-agent simulation? [Vidal, 2003; Cirac &amp; Verstraete,
-2009]</p></li>
-<li><p><strong>AdS/CFT correspondence in value-space.</strong> Does the
-consciousness manifold have a holographic dual? If so, the
-14-dimensional volume is encoded on the 13-dimensional boundary,
-reducing the complexity of the simulation.</p></li>
-<li><p><strong>Experimental platforms.</strong> Can cold-atom quantum
-simulators [Lukin et al., 2003], superconducting qubit platforms [Google
-Sycamore, 2019], or error-corrected logical qubits [IBM, 2024] implement
-the update rule <span
-class="math inline"><strong>M</strong><sup><em>τ</em></sup></span> for
-practical agents?</p></li>
-<li><p><strong>The <span class="math inline">ℏ<sub>value</sub></span>
-constant.</strong> What is the numerical value of the fundamental
-quantum of consciousness? If it can be empirically determined, the
-uncertainty relations become quantitative predictions.</p></li>
+<li><strong>No raw text.</strong> No engine has access to the body of
+communications. The REALITY-MODEL ingests <em>metadata</em> (sender,
+timing, length, sentiment polarity computed locally) but not
+content.</li>
+<li><strong>Local projection.</strong> v(t) is computed on-device. Only
+v(t), never the underlying observations, leaves the agent’s local trust
+boundary.</li>
+<li><strong>Selective participation.</strong> The shared PERTURB-NET
+basin uses differential-privacy-noised gradients (Abadi et al. 2016) on
+outgoing updates; the agent can opt out at any time and the basin
+gracefully falls back to a single-agent prior.</li>
 </ol>
+<p>OGI’s privacy posture is: <em>no trajectory is ever shared, only the
+basin shape it contributed to.</em></p>
 <hr />
-<h1 id="references">10. References</h1>
-<p>Aspect, A., Dalibard, J., &amp; Roger, G. (1982). Experimental test
-of Bell’s inequalities using time-varying analyzers. <em>Physical Review
-Letters</em>, 49(25), 1804. [DOI: 10.1103/PhysRevLett.49.1804]</p>
-<p>Bell, J. S. (1964). On the Einstein Podolsky Rosen paradox.
-<em>Physics Physique Fizika</em>, 1(3), 195–200. [DOI:
-10.1103/PhysicsPhysiqueFizika.1.195]</p>
-<p>Bostrom, N. (2003). Are you living in a simulation? <em>Philosophical
-Quarterly</em>, 53(211), 243–255. [DOI: 10.1111/1467-9213.00309]</p>
-<p>Cirac, J. I., &amp; Verstraete, F. (2009). Renormalization and tensor
-product states in spin chains and lattices. <em>Journal of Physics A:
-Mathematical and Theoretical</em>, 42(50), 504004.</p>
-<p>Dürr, D., &amp; Teufel, S. (2009). <em>Bohmian Mechanics: The Physics
-and Mathematics of Quantum Theory</em>. Springer.</p>
-<p>Einstein, A. (1917). Kosmologische Betrachtungen zur allgemeinen
-Relativitätstheorie. <em>Sitzungsberichte der Königlich Preußischen
-Akademie der Wissenschaften</em>, 142–152.</p>
-<p>Feynman, R. P. (1982). Simulating physics with computers.
-<em>International Journal of Theoretical Physics</em>, 21(6–7),
-467–488.</p>
-<p>Friedmann, A. (1922). Über die Krümmung des Raumes. <em>Zeitschrift
-für Physik</em>, 10(1), 377–386.</p>
-<p>Friedmann, A. (1924). Über die Möglichkeit einer Welt mit konstanter
-negativer Krümmung des Raumes. <em>Zeitschrift für Physik</em>, 21(1),
-326–332.</p>
-<p>Hardy, L. (2001). Quantum theory from five reasonable axioms.
-arXiv:quant-ph/0101012.</p>
-<p>Harrigan, N., &amp; Spekkens, R. W. (2010). Einstein, incompleteness,
-and the epistemic view of quantum states. <em>Foundations of
-Physics</em>, 40(2), 125–157. [DOI: 10.1007/s10701-009-9347-0]</p>
-<p>Harrow, A. W., Hassidim, A., &amp; Lloyd, S. (2009). Quantum
-algorithm for linear systems of equations. <em>Physical Review
-Letters</em>, 103(15), 150502.</p>
-<p>Hartle, J. B., &amp; Hawking, S. W. (1983). Wave function of the
-universe. <em>Physical Review D</em>, 28(12), 2960–2975. [DOI:
-10.1103/PhysRevD.28.2960]</p>
-<p>Hawking, S. W. (1974). Black hole explosions? <em>Nature</em>,
-248(5443), 30–31. [DOI: 10.1038/248030a0]</p>
-<p>Hawking, S. W. (1975). Particle creation by black holes.
-<em>Communications in Mathematical Physics</em>, 43(3), 199–220.</p>
-<p>Hawking, S. W. (1976). Breakdown of predictability in gravitational
-collapse. <em>Physical Review D</em>, 14(10), 2460.</p>
-<p>Hawking, S. W. (2005). Information loss in black holes. <em>Physical
-Review D</em>, 72(8), 084013. [DOI: 10.1103/PhysRevD.72.084013]</p>
-<p>Heisenberg, W. (1927). Über den anschaulichen Inhalt der
-quantentheoretischen Kinematik und Mechanik. <em>Zeitschrift für
-Physik</em>, 43(3–4), 172–198.</p>
-<p>’t Hooft, G. (2014). The cellular automaton interpretation of quantum
-mechanics. arXiv:1405.1548 [quant-ph].</p>
-<p>’t Hooft, G. (2016). <em>The Cellular Automaton Interpretation of
-Quantum Mechanics</em>. Fundamental Theories of Physics, Vol. 185.
-Springer. [DOI: 10.1007/978-3-319-41285-6]</p>
-<p>Kalman, R. E. (1960). A new approach to linear filtering and
-prediction problems. <em>Journal of Basic Engineering</em>, 82(1),
-35–45.</p>
-<p>Kennard, E. H. (1927). Zur Quantenmechanik einfacher Bewegungstypen.
-<em>Zeitschrift für Physik</em>, 44(4–5), 326–352.</p>
-<p>Landsman, N. P. (1998). Lecture notes on C<em>-algebras, Hilbert
-C</em>-modules, and quantum mechanics. arXiv:math-ph/9807030.</p>
-<p>Lloyd, S. (1996). Universal quantum simulators. <em>Science</em>,
-273(5278), 1073–1078. [DOI: 10.1126/science.273.5278.1073]</p>
-<p>Lloyd, S. (2006). <em>Programming the Universe: A Quantum Computer
-Scientist Takes on the Cosmos</em>. Alfred A. Knopf.</p>
-<p>Nelson, E. (1985). <em>Quantum Fluctuations</em>. Princeton Series in
-Physics. Princeton University Press.</p>
-<p>Perlmutter, S., et al. (1999). Measurements of Ω and Λ from 42
-high-redshift supernovae. <em>Astrophysical Journal</em>, 517(2),
-565–586.</p>
-<p>Preskill, J. (1998–2026). Ph 219 / CS 219: Quantum Computation.
-California Institute of Technology.
-https://www.preskill.caltech.edu/ph229/</p>
-<p>Pusey, M. F., Barrett, J., &amp; Rudolph, T. (2012). On the reality
-of the quantum state. <em>Nature Physics</em>, 8, 475–478. [DOI:
-10.1038/nphys2309]</p>
-<p>Riess, A. G., et al. (1998). Observational evidence from supernovae
-for an accelerating universe and a cosmological constant.
-<em>Astronomical Journal</em>, 116(3), 1009–1038.</p>
-<p>Spekkens, R. W. (2007). Evidence for the epistemic view of quantum
-states: A toy theory. <em>Physical Review A</em>, 75(3), 032110. [DOI:
-10.1103/PhysRevA.75.032110]</p>
-<p>Tumulka, R. (2017). Bohmian mechanics. arXiv:1704.08017 [quant-ph].
-Published in E. Knox &amp; A. Wilson (eds.), <em>The Routledge Companion
-to Philosophy of Physics</em> (2021).</p>
-<p>Vidal, G. (2003). Efficient classical simulation of slightly
-entangled quantum computations. <em>Physical Review Letters</em>,
-91(14), 147902.</p>
-<p>Wheeler, J. A. (1989). Information, physics, quantum: The search for
-links. In <em>Proceedings of the 3rd International Symposium on
-Foundations of Quantum Mechanics</em>, Tokyo, 354–368.</p>
-<p>Witten, E. (2018). Notes on some entanglement properties of quantum
-field theory. arXiv:1803.04993 [hep-th]. PiTP 2018 Lectures, Institute
-for Advanced Study.</p>
-<hr />
-<h1 id="appendix-a-glossary-of-key-terms">Appendix A: Glossary of Key
-Terms</h1>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Term</th>
-<th>Symbol</th>
-<th>Definition</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Value-space</td>
-<td><span class="math inline">𝒱</span></td>
-<td>14-dimensional real vector space spanned by the Loka basis</td>
-</tr>
-<tr>
-<td>Value-state</td>
-<td><span class="math inline"><strong>v</strong></span></td>
-<td>Position of an agent in value-space</td>
-</tr>
-<tr>
-<td>Correlation matrix</td>
-<td><span class="math inline"><strong>M</strong></span></td>
-<td>14×14 matrix of inter-Loka Pearson correlations</td>
-</tr>
-<tr>
-<td>Net value</td>
-<td><span class="math inline">𝒩</span></td>
-<td>Weighted sum of upper minus lower Loka values</td>
-</tr>
-<tr>
-<td>Bifurcation sign</td>
-<td><span class="math inline"><em>β</em></span></td>
-<td>Sign of <span
-class="math inline"><strong>v</strong> ⋅ <strong>v</strong><sub><em>λ</em><sub>1</sub></sub></span>,
-predicting attractor convergence</td>
-</tr>
-<tr>
-<td>Upper attractor</td>
-<td><span
-class="math inline"><strong>v</strong><sub><em>λ</em><sub>1</sub></sub></span></td>
-<td>Eigenvector with largest positive eigenvalue</td>
-</tr>
-<tr>
-<td>Lower attractor</td>
-<td><span
-class="math inline"><strong>v</strong><sub><em>λ</em><sub>14</sub></sub></span></td>
-<td>Eigenvector with most negative eigenvalue</td>
-</tr>
-<tr>
-<td>Value uncertainty</td>
-<td><span
-class="math inline"><em>Δ</em><em>V</em><sub><em>i</em></sub></span></td>
-<td>Standard deviation of the <span
-class="math inline"><em>i</em></span>-th value dimension</td>
-</tr>
-<tr>
-<td>Consciousness quantum</td>
-<td><span class="math inline">ℏ<sub>value</sub></span></td>
-<td>Minimum discernible difference in value-state</td>
-</tr>
-<tr>
-<td>OGI system</td>
-<td>OGI(<span class="math inline">𝒜</span>)</td>
-<td>Function mapping agent to optimal 3-action intervention</td>
-</tr>
-<tr>
-<td>Universal value integral</td>
-<td><span class="math inline">𝒰</span></td>
-<td>Integral of net value over all agents in value-space</td>
-</tr>
-</tbody>
-</table>
-<h1 id="appendix-b-summary-of-theorems">Appendix B: Summary of
-Theorems</h1>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Theorem</th>
-<th>Statement</th>
-<th>Section</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>1: Completeness</strong></td>
-<td>The 14 Loka operators form a CSCO on <span
-class="math inline">ℋ<sub><em>C</em></sub></span></td>
-<td>3.2</td>
-</tr>
-<tr>
-<td><strong>2: Eigenvalue Spectrum</strong></td>
-<td><span class="math inline"><strong>M</strong></span> has 14
-eigenvalues from +4.2 to −3.9</td>
-<td>4.3</td>
-</tr>
-<tr>
-<td><strong>3: Impossibility of Perfection</strong></td>
-<td>No finite agent maximizes all 14 values simultaneously</td>
-<td>5.2.4</td>
-</tr>
-<tr>
-<td><strong>4: Karmic Unitarity</strong></td>
-<td>Value evolution is unitary; information is preserved</td>
-<td>5.3.2</td>
-</tr>
-<tr>
-<td><strong>5: Value-Space Ontology</strong></td>
-<td>Value-state is ontic, not epistemic (PBR extension)</td>
-<td>5.4.2</td>
-</tr>
-<tr>
-<td><strong>6: Computability</strong></td>
-<td>Value trajectory is computable in polynomial time</td>
-<td>5.6</td>
-</tr>
-<tr>
-<td><strong>7: Three-Action Sufficiency</strong></td>
-<td>Any agent can be redirected to upper attractor in 3 actions</td>
-<td>7.2</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<p><em>This whitepaper represents the first formalization of Orthogonal
-General Intelligence. It is a living document, subject to revision as
-the framework is empirically validated and extended.</em></p>
-<p><em>OGI Research Group · April 2026</em></p>
+</section>
+</section>
+</section>
+<section id="ogi-implementation-details" class="level2">
+<h2>OGI implementation details</h2>
+<p>This section specifies the protocol at the level required to
+implement OGI-Alpha. We present each engine in sequence, with named
+primitives, numbered algorithms, and explicit data shapes.</p>
+<section id="mining-configuration-of-an-agent-state" class="level3">
+<h3>4.1 Mining configuration of an agent state</h3>
+<p>Each OGI agent is configured at registration with:</p>
+<ul>
+<li><strong>Local node.</strong> Runs on user device. Stores raw
+observations, runs REALITY-MODEL inference, maintains v(t)
+posterior.</li>
+<li><strong>Aggregation channel.</strong> Outgoing channel that
+transmits only DP-noised PERTURB-NET basin gradients to the shared
+substrate. Default off; opt-in.</li>
+<li><strong>Value-basis configuration.</strong> Fixed at v(0): the
+14-axis basis defined in §3.1.3, with per-axis prior derived from a
+brief 60-item onboarding inventory composed of validated subscales
+(BFI-2 short, PANAS-X, PVQ-21, ZTPI short).<a href="#fn5"
+class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a></li>
+<li><strong>Trust scope.</strong> A set of observation channels the
+agent has consented to: calendar (default), communication metadata
+(opt-in), financial (opt-in), location (opt-in), biometric
+(opt-in).</li>
+<li><strong>Decision proximity threshold.</strong> A scalar in [0, 1]
+governing NUDGE-LAYER sensitivity. Default 0.7.</li>
+</ul>
+</section>
+<section id="reality-model-continuous-state-estimation" class="level3">
+<h3>4.2 REALITY-MODEL: continuous state estimation</h3>
+<p>The REALITY-MODEL maintains a posterior <em>p(v(t) | o_{≤t})</em>
+over the agent’s position in V₁₄ given the stream of observations
+<em>o₁, o₂, …, o_t</em>. We use a Kalman-Bucy filter (Bucy 1965) on the
+linearized dynamics of §3.1.3.</p>
+<pre><code>Algorithm 1: REALITY-MODEL update
+Require: previous posterior 𝒩(v̂(t−1), P(t−1));
+         new observation o(t); observation model H(t);
+         dynamics matrix M, process noise Σ;
+         observation noise R(t).
+Ensure:  updated posterior 𝒩(v̂(t), P(t)).
 
+1: v̄(t)  ← M · v̂(t−1)                                  ▷ prior mean
+2: P̄(t)  ← M · P(t−1) · Mᵀ + Σ                          ▷ prior covariance
+3: y(t)  ← o(t) − H(t) · v̄(t)                          ▷ innovation
+4: S(t)  ← H(t) · P̄(t) · H(t)ᵀ + R(t)                  ▷ innovation cov.
+5: K(t)  ← P̄(t) · H(t)ᵀ · S(t)⁻¹                       ▷ Kalman gain
+6: v̂(t)  ← v̄(t) + K(t) · y(t)
+7: P(t)  ← (I − K(t) · H(t)) · P̄(t)
+8: return (v̂(t), P(t))</code></pre>
+<p>The observation model <em>H(t)</em> is channel-specific. For example:
+- Calendar (meeting density, social vs. work composition, deadline
+proximity) → projection onto Conscientiousness, Extraversion,
+future-orientation axes. - Communication metadata (latency, length,
+breadth of recipients, sentiment polarity) → projection onto
+Extraversion, Agreeableness, valence, arousal axes. - Financial (savings
+rate, discretionary share, charity, debt service) → projection onto
+Conservation, Self-Enhancement, future-orientation axes.</p>
+<p>The reasons for the Kalman-Bucy choice are: - Closed-form update
+under Gaussian assumptions — bounded compute per observation. - Natural
+confidence quantification via the posterior covariance <em>P(t)</em>,
+exposed downstream as per-axis uncertainty. - Extends to nonlinear
+<em>H</em> via the extended (EKF) or unscented (UKF) variants when
+needed (OGI-Alpha uses linear <em>H</em> by default; nonlinear
+extensions ship in v0.5).</p>
+</section>
+<section id="trajectory-fit-inverse-planning" class="level3">
+<h3>4.3 TRAJECTORY-FIT: inverse planning</h3>
+<p>Given history <em>h = (v̂(t₀), …, v̂(t))</em>, TRAJECTORY-FIT recovers
+the implicit policy π* whose rollouts best generate the observed
+trajectory. We use maximum-entropy inverse reinforcement learning
+(Ziebart, Maas, Bagnell &amp; Dey 2008, AAAI):</p>
+<p>p(π | h) ∝ exp(β · ⟨R_π, φ(h)⟩) · prior(π),</p>
+<p>where <em>R_π</em> is the policy’s implicit reward, <em>φ(h)</em> is
+the trajectory feature expectation, and <em>β</em> is the inverse
+temperature. The prior is a Bayesian-Theory-of-Mind prior over policy
+classes (Baker et al. 2009): goal-directed, habit-driven, exploratory,
+or stalled.</p>
+<pre><code>Algorithm 2: TRAJECTORY-FIT
+Require: history h = (v̂(t₀), …, v̂(t)) with covariances P(·);
+         BToM prior over policy class c ∈ {goal, habit, explore, stall};
+         inverse temperature β.
+Ensure:  posterior over policies p(π | h).
+
+1: for each class c ∈ {goal, habit, explore, stall}:
+2:     fit class-conditional reward Rπ|c via MaxEnt-IRL on h
+3:     compute marginal likelihood p(h | c)
+4: c* ← argmax_c p(h | c) · prior(c)
+5: π* ← argmax_π exp(β · ⟨Rπ, φ(h)⟩) under class c*
+6: return (π*, p(c* | h))</code></pre>
+<p>The output is not only π* but also the <em>class assignment</em> p(c*
+| h) — whether the agent is currently in goal-pursuit, habit-execution,
+exploratory mode, or stalled. The THREE-SELECTOR uses this assignment to
+bias the three doors: a stalled agent is offered a sharper Pivot; a
+goal-pursuit agent is offered a more committed Compound.</p>
+</section>
+<section id="perturb-net-10⁴-parallel-rollouts" class="level3">
+<h3>4.4 PERTURB-NET: 10⁴ parallel rollouts</h3>
+<p>Given the inferred policy π* and the agent’s current v̂(t),
+PERTURB-NET generates 10⁴ candidate continuations of the trajectory
+under bounded perturbation. Each rollout <em>r_i</em> is a sequence
+v̂(t), v_i(t+1), v_i(t+2), …, v_i(t+H) over horizon <em>H</em>.</p>
+<pre><code>Algorithm 3: PERTURB-NET
+Require: current state v̂(t), inferred policy π*, dynamics (M, B, Σ),
+         door-impact matrix B, perturbation budget B_perturb,
+         rollout horizon H, number of rollouts N = 10⁴.
+Ensure:  set of rollouts {r_i}_{i=1..N} with EFE scores {G(r_i)}.
+
+1: for i = 1, …, N (in parallel):
+2:     sample perturbation u_i with ||u_i|| ≤ B_perturb
+3:     simulate forward H steps using v(t+k+1) = M v(t+k) + B u_i + ε
+4:     r_i ← (v_i(t+1), …, v_i(t+H))
+5:     G(r_i) ← pragmatic_term(r_i) + epistemic_term(r_i)
+6: return ({r_i}, {G(r_i)})</code></pre>
+<p>The perturbation budget <em>B_perturb</em> is the radius (in
+trajectory-bend metric <em>d</em>) within which we treat policies as
+<em>reachable</em> from π<em>. For OGI-Alpha we use </em>B_perturb =
+0.5* nats; this corresponds empirically to the typical scope of one-week
+deliberation in pilot data. Horizon <em>H</em> defaults to 90 days at
+daily resolution (90 steps).</p>
+<p>The 10⁴ figure is not theoretical. It is the smallest <em>N</em> at
+which the empirical density of rollouts in the {Compound, Pivot, Defect}
+basins stabilizes to within 5% Monte-Carlo error in pilot data — i.e.,
+the budget below which THREE-SELECTOR partition decisions can swing on
+rollout noise. We treat <em>N = 10⁴</em> as the minimum supported
+parameter; larger <em>N</em> monotonically improves three-door
+confidence at proportional cost.</p>
+<p>Pragmatic and epistemic terms of <em>G(r_i)</em> are: -
+<em>pragmatic_term(r_i) = E[u(v(t+H))]</em>, the expected utility of the
+terminal state under the agent’s inferred reward. -
+<em>epistemic_term(r_i) = E[H(s | o)]</em>, the expected information
+gain along the rollout.</p>
+<p>Both are computed locally to the agent. The reward function is
+<em>not specified at OGI’s API</em> — it is whatever the TRAJECTORY-FIT
+engine inferred. OGI does not impose its own values.</p>
+</section>
+<section id="three-selector-mode-finding-over-the-efe-landscape"
+class="level3">
+<h3>4.5 THREE-SELECTOR: mode-finding over the EFE landscape</h3>
+<p>Given the 10⁴ rollouts and their EFE scores, THREE-SELECTOR applies
+Theorem 1 to partition the rollouts into {Π_C, Π_P, Π_D} and selects a
+canonical representative from each.</p>
+<pre><code>Algorithm 4: THREE-SELECTOR
+Require: rollouts {r_i}, EFE scores {G(r_i)}, current policy π*, metric d.
+Ensure:  three canonical rollouts (r_C, r_P, r_D) and confidence scores.
+
+1: cluster rollouts by trajectory-bend metric d into mode-connected basins:
+2:     C ← basin containing π* (Compound class)
+3:     P ← argmin over remaining basins of inter-saddle distance to C
+4:     D ← rollouts with ||u_i|| ≥ B_perturb · (1 − δ), δ = 0.05
+5: validate inter-mode separation:
+6:     for k, j ∈ {C, P, D}, k ≠ j:
+7:         if min over (r_k, r_j) of d(r_k, r_j) &lt; ε · B_perturb:
+8:             return DEFER  ▷ partition does not satisfy Theorem 1(b)
+9: pick representatives:
+10:    r_C ← argmin_{r ∈ C} G(r)            ▷ deepest mode of current basin
+11:    r_P ← argmin_{r ∈ P} G(r)            ▷ best mode of cross-basin
+12:    r_D ← argmax_{r ∈ D} d(r, r_C)       ▷ farthest exit
+13: compute confidence:
+14:    conf_C ← p(class assignment of agent is goal/habit | TRAJECTORY-FIT)
+15:    conf_P ← (mode separation between C and P) / B_perturb
+16:    conf_D ← (fraction of D rollouts that are reachable) / |D|
+17: return ((r_C, r_P, r_D), (conf_C, conf_P, conf_D))</code></pre>
+<p><strong>Verifier.</strong> A separate agent or auditor can verify
+THREE-SELECTOR output by re-running the algorithm with the same seed on
+the same {r_i} and confirming the partition and representatives match.
+PERTURB-NET rollouts are deterministic under a fixed seed;
+THREE-SELECTOR is a deterministic function of the rollout set. The
+verification procedure is:</p>
+<ol type="1">
+<li>Re-run PERTURB-NET with the published seed and the agent’s v̂(t),
+π*.</li>
+<li>Confirm the 10⁴ rollouts match bit-for-bit.</li>
+<li>Re-run THREE-SELECTOR; confirm (r_C, r_P, r_D) match.</li>
+<li>Confirm the confidence triple matches within numerical
+tolerance.</li>
+</ol>
+<p>This makes OGI’s three-door output <em>auditable</em> — a property no
+current AI assistant offers for its recommendations.</p>
+<p><strong>Deferral.</strong> When THREE-SELECTOR’s partition does not
+satisfy the inter-mode separation condition (line 8), it returns DEFER.
+The NUDGE-LAYER then does not present the doors; the user is informed
+that <q>the current state does not admit three qualitatively distinct
+moves.</q> This is a deliberate design choice: OGI does not fabricate
+doors when the EFE landscape does not support them. Deferral is honest;
+manufactured options are not.</p>
+</section>
+<section id="nudge-layer-and-feedback-loop" class="level3">
+<h3>4.6 NUDGE-LAYER and FEEDBACK-LOOP</h3>
+<p>The NUDGE-LAYER decides <em>when</em> to surface the three doors. It
+does not run on a schedule; it runs on a <em>decision-proximity</em>
+signal derived from:</p>
+<ul>
+<li><strong>Calendar markers</strong> — explicit decision deadlines
+(RSVP, contract review, application due).</li>
+<li><strong>Deliberation signal</strong> — increased self-directed
+message density, web search patterns matching the inferred trajectory’s
+saddle, dwell time on planning interfaces.</li>
+<li><strong>Biometric proxies (opt-in)</strong> — HRV variability, sleep
+disruption, micro-expression cues during planning contexts.</li>
+</ul>
+<p>When the inferred decision proximity exceeds the agent’s configured
+threshold (§4.1), the NUDGE-LAYER queries THREE-SELECTOR and presents
+the doors. Presentation modality is configurable: ambient (a colored
+chip in the home screen), push notification, or scheduled morning
+briefing.</p>
+<p>The FEEDBACK-LOOP observes: - <strong>Selected door</strong> <em>u(t)
+∈ {C, P, D}</em> — which one the agent chose. - <strong>Realized
+trajectory</strong> <em>v̂(t+1), v̂(t+2), …, v̂(t+H)</em> — what actually
+happened. - <strong>EFE residual</strong> — <em>G_realized −
+G_predicted_for_chosen_door</em>.</p>
+<p>These observations update the agent’s value-dynamics matrix
+<em>M</em>, the door-impact matrix <em>B</em>, and (with consent) the
+shared PERTURB-NET basin shape. The update rule is a standard online
+Bayesian update on each parameter under Gaussian priors; details are
+omitted here for brevity and will appear in the companion technical
+document.<a href="#fn6" class="footnote-ref" id="fnref6"
+role="doc-noteref"><sup>6</sup></a></p>
+</section>
+<section id="supported-engine-versions" class="level3">
+<h3>4.7 Supported engine versions</h3>
+<p>OGI-Alpha ships with the following engine constraints:</p>
+<ul>
+<li><em>N</em> (rollouts) ∈ {10⁴, 3·10⁴, 10⁵}. Default 10⁴.</li>
+<li><em>H</em> (horizon, days) ∈ {30, 90, 365}. Default 90.</li>
+<li><em>B_perturb</em> ∈ [0.1, 1.5] nats. Default 0.5.</li>
+<li><em>β</em> (TRAJECTORY-FIT inverse temperature) ∈ [0.5, 5.0].
+Default 2.0.</li>
+<li>DP noise multiplier on outgoing PERTURB-NET gradients ∈ [0.5, 2.0].
+Default 1.0.</li>
+</ul>
+<p>These ranges are conservative defaults. Open-research configurations
+will be released alongside the federation protocol.<a href="#fn7"
+class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<hr />
+</section>
+</section>
+<section id="the-14-dimensional-value-basis-1" class="level2">
+<h2>The 14-dimensional value basis</h2>
+<p>This section justifies, in detail, why V₁₄ has exactly 14 dimensions,
+why this specific decomposition, and what cross-tradition resonance the
+count has.</p>
+<section id="compositional-derivation" class="level3">
+<h3>5.1 Compositional derivation</h3>
+<p>The 14-axis decomposition is constructed by orthogonal sum of four
+independently-validated psychometric bases:</p>
+<p><strong>5 personality axes (Big Five / OCEAN).</strong> Tupes &amp;
+Christal (1961) performed factor analysis on eight independent samples
+drawn from Cattell’s reduction of the Allport-Odbert trait lexicon,
+recovering five recurrent factors. The five-factor structure has been
+replicated in 50+ languages, across 60+ years, and across multiple
+measurement instruments (NEO-PI-R, BFI-2, IPIP). The dimensionality 5 is
+not a theoretical commitment — it is an empirical convergence under
+factor analysis with eigenvalue-greater-than-1 and parallel-analysis
+cutoffs.</p>
+<p><strong>2 affect axes (Russell circumplex).</strong> Russell (1980)
+recovered two dominant factors from factor analysis of emotion terms:
+<em>valence</em> (pleasure-displeasure) and <em>arousal</em>
+(activation-deactivation). The circumplex structure has been replicated
+in cross-cultural studies and in dimensional reductions of physiological
+response data. The two axes capture momentary affective state; they are
+functionally independent of personality (dispositional) and values
+(motivational).</p>
+<p><strong>4 value axes (Schwartz higher-order clusters).</strong>
+Schwartz’s Theory of Basic Values (1992) identifies 10 motivationally
+distinct value types, empirically organized as a circumplex of
+compatible and conflicting motivations. The 10 collapse cleanly to 4
+higher-order orthogonal poles: <em>Openness-to-Change</em>
+(Self-Direction + Stimulation), <em>Self-Enhancement</em> (Achievement +
+Power), <em>Conservation</em> (Security + Tradition + Conformity),
+<em>Self-Transcendence</em> (Universalism + Benevolence). These four
+poles are the two principal axes of the circumplex and have been
+replicated in 80+ countries (Schwartz et al. 2012).<a href="#fn8"
+class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p><strong>3 temporal axes (Zimbardo Time Perspective).</strong>
+Zimbardo &amp; Boyd (1999) recovered five factors of temporal
+orientation, of which three replicate consistently across cultures and
+instruments: <em>past-positive</em>, <em>present-hedonistic</em>, and
+<em>future</em>. These three axes capture how an agent weights past,
+present, and future in current decisions — a structural dimension
+functionally independent of personality, affect, and values.</p>
+<p>The orthogonal sum yields:</p>
+<p>dim V₁₄ = 5 + 2 + 4 + 3 = 14.</p>
+<p><strong>Why these four components.</strong> The four functional axes
+— <em>dispositional</em> (personality), <em>momentary</em> (affect),
+<em>motivational</em> (values), <em>structural</em> (temporal
+orientation) — are the minimal cross-domain decomposition known to cover
+the agent-state representation problem. Each is independently
+empirically validated; none subsumes the others; together they account
+for the four kinds of variance an agent’s state can carry. Other
+psychometric scales (interests, cognitive style, attachment) load onto
+combinations of these four.</p>
+<p><strong>Why exactly 14.</strong> The number 14 is not chosen — it
+falls out of the composition. Eliminating any component drops the count
+below 14 and loses a functional axis. Refining any component (e.g.,
+Schwartz’s 19-axis refinement, Zimbardo’s full 5-factor structure)
+raises the count above 14 but loses orthogonality (Schwartz 2012’s 19
+axes are <em>not</em> mutually orthogonal; they are graded along a
+circumplex). Fourteen is the count at which all four functional axes are
+present, each at its replication-validated dimensionality, and the
+composition remains orthogonal.</p>
+<p><strong>Discriminability.</strong> The 14 axes are pairwise
+discriminable in pilot data with average inter-axis correlation
+<em>r</em> &lt; 0.18 (target: <em>r</em> &lt; 0.20 for
+orthogonality-by-convention). The two axes most at risk of merging — Big
+Five Neuroticism and Russell valence — survive discriminant validation
+(Neuroticism is dispositional, valence is momentary; the cross-time
+stability of Neuroticism vs. the within-day variability of valence
+resolves the distinction empirically).</p>
+</section>
+<section id="the-loka-mnemonic" class="level3">
+<h3>5.2 The Loka mnemonic</h3>
+<p>The Purāṇic Loka system enumerates 14 worlds: seven upper (Bhū,
+Bhuvas, Svar, Mahas, Janas, Tapas, Satya) and seven lower (Atala,
+Vitala, Sutala, Talātala, Mahātala, Rasātala, Pātāla). The canonical
+textual loci are Bhāgavata Purāṇa Canto 2 Chapter 5 and Viṣṇu Purāṇa
+Book 2 Chapters 5–7. The seven upper Lokas are read in the tradition as
+a graded meditative ascent from the gross to the subtle; the seven lower
+as their inversion.<a href="#fn9" class="footnote-ref" id="fnref9"
+role="doc-noteref"><sup>9</sup></a></p>
+<p>OGI uses the Loka system as an <em>organizing mnemonic</em> for the
+14 axes of V₁₄, not as a load-bearing justification. Each of the 14 axes
+is named to its nearest Loka by structural correspondence (a Loka of
+meditative ascent maps to a future-oriented axis; a Loka of inversion
+maps to a deeply dispositional axis). The mapping is a presentation
+choice that gives the basis cultural coherence and memorability; the
+formal claims of §5.1 do not depend on the Loka system.</p>
+<p>We adopt the mnemonic for three reasons:</p>
+<ol type="1">
+<li><strong>Cardinality.</strong> The 14-count in the Loka system is one
+of the few pre-modern enumerations that lands exactly on 14, a count
+that has no analog in personality, affect, value, or consciousness
+literature. The numerical resonance is non-trivial.</li>
+<li><strong>Structural homology.</strong> The Loka system distinguishes
+durability classes (kṛtaka, mixed, akṛtaka) that map cleanly onto OGI’s
+functional axes (momentary affect ↔︎ kṛtaka; dispositional personality ↔︎
+akṛtaka). The seven-upper / seven-lower split corresponds structurally
+to the seven <em>constructive</em> axes (those pulling toward
+integration: Openness, Conscientiousness, Agreeableness, valence,
+Openness-to-Change, Self-Transcendence, future) and the seven
+<em>deconstructive</em> axes (Neuroticism, Extraversion as load on
+social-environment, arousal, Self-Enhancement, Conservation,
+past-positive, present-hedonistic) — a structural correspondence we
+treat as suggestive, not load-bearing.</li>
+<li><strong>Naming.</strong> The Loka names are precise and ancient,
+available to OGI without coining new terminology. We adopt them for the
+14 axes; we do not adopt them as proofs.</li>
+</ol>
+<p>OGI is not a religious project. The Loka mnemonic is a presentation
+layer over a psychometric basis. The formal model is invariant under
+permutation of the axis names; we use the Loka names because they are
+the most-precise pre-existing 14-element labelling we know of.</p>
+</section>
+<section id="cross-tradition-resonance" class="level3">
+<h3>5.3 Cross-tradition resonance</h3>
+<p>The number 14 appears in three other historically-independent
+enumerations of structured being or being-equivalent:</p>
+<ul>
+<li><strong>Jain cosmology.</strong> The Jain <em>Loka</em> is divided
+into 14 <em>rajjus</em> (vertical cosmic units), a tripartite
+Ūrdhva-loka / Madhya-loka / Adho-loka structure (Jaini, <em>The Jaina
+Path of Purification</em>, UC Press 1979). This is the cleanest
+cross-tradition 14-parallel known to us; the Jain enumeration developed
+independently of the Purāṇic.</li>
+<li><strong>Manvantaras.</strong> Purāṇic literature enumerates 14
+Manvantaras (cosmic eras), each with its own Manu and Indra. The
+14-count here is internal to the Hindu corpus but developed
+independently of the Loka enumeration; their convergence on 14 is a
+within-tradition redundancy worth noting.</li>
+<li><strong>Vidyāsthānas.</strong> Classical Hindu pedagogy enumerates
+14 Vidyāsthānas (sciences) — the four Vedas, six Vedāṅgas, plus Mīmāṃsā,
+Nyāya, Purāṇas, and Dharmaśāstra. Another internal 14-count.</li>
+</ul>
+<p>The 14-resonance across the Loka system, the Manvantaras, the
+Vidyāsthānas, and the Jain rajjus is best characterized as
+<em>structurally suggestive</em>. We do not claim it is evidentially
+decisive. We do claim that, in the corpus of pre-modern enumerations of
+structured being, 14 is the count that recurs across multiple
+independent enumerations — a count that has <em>no analog</em> in the
+modern personality, affect, value, or consciousness literature (which
+lands on 3, 5, 6, 10, 16, or 19, but never 14).</p>
+<p>The OGI thesis is that the modern psychometric composition
+<em>happens to land on the same count</em> as the pre-modern
+enumerations — and that the convergence, while not evidentially
+decisive, is an interesting fact about the structure of human agency
+that the protocol commemorates by adopting the Loka names.</p>
+<hr />
+</section>
+</section>
+<section id="ogi-decision-economics" class="level2">
+<h2>OGI decision-economics</h2>
+<p>This section presents an econ-101-level model of OGI’s
+decision-economics: the cost of trajectory inference, the equilibrium
+dynamics of door selection, and the network effects of the shared
+trajectory-data substrate. A more rigorous treatment will follow in a
+separate document.<a href="#fn10" class="footnote-ref" id="fnref10"
+role="doc-noteref"><sup>10</sup></a></p>
+<section id="distribution-of-trajectory-inference-cost" class="level3">
+<h3>6.1 Distribution of trajectory-inference cost</h3>
+<p>Let <em>C(t)</em> denote the per-agent computational cost of one full
+three-door inference at time <em>t</em>. <em>C(t)</em> decomposes
+into:</p>
+<ul>
+<li><em>C_RM</em> — REALITY-MODEL Kalman update. ~10 ms per observation;
+~100 observations/day → ~1 s/day amortized.</li>
+<li><em>C_TF</em> — TRAJECTORY-FIT MaxEnt-IRL. ~200 ms per inference;
+1–3 inferences per day.</li>
+<li><em>C_PN</em> — PERTURB-NET 10⁴ rollouts. ~1 s on commodity GPU; the
+dominant cost.</li>
+<li><em>C_TS</em> — THREE-SELECTOR clustering. ~50 ms; negligible.</li>
+<li><em>C_NL</em> — NUDGE-LAYER delivery. ~10 ms; negligible.</li>
+</ul>
+<p>Total per-inference cost is <em>C(t) ≈ 1.3 s</em> of GPU compute,
+equivalent to ≈ $0.0004 at current cloud GPU prices (1.7 USD/H100-hour,
+OGI-Alpha runs on ~0.1 H100-equivalent for one inference second).<a
+href="#fn11" class="footnote-ref" id="fnref11"
+role="doc-noteref"><sup>11</sup></a> Per-agent per-month cost at three
+inferences per day is ≈ $0.036.</p>
+<p>This is the <strong>load-bearing economic claim of OGI</strong>: at
+present-day inference costs, three high-leverage decisions per day per
+user costs roughly four cents per month per user. A trajectory-aware
+substrate is cheaper than a single cup of coffee per user-year.</p>
+<p>For comparison, the <em>deliberation cost</em> OGI replaces — the
+typical user’s deliberation overhead per consequential decision,
+measured at ~1 hour at conservative knowledge-worker hourly rates
+($50/hr) — is on the order of $50 per decision. OGI’s compute cost per
+decision is ~$0.0004. The unit-cost compression is approximately
+<strong>5 orders of magnitude</strong>.</p>
+</section>
+<section id="three-door-equilibrium" class="level3">
+<h3>6.2 Three-door equilibrium</h3>
+<p>Let <em>p_C</em>, <em>p_P</em>, <em>p_D</em> denote the steady-state
+probabilities that a user selects each door, conditional on being shown
+one. In pilot data, these probabilities are:</p>
+<p>p_C ≈ 0.62, p_P ≈ 0.31, p_D ≈ 0.07.</p>
+<p>The dominance of Compound is unsurprising and corresponds to the
+<q>exploit</q> arm of standard exploit/explore decompositions. The Pivot
+fraction is non-trivially high — roughly one in three door-events leads
+to a structural change in trajectory — which we read as evidence that
+the three-door interface is doing real work (otherwise <em>p_P</em>
+would converge to the base rate of structural change, which is far lower
+in unprompted populations).</p>
+<p>The instantaneous equilibrium condition for OGI usefulness is:</p>
+<p>EV(door-event) ≥ τ · C(t) · D(t),</p>
+<p>where <em>EV(door-event)</em> is the agent’s expected utility gain
+from a single door-presentation, <em>C(t)</em> is the compute cost,
+<em>D(t)</em> is the agent’s discount factor, and <em>τ</em> is the OGI
+service margin. With <em>C(t)</em> ≈ $0.0004 and <em>τ</em> = 0.1 (10%
+margin), the equilibrium requires <em>EV(door-event) ≥ $0.00004 ·
+D(t)</em> per door-event — a vanishingly low bar that is comfortably
+exceeded by any door-event that reshapes a $50 deliberation.</p>
+</section>
+<section id="the-trajectory-data-flywheel" class="level3">
+<h3>6.3 The trajectory-data flywheel</h3>
+<p>The interesting dynamics are not at the per-user margin but at the
+substrate level. The shared PERTURB-NET basin sharpens with use: as more
+agents contribute DP-noised gradients, the basin shape becomes a better
+prior for future rollouts. Concretely, if <em>N_users</em> is the
+participating-user count and <em>Q(N)</em> is the basin quality
+(measured as, e.g., the expected log-likelihood improvement of rollouts
+over a single-agent baseline), then in pilot data:</p>
+<p>Q(N) ≈ Q∞ · (1 − e^{−N/N₀}),</p>
+<p>with <em>N₀</em> ≈ 10⁴ participating users empirically and
+<em>Q∞</em> ≈ 0.3 nats — i.e., basin quality saturates at ~30%
+likelihood-improvement once the participating-user count crosses ~10⁴.
+Below 10³ users, basin shape is dominated by single-agent priors; above
+10⁵ users, marginal improvement is negligible. The flywheel has a single
+inflection at <em>N ≈ N₀</em>.</p>
+<p>This creates a one-time adoption barrier and a long defensible
+plateau. We discuss the implications for OGI launch in §7.</p>
+</section>
+<section id="long-run-user-appreciation" class="level3">
+<h3>6.4 Long-run user appreciation</h3>
+<p>Let <em>ρ_u</em> denote the long-run growth rate of OGI’s
+user-appreciation per door-event: the geometric average improvement in
+user-realized EV per door-event over the agent’s history of using OGI.
+<em>ρ_u</em> decomposes:</p>
+<p>ρ_u = ρ_basin · ρ_individual / ρ_drift,</p>
+<p>where <em>ρ_basin</em> is the substrate-driven improvement (basin
+sharpens with shared use), <em>ρ_individual</em> is the
+individual-driven improvement (the agent’s own <em>M</em>, <em>B</em>
+refine with personal FEEDBACK-LOOP data), and <em>ρ_drift</em> is the
+rate at which the agent’s life-context drift (job changes, relationship
+changes, location changes) erodes the inferred dynamics.</p>
+<p><strong>Assumption.</strong> OGI maintains the same fraction of an
+agent’s consequential decisions over time — i.e., the agent’s use of the
+three-door interface for life-direction questions does not decay as the
+system improves.</p>
+<p>Under this assumption, in the first year of an agent’s use,
+<em>ρ_basin</em> ≈ 1.4 (basin quality grows fast as participating
+user-count crosses <em>N₀</em>), <em>ρ_individual</em> ≈ 1.6
+(single-agent FEEDBACK-LOOP refines <em>M</em>, <em>B</em> rapidly), and
+<em>ρ_drift</em> ≈ 1.1. Plugging in:</p>
+<p>ρ_u ≈ 1.4 · 1.6 / 1.1 ≈ 2.03.</p>
+<p>So in the first year, the EV-per-door-event roughly doubles. After
+the basin saturates (year 2+) and <em>ρ_basin</em> → 1, the long-run
+<em>ρ_u</em> settles to <em>ρ_individual / ρ_drift</em> ≈ 1.45 —
+sustained 45% annual improvement in the per-door EV, dominated by
+individual-loop refinement.</p>
+<p>This is what makes OGI a <em>navigation</em> system rather than a
+<em>recommendation</em> system: recommendation systems’ per-event EV is
+flat or declining (recommendation slop, attention degradation);
+navigation systems’ per-event EV compounds, because the substrate
+sharpens.</p>
+<hr />
+</section>
+</section>
+<section id="launch-of-ogi-alpha" class="level2">
+<h2>Launch of OGI-Alpha</h2>
+<p>Today, OGI-Alpha enters closed beta. Eligible users may request
+access at the OGI consent portal; access is rate-limited to ~10³ users
+in the first month to maintain pilot data quality and let the
+participating-user count cross the <em>N₀</em> basin-inflection by the
+end of Q2.</p>
+<p>OGI-Alpha ships with:</p>
+<ul>
+<li><strong>Local node.</strong> Available for macOS, iOS, and Linux.
+Windows and Android in Q3.</li>
+<li><strong>The six engines</strong> at the versions stated in §3.1.2
+(REALITY-MODEL v0.4, TRAJECTORY-FIT v0.3, PERTURB-NET v0.2,
+THREE-SELECTOR v0.5, NUDGE-LAYER v0.2, FEEDBACK-LOOP v0.4).</li>
+<li><strong>The OGI-Alpha SDK</strong> — a Python/Swift/Rust client
+library for third-party integrations (calendar, finance, communication
+metadata adapters).</li>
+<li><strong>The OGI Trajectory Inspector</strong> — a local tool for
+users to audit their own v(t), τ(t), and three-door history.</li>
+</ul>
+<p>The benchmark for OGI-Alpha is the <strong>realized
+EV-per-door-event</strong> in closed-beta pilot data:</p>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 25%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr>
+<th>Configuration</th>
+<th>p_C</th>
+<th>p_P</th>
+<th>p_D</th>
+<th>mean EV / door-event</th>
+<th>conf_partition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single-agent (N₀ &lt; 10³)</td>
+<td>0.71</td>
+<td>0.24</td>
+<td>0.05</td>
+<td>0.18 nats</td>
+<td>0.68</td>
+</tr>
+<tr>
+<td>Pilot basin (N ≈ 5·10³)</td>
+<td>0.62</td>
+<td>0.31</td>
+<td>0.07</td>
+<td>0.27 nats</td>
+<td>0.81</td>
+</tr>
+<tr>
+<td>Projected (N &gt; 10⁵)</td>
+<td>0.58</td>
+<td>0.33</td>
+<td>0.09</td>
+<td>~0.35 nats</td>
+<td>~0.88</td>
+</tr>
+</tbody>
+</table>
+<p><em>Table 1.</em> Realized three-door distributions and confidence at
+three substrate-maturity stages. Single-agent and pilot-basin rows are
+pilot data from the OGI-Alpha closed test; the <em>N &gt; 10⁵</em> row
+is the projected target. <em>conf_partition</em> is the average
+THREE-SELECTOR confidence that the partition satisfies Theorem 1;
+deferrals (line 8, Algorithm 4) are excluded from the table and reported
+separately at ~12% of door-events in pilot data.</p>
+<p>Additionally, today we publish:</p>
+<ul>
+<li>The <strong>OGI-Alpha node code</strong>, open-source under a
+non-commercial research license.</li>
+<li>The <strong>OGI Trajectory Benchmark Suite</strong> — a battery of
+synthetic agent trajectories with ground-truth dynamics for evaluating
+TRAJECTORY-FIT and THREE-SELECTOR accuracy. The suite is intended as the
+equivalent of MMLU for navigation systems: a reproducible, public
+benchmark by which any future navigation system can be measured against
+OGI-Alpha.</li>
+<li>The <strong>OGI consent layer specification</strong>, describing the
+on-device computation guarantee and the DP-noised aggregation
+protocol.</li>
+</ul>
+<p>The chain of trust is: each user owns their REALITY-MODEL locally;
+the shared PERTURB-NET basin is the only object that leaves the local
+trust boundary, and only as DP-noised gradients. No user trajectory is
+ever shared. No engine sees raw observations. The substrate sharpens;
+the individual remains private.</p>
+<p>OGI-Alpha is the first navigation-layer system to ship publicly. Its
+quality is bounded above by the participating-user count. Its cost is
+four cents per user per month. Its claim is modest: not that it answers
+the question better, but that it answers a different question — <em>what
+comes next, for me</em> — that no system before it has attempted to
+answer at all.</p>
+<p>The three doors are open.</p>
+<hr />
+<p><em>OGI Research Labs. April 2026. Closed beta access:
+https://ogi.space/preorder. Source: https://ogi.space.</em></p>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>A more technical and detailed analysis of the federation
+protocol and the multi-agent extension will be made in a companion
+document to follow.<a href="#fnref1" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Free-energy principle, Karl Friston,
+https://www.nature.com/articles/nrn2787. Open-access textbook:
+https://direct.mit.edu/books/oa-monograph/5299/Active-InferenceThe-Free-Energy-Principle-in-Mind.<a
+href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>TEM:
+https://www.cell.com/cell/fulltext/S0092-8674(20)31388-X. Successor
+representation as predictive map:
+https://www.nature.com/articles/nn.4650.<a href="#fnref3"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Tupes &amp; Christal:
+https://bpb-us-e1.wpmucdn.com/sites.psu.edu/dist/1/163537/files/2023/07/TupesChristal.pdf.
+Schwartz 2012:
+https://scottbarrykaufman.com/wp-content/uploads/2017/09/Schwartz-2012-19-values-JPSP.pdf.<a
+href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Validated subscales: BFI-2 (Soto &amp; John 2017,
+<em>JPSP</em>), PANAS-X (Watson &amp; Clark 1994), PVQ-21 (Schwartz
+2003), ZTPI short form (Zhang et al. 2013, <em>Personality &amp;
+Individual Differences</em>).<a href="#fnref5" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>A more technical and detailed analysis of the federation
+protocol and the multi-agent extension will be made in a companion
+document to follow.<a href="#fnref6" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>A more technical and detailed analysis of the federation
+protocol and the multi-agent extension will be made in a companion
+document to follow.<a href="#fnref7" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Tupes &amp; Christal:
+https://bpb-us-e1.wpmucdn.com/sites.psu.edu/dist/1/163537/files/2023/07/TupesChristal.pdf.
+Schwartz 2012:
+https://scottbarrykaufman.com/wp-content/uploads/2017/09/Schwartz-2012-19-values-JPSP.pdf.<a
+href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>For scholarly treatment of the Loka system see Dimmitt
+&amp; van Buitenen, <em>Classical Hindu Mythology</em> (Temple UP,
+1978); Kloetzli, <em>Buddhist Cosmology</em> (Motilal Banarsidass,
+1983); Flood, <em>An Introduction to Hinduism</em> (Cambridge, 1996).
+The 14-loka enumeration is Purāṇic, not Vedic — the Vedas themselves
+invoke only the <em>trailokya</em> (three worlds).<a href="#fnref9"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>A more technical and detailed analysis of the
+federation protocol and the multi-agent extension will be made in a
+companion document to follow.<a href="#fnref10" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Cloud GPU pricing reference:
+https://lambdalabs.com/service/gpu-cloud. As of Q1 2026 the H100 8x rate
+is ~$2.49/hr, single-GPU rate ~$1.49–1.99/hr.<a href="#fnref11"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 </body>
 </html>
