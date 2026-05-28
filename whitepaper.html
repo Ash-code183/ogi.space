@@ -1,1578 +1,1215 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="author" content="OGI Research Labs" />
-  <title>OGI: A Navigation Layer for the Simulation</title>
-  <style>
-    /* Default styles provided by pandoc.
-    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-    */
-    html {
-      color: #1a1a1a;
-      background-color: #fdfdfd;
-    }
-    body {
-      margin: 0 auto;
-      max-width: 36em;
-      padding-left: 50px;
-      padding-right: 50px;
-      padding-top: 50px;
-      padding-bottom: 50px;
-      hyphens: auto;
-      overflow-wrap: break-word;
-      text-rendering: optimizeLegibility;
-      font-kerning: normal;
-    }
-    @media (max-width: 600px) {
-      body {
-        font-size: 0.9em;
-        padding: 12px;
-      }
-      h1 {
-        font-size: 1.8em;
-      }
-    }
-    @media print {
-      html {
-        background-color: white;
-      }
-      body {
-        background-color: transparent;
-        color: black;
-        font-size: 12pt;
-      }
-      p, h2, h3 {
-        orphans: 3;
-        widows: 3;
-      }
-      h2, h3, h4 {
-        page-break-after: avoid;
-      }
-    }
-    p {
-      margin: 1em 0;
-    }
-    a {
-      color: #1a1a1a;
-    }
-    a:visited {
-      color: #1a1a1a;
-    }
-    img {
-      max-width: 100%;
-    }
-    svg {
-      height: auto;
-      max-width: 100%;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.4em;
-    }
-    h5, h6 {
-      font-size: 1em;
-      font-style: italic;
-    }
-    h6 {
-      font-weight: normal;
-    }
-    ol, ul {
-      padding-left: 1.7em;
-      margin-top: 1em;
-    }
-    li > ol, li > ul {
-      margin-top: 0;
-    }
-    blockquote {
-      margin: 1em 0 1em 1.7em;
-      padding-left: 1em;
-      border-left: 2px solid #e6e6e6;
-      color: #606060;
-    }
-    code {
-      white-space: pre-wrap;
-      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-      font-size: 85%;
-      margin: 0;
-      hyphens: manual;
-    }
-    pre {
-      margin: 1em 0;
-      overflow: auto;
-    }
-    pre code {
-      padding: 0;
-      overflow: visible;
-      overflow-wrap: normal;
-    }
-    .sourceCode {
-     background-color: transparent;
-     overflow: visible;
-    }
-    hr {
-      border: none;
-      border-top: 1px solid #1a1a1a;
-      height: 1px;
-      margin: 1em 0;
-    }
-    table {
-      margin: 1em 0;
-      border-collapse: collapse;
-      width: 100%;
-      overflow-x: auto;
-      display: block;
-      font-variant-numeric: lining-nums tabular-nums;
-    }
-    table caption {
-      margin-bottom: 0.75em;
-    }
-    tbody {
-      margin-top: 0.5em;
-      border-top: 1px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
-    }
-    th {
-      border-top: 1px solid #1a1a1a;
-      padding: 0.25em 0.5em 0.25em 0.5em;
-    }
-    td {
-      padding: 0.125em 0.5em 0.25em 0.5em;
-    }
-    header {
-      margin-bottom: 4em;
-      text-align: center;
-    }
-    #TOC li {
-      list-style: none;
-    }
-    #TOC ul {
-      padding-left: 1.3em;
-    }
-    #TOC > ul {
-      padding-left: 0;
-    }
-    #TOC a:not(:hover) {
-      text-decoration: none;
-    }
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    /* The extra [class] is a hack that increases specificity enough to
-       override a similar rule in reveal.js */
-    ul.task-list[class]{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      font-size: inherit;
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
-    q { quotes: "“" "”" "‘" "’"; }
-    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
-  </style>
-    <style>
-      /* ── Reset & Base ── */
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Navigating the Simulation — A Framework for Orthogonal General Intelligence</title>
 
-      body {
-        font-family: 'Georgia', 'Times New Roman', Times, serif;
-        font-size: 11pt;
-        line-height: 1.6;
-        color: #1a1a1a;
-        background: #fff;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2.5em 2em;
-        counter-reset: section footnotes;
-      }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=DM+Sans:opsz,wght@9..40,300..700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-      /* ── Typography ── */
-      h1, h2, h3, h4, h5, h6 {
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        font-weight: 600;
-        color: #111;
-        margin-top: 1.8em;
-        margin-bottom: 0.5em;
-        line-height: 1.3;
-      }
-      h1 { font-size: 2em; margin-top: 0.3em; border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
-      h2 { font-size: 1.5em; border-bottom: 1px solid #bdc3c7; padding-bottom: 0.2em; }
-      h3 { font-size: 1.2em; }
-      h4 { font-size: 1.1em; font-style: italic; }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
 
-      p { margin-bottom: 0.8em; text-align: justify; }
+<style>
+:root {
+  --bg: #0a0a0b;
+  --bg-soft: #131314;
+  --ink: #ece8da;
+  --ink-soft: #b8b3a3;
+  --ink-mute: #6e6a5e;
+  --rule: rgba(236, 232, 218, 0.12);
+  --rule-strong: rgba(236, 232, 218, 0.25);
+  --lime: #d4ff3d;
+  --lime-soft: rgba(212, 255, 61, 0.15);
+  --terra: #ff6b47;
+  --terra-soft: rgba(255, 107, 71, 0.12);
+  --pos: #d4ff3d;
+  --neg: #ff6b47;
+  --neu: #6e6a5e;
+}
 
-      /* ── Links ── */
-      a { color: #2980b9; text-decoration: none; }
-      a:hover { text-decoration: underline; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-      /* Heading anchors */
-      h1, h2, h3, h4, h5, h6 { scroll-margin-top: 1em; }
-      h2:target, h3:target, h4:target { background: #fff8d6; padding-left: 0.3em; transition: background 1.2s ease; }
+html { scroll-behavior: smooth; }
 
-      /* ── Code ── */
-      code {
-        font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
-        font-size: 0.85em;
-        background: #f4f4f4;
-        padding: 0.15em 0.3em;
-        border-radius: 3px;
-      }
-      pre {
-        background: #f8f9fa;
-        border: 1px solid #e9ecef;
-        border-radius: 4px;
-        padding: 1em;
-        overflow-x: auto;
-        font-size: 0.85em;
-        line-height: 1.45;
-        margin: 1em 0;
-      }
-      pre code { background: none; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  font-feature-settings: "ss01", "ss02", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-image:
+    radial-gradient(1200px 600px at 90% -10%, rgba(212, 255, 61, 0.04), transparent 60%),
+    radial-gradient(800px 500px at -10% 110%, rgba(255, 107, 71, 0.04), transparent 60%);
+  background-attachment: fixed;
+}
 
-      /* ── Blockquotes ── */
-      blockquote {
-        border-left: 3px solid #2c3e50;
-        padding: 0.5em 1em;
-        margin: 1em 0;
-        background: #f9f9f9;
-        font-style: italic;
-        color: #555;
-      }
-      blockquote p { margin-bottom: 0.3em; }
+/* subtle grain */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  z-index: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
 
-      /* ── Lists ── */
-      ul, ol { margin: 0.5em 0 0.5em 1.8em; }
-      li { margin-bottom: 0.3em; }
+.page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 80px 28px 160px;
+  position: relative;
+  z-index: 1;
+}
 
-      /* ── Tables ── */
-      table {
-        border-collapse: collapse;
-        width: 100%;
-        margin: 1.2em 0;
-        font-size: 0.9em;
-      }
-      th, td {
-        border: 1px solid #ddd;
-        padding: 0.5em 0.7em;
-        text-align: left;
-      }
-      th {
-        background: #2c3e50;
-        color: #fff;
-        font-weight: 600;
-      }
-      tr:nth-child(even) { background: #f8f9fa; }
+/* ── HEADER ─────────────────────────────────── */
+header.hero {
+  border-top: 1px solid var(--rule-strong);
+  border-bottom: 1px solid var(--rule-strong);
+  padding: 40px 0 56px;
+  margin-bottom: 56px;
+}
 
-      /* ── Footnotes ── */
-      .footnotes {
-        border-top: 1px solid #ddd;
-        margin-top: 2em;
-        padding-top: 1em;
-        font-size: 0.85em;
-        color: #666;
-      }
-      .footnotes ol { padding-left: 1.2em; }
-      .footnotes li { margin-bottom: 0.3em; }
-      a.footnote-ref, a.footnote-back { color: #2980b9; text-decoration: none; }
-      a.footnote-ref { font-size: 0.85em; vertical-align: super; }
+.meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 28px;
+}
 
-      /* ── Math (fallback) ── */
-      .math { font-style: italic; }
+.meta .tag {
+  color: var(--lime);
+}
 
-      /* ── Title block ── */
-      .title-block {
-        text-align: center;
-        margin-bottom: 2.5em;
-        padding-bottom: 1.5em;
-        border-bottom: 1px solid #ddd;
-      }
-      .title-block h1.title {
-        font-size: 2.2em;
-        border: none;
-        margin-top: 0;
-      }
-      .title-block .subtitle {
-        font-size: 1.15em;
-        color: #555;
-        margin-top: 0.5em;
-      }
-      .title-block .author {
-        font-size: 1em;
-        color: #777;
-        margin-top: 1em;
-      }
-      .title-block .date {
-        font-size: 0.9em;
-        color: #999;
-      }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--terra);
+  margin-bottom: 24px;
+}
 
-      /* ── Section numbering ── */
-      h2::before {
-        counter-increment: section;
-        content: counter(section) ". ";
-      }
-      section#abstract h2::before { content: none; counter-increment: none; }
+h1.title {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: clamp(40px, 7vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
+}
 
-      /* ── TOC ── */
-      nav#TOC {
-        background: #f8f9fa;
-        border: 1px solid #e9ecef;
-        border-radius: 4px;
-        padding: 1.2em 1.5em;
-        margin: 1em 0 2em 0;
-      }
-      nav#TOC h2 { font-size: 1em; border: none; margin: 0 0 0.6em 0; padding: 0; }
-      nav#TOC h2::before { content: none; }
-      nav#TOC ul { list-style: none; padding-left: 0; margin: 0; }
-      nav#TOC ul ul { padding-left: 1.5em; }
-      nav#TOC li { margin-bottom: 0.2em; }
-      nav#TOC a { color: #2c3e50; }
+h1.title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--lime);
+  font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+}
 
-      /* ── Abstract box ── */
-      .abstract {
-        background: #f0f3f5;
-        border-left: 4px solid #2c3e50;
-        padding: 1.2em 1.5em;
-        margin: 1.5em 0;
-        font-size: 0.95em;
-      }
-      .abstract strong { color: #2c3e50; }
+.subtitle {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+  max-width: 600px;
+  margin-bottom: 36px;
+}
 
-      /* ── Theorem box ── */
-      .theorem {
-        background: #fdfaf3;
-        border-left: 4px solid #d4a017;
-        padding: 1em 1.3em;
-        margin: 1.2em 0;
-      }
+.byline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--ink-mute);
+  letter-spacing: 0.05em;
+}
 
-      /* ── Print ── */
-      @media print {
-        body {
-          font-size: 10pt;
-          padding: 0;
-          max-width: none;
-        }
-        nav#TOC { page-break-after: always; }
-        h1, h2, h3 { page-break-after: avoid; }
-        table { page-break-inside: avoid; }
-        pre { page-break-inside: avoid; }
-        @page { margin: 1in; }
-      }
-    </style>
-    <style>
-      .ogi-back {
-        position: fixed; top: 16px; left: 16px; z-index: 9999;
-        display: inline-flex; align-items: center; gap: 8px;
-        padding: 10px 16px;
-        background: #07080C; color: #EFE7D5;
-        border: 1px solid rgba(239,231,213,0.18);
-        font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, monospace;
-        font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
-        text-decoration: none;
-        border-radius: 999px;
-        backdrop-filter: blur(8px);
-        transition: border-color .25s ease, color .25s ease;
-      }
-      .ogi-back:hover { border-color: #FF6F47; color: #FF6F47; }
-      .ogi-back .dot { width: 6px; height: 6px; border-radius: 50%; background: #FF6F47; box-shadow: 0 0 8px #FF6F47; }
-      @media print { .ogi-back { display: none; } }
-    </style>
+.byline span { color: var(--ink); }
+
+/* ── ABSTRACT ──────────────────────────────── */
+.abstract {
+  border-left: 2px solid var(--lime);
+  padding: 4px 0 4px 20px;
+  margin: 56px 0;
+  font-family: 'Fraunces', serif;
+  font-weight: 350;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+.abstract::before {
+  content: "Abstract";
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+/* ── TOC ───────────────────────────────────── */
+.toc {
+  margin: 56px 0;
+  padding: 28px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.toc-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 20px;
+}
+
+.toc ol {
+  list-style: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+}
+
+.toc li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dotted var(--rule);
+}
+
+.toc li:last-child { border-bottom: none; }
+
+.toc a {
+  color: var(--ink);
+  text-decoration: none;
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+}
+
+.toc a:hover { color: var(--lime); }
+
+.toc .num {
+  color: var(--ink-mute);
+  width: 28px;
+}
+
+/* ── HEADINGS ──────────────────────────────── */
+h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 32px;
+  letter-spacing: -0.015em;
+  margin: 80px 0 24px;
+  font-variation-settings: "opsz" 60, "SOFT" 30;
+}
+
+h2 .section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--lime);
+  letter-spacing: 0.15em;
+  margin-right: 18px;
+  vertical-align: middle;
+  position: relative;
+  top: -4px;
+}
+
+h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: 22px;
+  margin: 40px 0 14px;
+  color: var(--ink);
+  font-variation-settings: "opsz" 30, "SOFT" 50;
+}
+
+/* ── BODY TEXT ─────────────────────────────── */
+p {
+  margin-bottom: 18px;
+  color: var(--ink-soft);
+}
+
+p strong { color: var(--ink); font-weight: 500; }
+p em { color: var(--ink); font-style: italic; }
+
+.lead {
+  font-size: 18px;
+  color: var(--ink);
+  font-family: 'Fraunces', serif;
+  font-weight: 350;
+  line-height: 1.55;
+}
+
+a.inline-link {
+  color: var(--lime);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--lime-soft);
+}
+
+code, .mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+  color: var(--ink);
+}
+
+/* ── CALLOUTS ──────────────────────────────── */
+.postulate {
+  margin: 32px 0;
+  padding: 24px 28px;
+  background: rgba(212, 255, 61, 0.035);
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--lime);
+  position: relative;
+}
+
+.postulate-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.postulate p { color: var(--ink); }
+.postulate p:last-child { margin-bottom: 0; }
+
+.note {
+  border-left: 2px solid var(--terra);
+  background: var(--terra-soft);
+  padding: 18px 22px;
+  margin: 24px 0;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+}
+
+.note::before {
+  content: "Note";
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--terra);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+/* ── FIGURES ───────────────────────────────── */
+figure {
+  margin: 40px 0;
+  padding: 28px;
+  background: var(--bg-soft);
+  border: 1px solid var(--rule);
+}
+
+figure svg { width: 100%; height: auto; display: block; }
+
+figcaption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--ink-mute);
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+  line-height: 1.6;
+}
+
+figcaption .fig-num {
+  color: var(--lime);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  margin-right: 10px;
+}
+
+/* ── EQUATION DISPLAY ──────────────────────── */
+.equation {
+  margin: 28px 0;
+  padding: 24px;
+  text-align: center;
+  background: var(--bg-soft);
+  border: 1px solid var(--rule);
+  position: relative;
+  overflow-x: auto;
+}
+
+.equation .eq-num {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-mute);
+}
+
+/* ── REFS ──────────────────────────────────── */
+.refs {
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule-strong);
+}
+
+.refs ol {
+  list-style: none;
+  counter-reset: ref;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  font-family: 'Fraunces', serif;
+  font-weight: 350;
+}
+
+.refs li {
+  counter-increment: ref;
+  padding: 10px 0 10px 36px;
+  position: relative;
+  border-bottom: 1px dotted var(--rule);
+  line-height: 1.5;
+}
+
+.refs li::before {
+  content: "[" counter(ref) "]";
+  position: absolute;
+  left: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--lime);
+  top: 12px;
+}
+
+/* ── FOOTER ────────────────────────────────── */
+footer {
+  margin-top: 100px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule-strong);
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+footer .lime { color: var(--lime); }
+
+/* ── SVG STYLES ────────────────────────────── */
+svg text {
+  font-family: 'JetBrains Mono', monospace;
+  fill: var(--ink);
+}
+
+svg .node { fill: var(--bg); stroke: var(--lime); stroke-width: 1.5; }
+svg .node-label { fill: var(--ink); font-size: 13px; }
+svg .edge-pos { stroke: var(--pos); stroke-width: 1.5; fill: none; }
+svg .edge-neg { stroke: var(--neg); stroke-width: 1.5; fill: none; }
+svg .edge-neu { stroke: var(--neu); stroke-width: 1.2; fill: none; stroke-dasharray: 3 4; }
+svg .edge-label { font-size: 11px; }
+svg .axis { stroke: var(--rule-strong); stroke-width: 1; }
+svg .axis-label { fill: var(--ink-mute); font-size: 10px; letter-spacing: 0.1em; }
+svg .annot { fill: var(--ink-mute); font-size: 10px; }
+svg .accent { fill: var(--lime); }
+
+/* responsive */
+@media (max-width: 640px) {
+  .page { padding: 48px 20px 100px; }
+  h1.title { font-size: 38px; }
+  .subtitle { font-size: 18px; }
+  h2 { font-size: 26px; }
+  h3 { font-size: 19px; }
+  figure { padding: 18px; margin: 28px 0; }
+  .meta { flex-direction: column; gap: 6px; }
+}
+
+/* selection */
+::selection { background: var(--lime); color: var(--bg); }
+
+</style>
 </head>
 <body>
-<a class="ogi-back" href="index.html"><span class="dot"></span>← ogi.space</a>
-<header id="title-block-header">
-<h1 class="title">OGI: A Navigation Layer for the Simulation</h1>
-<p class="subtitle">Orthogonal General Intelligence — Protocol,
-Implementation, and Decision-Economics</p>
-<p class="author">OGI Research Labs</p>
-<p class="date">April 2026</p>
+
+<div class="page">
+
+<!-- ─────────────────────── HEADER ────────────────────── -->
+<header class="hero">
+  <div class="meta">
+    <span>Working Paper · v0.1</span>
+    <span class="tag">⟶ OGI / 001</span>
+  </div>
+
+  <div class="eyebrow">Toward an Orthogonal General Intelligence</div>
+
+  <h1 class="title">Navigating the<br><em>Simulation</em>.</h1>
+
+  <p class="subtitle">A framework for modeling agent dynamics, value entropy and trust topology in a simulated reality — and the case for an orthogonal navigation intelligence built on top of it.</p>
+
+  <div class="byline">
+    <div>Author &nbsp;·&nbsp; <span>Sid</span></div>
+    <div>Draft &nbsp;·&nbsp; <span id="date"></span></div>
+  </div>
+  <script>document.getElementById('date').textContent = new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});</script>
 </header>
-<nav id="TOC" role="doc-toc">
-<ul>
-<li><a href="#abstract" id="toc-abstract">Abstract</a></li>
-<li><a href="#introduction" id="toc-introduction">Introduction</a>
-<ul>
-<li><a href="#planned-upgrades" id="toc-planned-upgrades">1.1 Planned
-upgrades</a></li>
-</ul></li>
-<li><a href="#background-active-inference-and-cognitive-maps"
-id="toc-background-active-inference-and-cognitive-maps">Background:
-active inference and cognitive maps</a></li>
-<li><a href="#ogi-overview" id="toc-ogi-overview">OGI overview</a>
-<ul>
-<li><a href="#high-level-description"
-id="toc-high-level-description">3.1 High-level description</a></li>
-</ul></li>
-<li><a href="#ogi-implementation-details"
-id="toc-ogi-implementation-details">OGI implementation details</a>
-<ul>
-<li><a href="#mining-configuration-of-an-agent-state"
-id="toc-mining-configuration-of-an-agent-state">4.1 Mining configuration
-of an agent state</a></li>
-<li><a href="#reality-model-continuous-state-estimation"
-id="toc-reality-model-continuous-state-estimation">4.2 REALITY-MODEL:
-continuous state estimation</a></li>
-<li><a href="#trajectory-fit-inverse-planning"
-id="toc-trajectory-fit-inverse-planning">4.3 TRAJECTORY-FIT: inverse
-planning</a></li>
-<li><a href="#perturb-net-10⁴-parallel-rollouts"
-id="toc-perturb-net-10⁴-parallel-rollouts">4.4 PERTURB-NET: 10⁴ parallel
-rollouts</a></li>
-<li><a href="#three-selector-mode-finding-over-the-efe-landscape"
-id="toc-three-selector-mode-finding-over-the-efe-landscape">4.5
-THREE-SELECTOR: mode-finding over the EFE landscape</a></li>
-<li><a href="#nudge-layer-and-feedback-loop"
-id="toc-nudge-layer-and-feedback-loop">4.6 NUDGE-LAYER and
-FEEDBACK-LOOP</a></li>
-<li><a href="#supported-engine-versions"
-id="toc-supported-engine-versions">4.7 Supported engine
-versions</a></li>
-</ul></li>
-<li><a href="#the-14-dimensional-value-basis-1"
-id="toc-the-14-dimensional-value-basis-1">The 14-dimensional value
-basis</a>
-<ul>
-<li><a href="#compositional-derivation"
-id="toc-compositional-derivation">5.1 Compositional derivation</a></li>
-<li><a href="#the-loka-mnemonic" id="toc-the-loka-mnemonic">5.2 The Loka
-mnemonic</a></li>
-<li><a href="#cross-tradition-resonance"
-id="toc-cross-tradition-resonance">5.3 Cross-tradition
-resonance</a></li>
-</ul></li>
-<li><a href="#ogi-decision-economics"
-id="toc-ogi-decision-economics">OGI decision-economics</a>
-<ul>
-<li><a href="#distribution-of-trajectory-inference-cost"
-id="toc-distribution-of-trajectory-inference-cost">6.1 Distribution of
-trajectory-inference cost</a></li>
-<li><a href="#three-door-equilibrium"
-id="toc-three-door-equilibrium">6.2 Three-door equilibrium</a></li>
-<li><a href="#the-trajectory-data-flywheel"
-id="toc-the-trajectory-data-flywheel">6.3 The trajectory-data
-flywheel</a></li>
-<li><a href="#long-run-user-appreciation"
-id="toc-long-run-user-appreciation">6.4 Long-run user
-appreciation</a></li>
-</ul></li>
-<li><a href="#launch-of-ogi-alpha" id="toc-launch-of-ogi-alpha">Launch
-of OGI-Alpha</a></li>
-</ul>
+
+<!-- ─────────────────────── ABSTRACT ────────────────────── -->
+<div class="abstract">
+We proceed from the hypothesis that perceived reality is a simulation, and that within it the dominant medium of exchange is not money but <em>trust</em> between agents. We formalize a substrate of $N$ interacting agents over a signed directed graph of affinity, equip each agent with a state vector of needs, wants and skills, and state two postulates governing how value compounds and how imagination crosses into reality. From these we derive a manifestation probability $P^{\ast}$ that depends on how closely an agent population approaches the Nash equilibrium of its own desires. We argue that two latent variables — <em>power</em> and <em>awareness</em> — determine which agents can be aligned and at what cost, and we close by introducing <strong>Orthogonal General Intelligence (OGI)</strong>: a system whose function is not to outperform the simulation but to <em>navigate</em> it by prompt-engineering its agents toward shared, higher-probability realities.
+</div>
+
+<!-- ─────────────────────── TOC ────────────────────── -->
+<nav class="toc">
+  <div class="toc-label">Contents</div>
+  <ol>
+    <li><a href="#s1"><span class="num">01</span> Introduction · The simulation as a workable hypothesis</a></li>
+    <li><a href="#s2"><span class="num">02</span> The Agent Substrate · A signed affinity graph</a></li>
+    <li><a href="#s3"><span class="num">03</span> Agent State · Needs, Wants, Skills</a></li>
+    <li><a href="#s4"><span class="num">04</span> Two Postulates of Manifestation</a></li>
+    <li><a href="#s5"><span class="num">05</span> The Manifestation Equation</a></li>
+    <li><a href="#s6"><span class="num">06</span> Trust &amp; Power · The Hidden Topology</a></li>
+    <li><a href="#s7"><span class="num">07</span> Awareness · The Navigation Coordinate</a></li>
+    <li><a href="#s8"><span class="num">08</span> Orthogonal General Intelligence</a></li>
+    <li><a href="#s9"><span class="num">09</span> A Roadmap of Experiments</a></li>
+    <li><a href="#s10"><span class="num">10</span> References</a></li>
+  </ol>
 </nav>
-<section id="abstract" class="level2">
-<h2>Abstract</h2>
-<p>This document describes the design of OGI — <em>Orthogonal General
-Intelligence</em> — a navigation layer for human decision-making under
-irreducible uncertainty. Conventional artificial intelligence answers
-two questions: <em>what is true</em> (retrieval, reasoning) and <em>what
-maximizes reward</em> (optimization, reinforcement learning). OGI
-answers a third: <em>what comes next, for me</em>. The protocol reads an
-agent’s present trajectory from observable state, simulates 10⁴
-perturbed continuations of that trajectory, and surfaces exactly three
-qualitatively-distinct candidate next-moves — <em>Compound</em>,
-<em>Pivot</em>, <em>Defect</em> — derived as the dominant modes of an
-expected-free-energy landscape over reachable policies. Agent state is
-represented in a 14-dimensional value basis constructed by composition
-of established psychometric scales and aligned to the 14-loka cosmology
-of the Purāṇic tradition as an organizing mnemonic. We formalize OGI as
-a six-engine pipeline (REALITY-MODEL, TRAJECTORY-FIT, PERTURB-NET,
-THREE-SELECTOR, NUDGE-LAYER, FEEDBACK-LOOP), prove a partition theorem
-establishing K=3 as the minimal complete cover of reachable policy space
-under a trajectory-bend metric, derive the decision-economics of a
-shared trajectory-inference substrate, and document the closed-beta
-launch of the OGI-Alpha service. OGI is to navigation what large
-language models were to retrieval: not a better answer, but a different
-kind of answer.</p>
-<hr />
-</section>
-<section id="introduction" class="level2">
-<h2>Introduction</h2>
-<p>Modern artificial intelligence was built to answer two questions.</p>
-<p><em>What is true?</em> — handled by retrieval, reasoning, and large
-language models. Pre-training scales the corpus of <q>knowable</q>
-things; inference operates as look-up under uncertainty.</p>
-<p><em>What maximizes reward?</em> — handled by reinforcement learning,
-planning, and optimization. The agent is given an objective; the system
-finds the policy that maximizes its expected return.</p>
-<p>Neither answers the question a human actually faces at any moment of
-consequence. Not <q>is X true,</q> not <q>what maximizes Y,</q> but:
-<em>what comes next, for me — given who I am, where I am, and what is
-around me?</em> This is a navigation question, not a retrieval or
-optimization question. It has no ground truth, and no objective
-function. It has a <em>trajectory</em>, and a small number of
-high-leverage perturbations of that trajectory.</p>
-<blockquote>
-<p><em>Our central thesis is simple: an agent’s life is a trajectory
-through value-space; that trajectory is computable from observable
-state; and the highest-leverage perturbations of it — the moves that
-actually bend the orbit — number three.</em></p>
-</blockquote>
-<p>OGI is the navigation layer for that third question. Where
-conventional intelligence is an oracle (answers facts) or an optimizer
-(returns actions that maximize a stipulated objective), OGI is a
-<em>router</em>: given an agent’s current trajectory, it surfaces the
-three qualitatively-distinct moves that most reshape the agent’s
-reachable future. We call these three moves the <em>doors</em>:
-<strong>Compound</strong> (deepen the current trajectory),
-<strong>Pivot</strong> (cross to an adjacent trajectory at fixed cost),
-<strong>Defect</strong> (exit the reachable set entirely).</p>
-<p><strong>OGI is the GPS of the post-AGI era.</strong></p>
-<p><strong>Motivation.</strong> The dominant interaction paradigm with
-large models today is the <em>prompt</em>: a human asks, the model
-answers. This is a retrieval interface bolted onto a system that is
-increasingly agentic. As models gain reach into the user’s calendar,
-finances, relationships, and biology, the prompt interface becomes a
-bottleneck: the user must already know what to ask. A navigation layer
-inverts this. The system reads what the user is <em>doing</em>, infers
-what the user is <em>becoming</em>, and surfaces the three moves that
-most affect what the user could <em>become</em>. The user no longer has
-to ask the right question; they have to choose among three pre-routed
-continuations of their own trajectory.</p>
-<p><strong>New unit economics for individual decisions.</strong> Today,
-the cost of a high-quality decision — whether to take a job, end a
-relationship, change a city, start a project — is dominated by the cost
-of <em>information gathering</em> and <em>deliberation</em>. OGI
-re-prices this in four steps:</p>
-<ol type="1">
-<li>The REALITY-MODEL continuously ingests the agent’s observable state
-— calendar, finances, communication metadata, location — at negligible
-marginal cost.</li>
-<li>The TRAJECTORY-FIT engine infers the agent’s current path from
-history without explicit elicitation.</li>
-<li>The PERTURB-NET simulates 10⁴ parallel next-moves at the cost of one
-inference batch.</li>
-<li>The THREE-SELECTOR returns the three highest-leverage moves, ranked
-by trajectory bend and feasibility.</li>
-</ol>
-<p>The unit cost of a deliberate next-move thus collapses from <em>hours
-of deliberation</em> to <em>one inference pass</em>, and the quality of
-that move is bounded above by the agent’s own observable state — not by
-their patience with a prompt box.</p>
-<p><strong>Towards a marketplace of trajectories.</strong> When
-trajectory inference is cheap, trajectory data becomes the underlying
-asset. Agents who opt into shared trajectory-data pools benefit from
-collective PERTURB-NET basins: their own rollouts inherit shape from the
-rollouts of thousands of similar agents who have already walked nearby
-paths. We treat the dynamics of this shared substrate as a first-class
-object in §6.</p>
-<section id="planned-upgrades" class="level3">
-<h3>1.1 Planned upgrades</h3>
-<p>This document specifies OGI-Alpha — the first publicly-deployed
-version of the protocol. Alpha exposes the six engines as a closed
-system with restricted PERTURB-NET parameters and a curated NUDGE-LAYER
-channel. Two upgrades are planned and outside the scope of this
-whitepaper: (i) <em>open trajectory data</em> — a federated protocol
-allowing third-party agents to query the shared PERTURB-NET basin
-without revealing individual trajectories; (ii) <em>agent-to-agent
-navigation</em> — multi-agent extensions in which two OGI users at
-consequential trajectory intersections (negotiation, collaboration,
-departure) jointly select compatible doors. Both will be specified in a
-separate document.<a href="#fn1" class="footnote-ref" id="fnref1"
-role="doc-noteref"><sup>1</sup></a></p>
-<hr />
-</section>
-</section>
-<section id="background-active-inference-and-cognitive-maps"
-class="level2">
-<h2>Background: active inference and cognitive maps</h2>
-<p>OGI inherits two strands of formal scaffolding. We summarize them
-here so the rest of the document can be read without redirection.</p>
-<p><strong>Active inference.</strong> Karl Friston’s free-energy
-principle (Friston, 2010, <em>Nature Reviews Neuroscience</em>) and the
-active-inference formulation (Parr, Pezzulo &amp; Friston, <em>Active
-Inference: The Free Energy Principle in Mind, Brain, and Behavior</em>,
-MIT Press, 2022) posit that any self-organizing agent that resists
-dissipation acts so as to minimize the long-run <em>expected free
-energy</em> (EFE) of its policies under its own generative model.<a
-href="#fn2" class="footnote-ref" id="fnref2"
-role="doc-noteref"><sup>2</sup></a> In the canonical formulation, the
-agent maintains a generative model <em>P(o, s, π)</em> over observations
-<em>o</em>, latent states <em>s</em>, and policies <em>π</em>; it
-selects policies by sampling from a Boltzmann distribution proportional
-to <em>exp(−G(π))</em>, where <em>G(π)</em> is the expected free energy
-of policy <em>π</em> decomposed into a <em>pragmatic</em> term
-(extrinsic value) and an <em>epistemic</em> term (uncertainty
-resolution). Active inference unifies perception and action: perception
-updates the generative model to fit sensations; action changes
-sensations to fit the model.</p>
-<p>OGI is best understood as a <em>reader</em> of an active-inference
-substrate. We do not propose a new theory of agency; we propose a
-navigation interface that returns the dominant modes of the EFE
-landscape, partitioned into three qualitatively-distinct equivalence
-classes. Where standard active inference returns a softmax over a full
-policy space, OGI returns three named modes.</p>
-<p><strong>Cognitive maps.</strong> Tolman (1948, <em>Psychological
-Review</em>) introduced the cognitive map as a relational structure that
-supports flexible navigation. The neural realization of this idea —
-place and grid cells (O’Keefe &amp; Dostrovsky 1971; Hafting et
-al. 2005, <em>Nature</em>) — was extended to abstract, non-spatial
-domains by Behrens et al. (2018, <em>Neuron</em>, <q>What is a cognitive
-map?</q>) and operationalized by the Tolman–Eichenbaum Machine
-(Whittington et al. 2020, <em>Cell</em>), which generates place- and
-grid-like codes from a general-purpose generative model over relational
-structure.<a href="#fn3" class="footnote-ref" id="fnref3"
-role="doc-noteref"><sup>3</sup></a> The <em>successor
-representation</em> (Dayan 1993, <em>Neural Computation</em>;
-Stachenfeld, Botvinick &amp; Gershman 2017, <em>Nature
-Neuroscience</em>) supplies the computational primitive that OGI’s
-TRAJECTORY-FIT engine specializes: a representation that predicts which
-states follow from where the agent is, weighted by reachability.</p>
-<p>The picture we work from is: OGI’s substrate is an active-inference
-generative model; its representational primitive is a successor-style
-cognitive map over value-space; its output is the three dominant modes
-of the resulting EFE landscape over reachable policies. The contribution
-is the <em>interface</em> — not the substrate.</p>
-<hr />
-</section>
-<section id="ogi-overview" class="level2">
-<h2>OGI overview</h2>
-<p>The OGI protocol has two objectives: (i) accurately estimate an
-agent’s position and velocity in a 14-dimensional value-space from
-observable state, and (ii) surface the three highest-leverage next-moves
-from that position, partitioned into the <em>Compound / Pivot /
-Defect</em> typology, with calibrated confidence.</p>
-<p><strong>Reality-fit.</strong> OGI assumes the agent’s instantaneous
-state lies on a 14-dimensional manifold V whose axes are constructed by
-composition of independently-validated psychometric scales (§5). State
-is <em>not</em> directly elicited — it is inferred from observed
-behavior. This avoids the well-known unreliability of self-reported
-state.</p>
-<p><strong>Path-from-history.</strong> Given a history <em>h</em>, OGI
-infers a trajectory <em>τ(h)</em> — a low-dimensional curve in V — using
-Bayesian inverse planning (Baker, Saxe &amp; Tenenbaum 2009,
-<em>Cognition</em>; Ziebart et al. 2008 MaxEnt IRL) constrained by the
-cognitive-map prior. The trajectory is what the agent is <em>currently
-doing</em>, not what they say they are doing.</p>
-<p><strong>Three doors.</strong> Given the inferred trajectory, OGI
-computes the three dominant modes of the EFE landscape over reachable
-policies, partitioned by trajectory-bend (§3.1.1, §4.5). The output is
-three named, qualitatively-distinct candidate moves — never two, never
-four.</p>
-<section id="high-level-description" class="level3">
-<h3>3.1 High-level description</h3>
-<p>OGI is realized as a six-engine pipeline (Figure 1). Each engine has
-a well-defined input/output contract; engines run continuously and
-asynchronously rather than in batch.</p>
-<pre><code>   observable state ──► [REALITY-MODEL] ──► v(t) ∈ V₁₄
-                                              │
-                                              ▼
-                          history ──► [TRAJECTORY-FIT] ──► τ(t)
-                                              │
-                                              ▼
-                              [PERTURB-NET] simulates 10⁴ Π ──► EFE landscape G
-                                              │
-                                              ▼
-                          [THREE-SELECTOR] picks top-3 modes ──► {Compound, Pivot, Defect}
-                                              │
-                                              ▼
-                         [NUDGE-LAYER] (timed delivery) ──► user
-                                              │
-                                              ▼
-                  outcomes ──► [FEEDBACK-LOOP] ──► updates REALITY-MODEL, PERTURB-NET</code></pre>
-<p><em>Figure 1.</em> The OGI pipeline. Closed loop; engines run
-continuously, not as a single batch.</p>
-<p>The pipeline has three closed-loop properties:</p>
-<ol type="1">
-<li><strong>State refreshes continuously.</strong> The REALITY-MODEL
-ingests new observations at second-to-hour cadence; v(t) is never stale
-beyond the latest observation window.</li>
-<li><strong>Three doors update at decision-relevant cadence, not request
-cadence.</strong> OGI does not wait for the user to ask. The NUDGE-LAYER
-chooses when to surface the doors based on inferred decision
-proximity.</li>
-<li><strong>The FEEDBACK-LOOP closes both inwards and outwards.</strong>
-Outcomes adjust the agent’s own generative model (inwards) and the
-shared PERTURB-NET prior (outwards), so the basin shape improves with
-use.</li>
-</ol>
-<section id="the-three-doors" class="level4">
-<h4>3.1.1 The three doors</h4>
-<p>Let π* denote the agent’s current policy (the policy whose rollout
-distribution best matches inferred trajectory τ). Let Π denote the set
-of policies reachable from the current state under a bounded
-perturbation budget <em>B</em>. We define the <em>trajectory-bend</em>
-metric between two policies as the Kullback–Leibler divergence between
-their induced rollout distributions:</p>
-<p>d(π, π′) = D_KL ( p_π(τ) ‖ p_π′(τ) ).</p>
-<p>Under this metric, the three doors are:</p>
-<ul>
-<li><strong>Compound</strong> — the policy in Π closest to π* in
-trajectory-bend. Compound <em>deepens</em> the current trajectory: it
-commits more aggressively to the mode the agent is already in.</li>
-<li><strong>Pivot</strong> — the policy in Π that is mode-distant from
-both Compound and Defect, lying in a different basin of the EFE
-landscape than π<em>, reachable within budget </em>B<em>. Pivot
-</em>crosses* to a structurally different trajectory at non-trivial
-cost.</li>
-<li><strong>Defect</strong> — the policy that exits the reachable set Π
-entirely, in the sense that it maximizes trajectory-bend while remaining
-feasible. Defect <em>leaves</em> the current game.</li>
-</ul>
-<p>The reasons for this choice are:</p>
-<ul>
-<li>The three doors form a <em>complete partition</em> of policy-space
-moves under any reasonable trajectory metric (Theorem 1 below). Fewer
-doors collapse the typology; more require arbitrary sub-typing of the
-<em>Pivot</em> category.</li>
-<li>The three doors correspond to the canonical decomposition of
-exploitation, exploration, and exit in sequential-decision theory
-(Sutton &amp; Barto 2018, Ch. 2; Bubeck &amp; Cesa-Bianchi 2012,
-<em>Foundations and Trends in Machine Learning</em>).</li>
-<li>The three doors fall within the cognitive-ergonomic envelope of
-Hick’s law: choice reaction time scales as ≈ log₂(K+1) (Hick 1952,
-<em>QJEP</em>; Proctor &amp; Schneider 2018, <em>QJEP</em>). K=3 yields
-≈ 2 bits — sufficient to express qualitative typology without inducing
-choice overload (Iyengar &amp; Lepper 2000, <em>JPSP</em>).</li>
-</ul>
-<p><strong>Theorem 1 (Three-Door Partition).</strong> Let Π be the set
-of policies reachable from state <em>s</em> under bounded perturbation
-budget <em>B</em>. Let <em>G : Π → ℝ</em> be the expected-free-energy
-functional. Assume (i) <em>G</em> is <em>L</em>-Lipschitz on Π under the
-trajectory-bend metric <em>d</em>; (ii) the level sets of <em>G</em> on
-Π are mode-connected (smooth-saddle assumption); (iii) the agent’s
-current policy π* lies in the interior of Π. Then there exists a
-partition {Π_C, Π_P, Π_D} of Π such that:</p>
-<ol type="a">
-<li><p><strong>Mode-connectedness.</strong> Each Π_k is path-connected
-under <em>d</em> in a sublevel set of <em>G</em>.</p></li>
-<li><p><strong>Inter-mode separation.</strong> For any π_k ∈ Π_k and π_j
-∈ Π_j with <em>k</em> ≠ <em>j</em>, <em>d(π_k, π_j) ≥ ε B</em> for some
-ε &gt; 0 determined by <em>L</em> and the saddle separation.</p></li>
-<li><p><strong>Completeness.</strong> Every π ∈ Π is closer (under
-<em>d</em>) to a Π_k representative than to any
-non-representative.</p></li>
-</ol>
-<p>The partition is unique up to representative choice within each Π_k.
-Moreover, no partition into K &lt; 3 satisfies (a)–(c) jointly, and any
-partition into K &gt; 3 requires sub-typing one of the three classes —
-that is, <em>K = 3 is the minimal complete cover of Π by mode-connected,
-inter-separated, exhaustively-covering classes.</em></p>
-<p><em>Proof sketch.</em> The three classes correspond to (i) the basin
-containing π* (Compound), (ii) the union of EFE basins reachable from π*
-by a single saddle-crossing within budget <em>B</em> (Pivot), and (iii)
-the boundary of Π itself, treated as a single class because no further
-interior structure is reachable (Defect). Mode-connectedness within each
-class follows from the smooth-saddle assumption applied to the sublevel
-sets of <em>G</em> restricted to that class. Inter-mode separation is a
-direct consequence of the saddle structure: by construction, no two
-classes can be connected by a path that does not cross a saddle, and by
-Lipschitz continuity any such crossing incurs distance at least
-<em>εB</em>. Completeness follows from the definition of Π as bounded
-and the construction of Defect as the residual class. For minimality,
-observe that any K = 2 partition must collapse either Compound with
-Pivot (losing inter-mode separation within the agent’s current basin) or
-Pivot with Defect (losing the distinction between <em>reachable
-cross-mode</em> and <em>exit-set</em> policies). For K &gt; 3, any
-further refinement strictly sub-types Pivot, since Compound is by
-construction the single basin containing π* and Defect is by
-construction the residual boundary. ∎</p>
-<p>Theorem 1 is a <em>constructive</em> result: it does not claim that
-real human decisions cleanly factor into three categories — it claims
-that under the EFE landscape OGI computes, K = 3 is the minimum K for
-which a structurally-distinguished partition exists. The theorem does
-its work as a <em>typology constraint</em>, not as a metaphysical
-claim.</p>
-<p><strong>On the assumptions.</strong> Lipschitz continuity of
-<em>G</em> is standard in the active-inference literature for compact
-policy spaces (Parr et al. 2022, §4). The smooth-saddle assumption is
-empirically supported by Stachenfeld et al. (2017) for successor
-representations; it can fail in pathological landscapes (cliffs,
-disconnected reachable sets), in which case OGI defers the partition
-rather than fabricating it. We discuss failure handling in §4.5.</p>
-</section>
-<section id="the-six-engines" class="level4">
-<h4>3.1.2 The six engines</h4>
-<p>The high-level description of each engine is:</p>
-<ul>
-<li><p><strong>REALITY-MODEL</strong> (v0.4) — Continuous state
-estimator. Maintains a Bayesian belief over the agent’s current point in
-V₁₄ given a stream of observed state. Inputs: calendar, communication
-metadata, financial transactions, location, biometric where consented.
-Output: posterior <em>p(v(t) | observations_{≤t})</em>.</p></li>
-<li><p><strong>TRAJECTORY-FIT</strong> (v0.3) — Inverse planner. Given
-history <em>h</em> and a sequence of inferred states <em>v(t₀), …,
-v(t)</em>, recovers the implicit policy π* that best generates the
-observed trajectory. Built on maximum-entropy inverse reinforcement
-learning (Ziebart et al. 2008) with a Bayesian-Theory-of-Mind prior
-(Baker et al. 2009).</p></li>
-<li><p><strong>PERTURB-NET</strong> (v0.2) — Rollout simulator.
-Generates 10⁴ parallel candidate continuations of the inferred
-trajectory under bounded perturbation. Computes the expected free energy
-of each rollout under the agent’s generative model.</p></li>
-<li><p><strong>THREE-SELECTOR</strong> (v0.5) — Mode finder. Applies
-Theorem 1 to partition the 10⁴ rollouts into {Π_C, Π_P, Π_D} and selects
-one canonical representative from each class, ranked by trajectory
-bend.</p></li>
-<li><p><strong>NUDGE-LAYER</strong> (v0.2) — Timed delivery. Decides
-when to present the three doors to the user, based on inferred decision
-proximity (calendar markers, deliberation-signal in communication,
-biometric proxies for indecision).</p></li>
-<li><p><strong>FEEDBACK-LOOP</strong> (v0.4) — Outcome estimator.
-Observes which door the agent took, the realized trajectory under that
-door, and the EFE residual; updates the REALITY-MODEL prior and the
-PERTURB-NET basin shape.</p></li>
-</ul>
-<p>The engines must satisfy:</p>
-<ul>
-<li><strong>Tile-level verifiability.</strong> Each engine’s outputs are
-auditable by re-running the engine on the same input. PERTURB-NET
-rollouts are deterministic under a fixed seed.</li>
-<li><strong>Binding.</strong> REALITY-MODEL posteriors are binding
-inputs to TRAJECTORY-FIT; PERTURB-NET basins are binding inputs to
-THREE-SELECTOR.</li>
-<li><strong>Low overhead.</strong> End-to-end three-door inference
-completes within ~2 seconds for a single agent on commodity inference
-hardware.</li>
-<li><strong>Privacy.</strong> No engine has access to raw observation
-text; all engines operate on REALITY-MODEL’s projected v(t), not on the
-underlying corpus.</li>
-</ul>
-</section>
-<section id="the-14-dimensional-value-basis" class="level4">
-<h4>3.1.3 The 14-dimensional value basis</h4>
-<p>Let V₁₄ denote the value-space in which the agent’s instantaneous
-state v(t) lives. We construct V₁₄ as the orthogonal sum of four
-independently-validated psychometric components:</p>
-<p>V₁₄ = V_personality (5) ⊕ V_affect (2) ⊕ V_values (4) ⊕ V_temporal
-(3)</p>
-<p>with dim V₁₄ = 14. The component bases are:</p>
-<ul>
-<li><strong>V_personality</strong> — the Big Five (OCEAN): Openness,
-Conscientiousness, Extraversion, Agreeableness, Neuroticism. The
-dimensionality 5 derives from lexical factor analysis (Tupes &amp;
-Christal 1961; Goldberg 1990; replicated across languages and
-decades).<a href="#fn4" class="footnote-ref" id="fnref4"
-role="doc-noteref"><sup>4</sup></a></li>
-<li><strong>V_affect</strong> — Russell’s circumplex: valence × arousal.
-The dimensionality 2 is the empirical recovery from factor analysis of
-emotion terms (Russell 1980, <em>JPSP</em>).</li>
-<li><strong>V_values</strong> — Schwartz’s four higher-order value
-clusters: Openness-to-Change, Self-Enhancement, Conservation,
-Self-Transcendence. Derived from the 10-value Schwartz Theory of Basic
-Values (Schwartz 1992) by collapsing to the four orthogonal motivational
-poles validated in 80+ cultures.</li>
-<li><strong>V_temporal</strong> — Zimbardo Time Perspective Inventory’s
-three dominant orientations: past-positive, present-hedonistic, future.
-Empirically recovered as the three replicable axes of temporal
-orientation (Zimbardo &amp; Boyd 1999, <em>JPSP</em>).</li>
-</ul>
-<p>The orthogonal sum is <em>constructive</em>: each component basis is
-independently empirically validated, the four components are
-functionally independent (personality is dispositional; affect is
-momentary; values are motivational; temporal orientation is structural),
-and their composition yields a 14-axis space that captures
-dispositional, affective, motivational, and temporal aspects of agent
-state simultaneously. This is the minimal cross-domain composition known
-to us that simultaneously achieves replication-validated coverage in all
-four functional axes.</p>
-<p>The full justification — including why exactly these four components
-and why the dimensionality is <em>exactly</em> 14 — is the subject of
-§5.</p>
-<p>The update rule on V₁₄ is the discrete Kalman-Bucy form</p>
-<p>v(t+1) = M v(t) + B u(t) + ε(t), ε(t) ∼ 𝒩(0, Σ),</p>
-<p>where <em>M ∈ ℝ^{14×14}</em> is the value-dynamics matrix learned
-per-agent by the REALITY-MODEL, <em>u(t)</em> is the door taken by the
-agent (one-hot in {Compound, Pivot, Defect}), <em>B ∈ ℝ^{14×3}</em> is
-the door-impact matrix, and ε(t) is irreducible noise from un-modeled
-observation channels. The diagonal of Σ is the OGI
-confidence-per-dimension; we report this in §4.</p>
-</section>
-<section id="privacy-and-the-consent-layer" class="level4">
-<h4>3.1.4 Privacy and the consent layer</h4>
-<p>OGI ingests deeply personal data — calendar, communications metadata,
-financial transactions, location, optionally biometric. Three principles
-govern the consent layer:</p>
-<ol type="1">
-<li><strong>No raw text.</strong> No engine has access to the body of
-communications. The REALITY-MODEL ingests <em>metadata</em> (sender,
-timing, length, sentiment polarity computed locally) but not
-content.</li>
-<li><strong>Local projection.</strong> v(t) is computed on-device. Only
-v(t), never the underlying observations, leaves the agent’s local trust
-boundary.</li>
-<li><strong>Selective participation.</strong> The shared PERTURB-NET
-basin uses differential-privacy-noised gradients (Abadi et al. 2016) on
-outgoing updates; the agent can opt out at any time and the basin
-gracefully falls back to a single-agent prior.</li>
-</ol>
-<p>OGI’s privacy posture is: <em>no trajectory is ever shared, only the
-basin shape it contributed to.</em></p>
-<hr />
-</section>
-</section>
-</section>
-<section id="ogi-implementation-details" class="level2">
-<h2>OGI implementation details</h2>
-<p>This section specifies the protocol at the level required to
-implement OGI-Alpha. We present each engine in sequence, with named
-primitives, numbered algorithms, and explicit data shapes.</p>
-<section id="mining-configuration-of-an-agent-state" class="level3">
-<h3>4.1 Mining configuration of an agent state</h3>
-<p>Each OGI agent is configured at registration with:</p>
-<ul>
-<li><strong>Local node.</strong> Runs on user device. Stores raw
-observations, runs REALITY-MODEL inference, maintains v(t)
-posterior.</li>
-<li><strong>Aggregation channel.</strong> Outgoing channel that
-transmits only DP-noised PERTURB-NET basin gradients to the shared
-substrate. Default off; opt-in.</li>
-<li><strong>Value-basis configuration.</strong> Fixed at v(0): the
-14-axis basis defined in §3.1.3, with per-axis prior derived from a
-brief 60-item onboarding inventory composed of validated subscales
-(BFI-2 short, PANAS-X, PVQ-21, ZTPI short).<a href="#fn5"
-class="footnote-ref" id="fnref5"
-role="doc-noteref"><sup>5</sup></a></li>
-<li><strong>Trust scope.</strong> A set of observation channels the
-agent has consented to: calendar (default), communication metadata
-(opt-in), financial (opt-in), location (opt-in), biometric
-(opt-in).</li>
-<li><strong>Decision proximity threshold.</strong> A scalar in [0, 1]
-governing NUDGE-LAYER sensitivity. Default 0.7.</li>
-</ul>
-</section>
-<section id="reality-model-continuous-state-estimation" class="level3">
-<h3>4.2 REALITY-MODEL: continuous state estimation</h3>
-<p>The REALITY-MODEL maintains a posterior <em>p(v(t) | o_{≤t})</em>
-over the agent’s position in V₁₄ given the stream of observations
-<em>o₁, o₂, …, o_t</em>. We use a Kalman-Bucy filter (Bucy 1965) on the
-linearized dynamics of §3.1.3.</p>
-<pre><code>Algorithm 1: REALITY-MODEL update
-Require: previous posterior 𝒩(v̂(t−1), P(t−1));
-         new observation o(t); observation model H(t);
-         dynamics matrix M, process noise Σ;
-         observation noise R(t).
-Ensure:  updated posterior 𝒩(v̂(t), P(t)).
 
-1: v̄(t)  ← M · v̂(t−1)                                  ▷ prior mean
-2: P̄(t)  ← M · P(t−1) · Mᵀ + Σ                          ▷ prior covariance
-3: y(t)  ← o(t) − H(t) · v̄(t)                          ▷ innovation
-4: S(t)  ← H(t) · P̄(t) · H(t)ᵀ + R(t)                  ▷ innovation cov.
-5: K(t)  ← P̄(t) · H(t)ᵀ · S(t)⁻¹                       ▷ Kalman gain
-6: v̂(t)  ← v̄(t) + K(t) · y(t)
-7: P(t)  ← (I − K(t) · H(t)) · P̄(t)
-8: return (v̂(t), P(t))</code></pre>
-<p>The observation model <em>H(t)</em> is channel-specific. For example:
-- Calendar (meeting density, social vs. work composition, deadline
-proximity) → projection onto Conscientiousness, Extraversion,
-future-orientation axes. - Communication metadata (latency, length,
-breadth of recipients, sentiment polarity) → projection onto
-Extraversion, Agreeableness, valence, arousal axes. - Financial (savings
-rate, discretionary share, charity, debt service) → projection onto
-Conservation, Self-Enhancement, future-orientation axes.</p>
-<p>The reasons for the Kalman-Bucy choice are: - Closed-form update
-under Gaussian assumptions — bounded compute per observation. - Natural
-confidence quantification via the posterior covariance <em>P(t)</em>,
-exposed downstream as per-axis uncertainty. - Extends to nonlinear
-<em>H</em> via the extended (EKF) or unscented (UKF) variants when
-needed (OGI-Alpha uses linear <em>H</em> by default; nonlinear
-extensions ship in v0.5).</p>
-</section>
-<section id="trajectory-fit-inverse-planning" class="level3">
-<h3>4.3 TRAJECTORY-FIT: inverse planning</h3>
-<p>Given history <em>h = (v̂(t₀), …, v̂(t))</em>, TRAJECTORY-FIT recovers
-the implicit policy π* whose rollouts best generate the observed
-trajectory. We use maximum-entropy inverse reinforcement learning
-(Ziebart, Maas, Bagnell &amp; Dey 2008, AAAI):</p>
-<p>p(π | h) ∝ exp(β · ⟨R_π, φ(h)⟩) · prior(π),</p>
-<p>where <em>R_π</em> is the policy’s implicit reward, <em>φ(h)</em> is
-the trajectory feature expectation, and <em>β</em> is the inverse
-temperature. The prior is a Bayesian-Theory-of-Mind prior over policy
-classes (Baker et al. 2009): goal-directed, habit-driven, exploratory,
-or stalled.</p>
-<pre><code>Algorithm 2: TRAJECTORY-FIT
-Require: history h = (v̂(t₀), …, v̂(t)) with covariances P(·);
-         BToM prior over policy class c ∈ {goal, habit, explore, stall};
-         inverse temperature β.
-Ensure:  posterior over policies p(π | h).
+<!-- ═══════════════════════ §1 ════════════════════════ -->
+<section id="s1">
+  <h2><span class="section-num">§01</span>Introduction</h2>
 
-1: for each class c ∈ {goal, habit, explore, stall}:
-2:     fit class-conditional reward Rπ|c via MaxEnt-IRL on h
-3:     compute marginal likelihood p(h | c)
-4: c* ← argmax_c p(h | c) · prior(c)
-5: π* ← argmax_π exp(β · ⟨Rπ, φ(h)⟩) under class c*
-6: return (π*, p(c* | h))</code></pre>
-<p>The output is not only π* but also the <em>class assignment</em> p(c*
-| h) — whether the agent is currently in goal-pursuit, habit-execution,
-exploratory mode, or stalled. The THREE-SELECTOR uses this assignment to
-bias the three doors: a stalled agent is offered a sharper Pivot; a
-goal-pursuit agent is offered a more committed Compound.</p>
-</section>
-<section id="perturb-net-10⁴-parallel-rollouts" class="level3">
-<h3>4.4 PERTURB-NET: 10⁴ parallel rollouts</h3>
-<p>Given the inferred policy π* and the agent’s current v̂(t),
-PERTURB-NET generates 10⁴ candidate continuations of the trajectory
-under bounded perturbation. Each rollout <em>r_i</em> is a sequence
-v̂(t), v_i(t+1), v_i(t+2), …, v_i(t+H) over horizon <em>H</em>.</p>
-<pre><code>Algorithm 3: PERTURB-NET
-Require: current state v̂(t), inferred policy π*, dynamics (M, B, Σ),
-         door-impact matrix B, perturbation budget B_perturb,
-         rollout horizon H, number of rollouts N = 10⁴.
-Ensure:  set of rollouts {r_i}_{i=1..N} with EFE scores {G(r_i)}.
+  <p class="lead">This paper proceeds from a working hypothesis: the world we inhabit is a simulation, and within it, what is imagined with sufficient clarity — and pursued with sufficient skill — can be instantiated as reality.</p>
 
-1: for i = 1, …, N (in parallel):
-2:     sample perturbation u_i with ||u_i|| ≤ B_perturb
-3:     simulate forward H steps using v(t+k+1) = M v(t+k) + B u_i + ε
-4:     r_i ← (v_i(t+1), …, v_i(t+H))
-5:     G(r_i) ← pragmatic_term(r_i) + epistemic_term(r_i)
-6: return ({r_i}, {G(r_i)})</code></pre>
-<p>The perturbation budget <em>B_perturb</em> is the radius (in
-trajectory-bend metric <em>d</em>) within which we treat policies as
-<em>reachable</em> from π<em>. For OGI-Alpha we use </em>B_perturb =
-0.5* nats; this corresponds empirically to the typical scope of one-week
-deliberation in pilot data. Horizon <em>H</em> defaults to 90 days at
-daily resolution (90 steps).</p>
-<p>The 10⁴ figure is not theoretical. It is the smallest <em>N</em> at
-which the empirical density of rollouts in the {Compound, Pivot, Defect}
-basins stabilizes to within 5% Monte-Carlo error in pilot data — i.e.,
-the budget below which THREE-SELECTOR partition decisions can swing on
-rollout noise. We treat <em>N = 10⁴</em> as the minimum supported
-parameter; larger <em>N</em> monotonically improves three-door
-confidence at proportional cost.</p>
-<p>Pragmatic and epistemic terms of <em>G(r_i)</em> are: -
-<em>pragmatic_term(r_i) = E[u(v(t+H))]</em>, the expected utility of the
-terminal state under the agent’s inferred reward. -
-<em>epistemic_term(r_i) = E[H(s | o)]</em>, the expected information
-gain along the rollout.</p>
-<p>Both are computed locally to the agent. The reward function is
-<em>not specified at OGI’s API</em> — it is whatever the TRAJECTORY-FIT
-engine inferred. OGI does not impose its own values.</p>
-</section>
-<section id="three-selector-mode-finding-over-the-efe-landscape"
-class="level3">
-<h3>4.5 THREE-SELECTOR: mode-finding over the EFE landscape</h3>
-<p>Given the 10⁴ rollouts and their EFE scores, THREE-SELECTOR applies
-Theorem 1 to partition the rollouts into {Π_C, Π_P, Π_D} and selects a
-canonical representative from each.</p>
-<pre><code>Algorithm 4: THREE-SELECTOR
-Require: rollouts {r_i}, EFE scores {G(r_i)}, current policy π*, metric d.
-Ensure:  three canonical rollouts (r_C, r_P, r_D) and confidence scores.
+  <p>The simulation hypothesis has been argued from contemporary first principles by Bostrom [1] and elaborated philosophically by Chalmers [2]. It also appears, in different language, in older sources: the doctrine of <em>māyā</em> in Advaita Vedānta, the discussion of the dream-state and the waking-state in the Māṇḍūkya Upaniṣad, and the broader Vedic insistence that the apparent world is a layered projection rather than ultimate substrate [9]. We do not attempt to adjudicate between these traditions; we treat them as convergent intuitions that the same problem is worth taking seriously.</p>
 
-1: cluster rollouts by trajectory-bend metric d into mode-connected basins:
-2:     C ← basin containing π* (Compound class)
-3:     P ← argmin over remaining basins of inter-saddle distance to C
-4:     D ← rollouts with ||u_i|| ≥ B_perturb · (1 − δ), δ = 0.05
-5: validate inter-mode separation:
-6:     for k, j ∈ {C, P, D}, k ≠ j:
-7:         if min over (r_k, r_j) of d(r_k, r_j) &lt; ε · B_perturb:
-8:             return DEFER  ▷ partition does not satisfy Theorem 1(b)
-9: pick representatives:
-10:    r_C ← argmin_{r ∈ C} G(r)            ▷ deepest mode of current basin
-11:    r_P ← argmin_{r ∈ P} G(r)            ▷ best mode of cross-basin
-12:    r_D ← argmax_{r ∈ D} d(r, r_C)       ▷ farthest exit
-13: compute confidence:
-14:    conf_C ← p(class assignment of agent is goal/habit | TRAJECTORY-FIT)
-15:    conf_P ← (mode separation between C and P) / B_perturb
-16:    conf_D ← (fraction of D rollouts that are reachable) / |D|
-17: return ((r_C, r_P, r_D), (conf_C, conf_P, conf_D))</code></pre>
-<p><strong>Verifier.</strong> A separate agent or auditor can verify
-THREE-SELECTOR output by re-running the algorithm with the same seed on
-the same {r_i} and confirming the partition and representatives match.
-PERTURB-NET rollouts are deterministic under a fixed seed;
-THREE-SELECTOR is a deterministic function of the rollout set. The
-verification procedure is:</p>
-<ol type="1">
-<li>Re-run PERTURB-NET with the published seed and the agent’s v̂(t),
-π*.</li>
-<li>Confirm the 10⁴ rollouts match bit-for-bit.</li>
-<li>Re-run THREE-SELECTOR; confirm (r_C, r_P, r_D) match.</li>
-<li>Confirm the confidence triple matches within numerical
-tolerance.</li>
-</ol>
-<p>This makes OGI’s three-door output <em>auditable</em> — a property no
-current AI assistant offers for its recommendations.</p>
-<p><strong>Deferral.</strong> When THREE-SELECTOR’s partition does not
-satisfy the inter-mode separation condition (line 8), it returns DEFER.
-The NUDGE-LAYER then does not present the doors; the user is informed
-that <q>the current state does not admit three qualitatively distinct
-moves.</q> This is a deliberate design choice: OGI does not fabricate
-doors when the EFE landscape does not support them. Deferral is honest;
-manufactured options are not.</p>
+  <p>What is novel here is not the hypothesis itself but the engineering question that follows from it. <em>If</em> the world behaves like a simulation, then it has rules, edges, observable regularities, and — most importantly — agents whose interactions encode the medium through which it computes. The right question is therefore not "is it true?" but "if we take it as a working model, how do we navigate?"</p>
+
+  <p>This paper has three goals:</p>
+
+  <ol style="list-style:none; padding-left:0; margin: 18px 0 24px;">
+    <li style="padding:10px 0 10px 36px; position:relative; color:var(--ink);">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--lime);">→ 01</span>
+      Consolidate empirical learnings about the structure of the simulation from lived and observed agent behavior.
+    </li>
+    <li style="padding:10px 0 10px 36px; position:relative; color:var(--ink);">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--lime);">→ 02</span>
+      Formalize a minimum-viable model of agent interaction, value creation and reality manifestation within it.
+    </li>
+    <li style="padding:10px 0 10px 36px; position:relative; color:var(--ink);">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--lime);">→ 03</span>
+      Introduce the Orthogonal General Intelligence (OGI) program — a navigation layer designed to operate <em>on</em> the simulation rather than within it.
+    </li>
+  </ol>
+
+  <p>The remainder of the paper assumes the reader is willing to suspend ontological commitment for the duration of the argument. We will return to questions of evidence and falsifiability in §9.</p>
 </section>
-<section id="nudge-layer-and-feedback-loop" class="level3">
-<h3>4.6 NUDGE-LAYER and FEEDBACK-LOOP</h3>
-<p>The NUDGE-LAYER decides <em>when</em> to surface the three doors. It
-does not run on a schedule; it runs on a <em>decision-proximity</em>
-signal derived from:</p>
-<ul>
-<li><strong>Calendar markers</strong> — explicit decision deadlines
-(RSVP, contract review, application due).</li>
-<li><strong>Deliberation signal</strong> — increased self-directed
-message density, web search patterns matching the inferred trajectory’s
-saddle, dwell time on planning interfaces.</li>
-<li><strong>Biometric proxies (opt-in)</strong> — HRV variability, sleep
-disruption, micro-expression cues during planning contexts.</li>
-</ul>
-<p>When the inferred decision proximity exceeds the agent’s configured
-threshold (§4.1), the NUDGE-LAYER queries THREE-SELECTOR and presents
-the doors. Presentation modality is configurable: ambient (a colored
-chip in the home screen), push notification, or scheduled morning
-briefing.</p>
-<p>The FEEDBACK-LOOP observes: - <strong>Selected door</strong> <em>u(t)
-∈ {C, P, D}</em> — which one the agent chose. - <strong>Realized
-trajectory</strong> <em>v̂(t+1), v̂(t+2), …, v̂(t+H)</em> — what actually
-happened. - <strong>EFE residual</strong> — <em>G_realized −
-G_predicted_for_chosen_door</em>.</p>
-<p>These observations update the agent’s value-dynamics matrix
-<em>M</em>, the door-impact matrix <em>B</em>, and (with consent) the
-shared PERTURB-NET basin shape. The update rule is a standard online
-Bayesian update on each parameter under Gaussian priors; details are
-omitted here for brevity and will appear in the companion technical
-document.<a href="#fn6" class="footnote-ref" id="fnref6"
-role="doc-noteref"><sup>6</sup></a></p>
+
+<!-- ═══════════════════════ §2 ════════════════════════ -->
+<section id="s2">
+  <h2><span class="section-num">§02</span>The Agent Substrate</h2>
+
+  <p>We begin by reimagining the medium of value. In the regime considered here, monetary currency does not hold value to the degree it does in the conventional economic frame; in its place, <em>relationships</em> — and specifically, <em>trust</em> between entities — emerge as the dominant medium of interaction. We take this reframing as a starting axiom, both because it reflects how agents in complex systems actually coordinate and because it admits a formalization more native to a simulated world than an economic one.</p>
+
+  <p>Let the world contain $N$ entities. Because the world is taken to be a simulation, we treat each entity as an <em>agent</em>, and denote the full agent set as:</p>
+
+  <div class="equation">
+    $$ S = \{a_1, a_2, a_3, a_4, \ldots, a_N\} $$
+    <span class="eq-num">(1)</span>
+  </div>
+
+  <p>For any ordered pair $(a_i, a_j) \in S \times S$ we define an <em>affinity</em> relation:</p>
+
+  <div class="equation">
+    $$ \varphi(a_i, a_j) \in \{+,\, -,\, 0\} $$
+    <span class="eq-num">(2)</span>
+  </div>
+
+  <p>where $+$ denotes positive affinity, $-$ denotes negative affinity, and $0$ denotes the absence of affinity. Affinity is not assumed symmetric: in general $\varphi(a_i, a_j) \neq \varphi(a_j, a_i)$. The induced structure is therefore a <strong>signed directed graph</strong> $G = (S, E)$ over the agent set, with edges labeled by the value of $\varphi$.</p>
+
+  <!-- FIGURE 1: AGENT AFFINITY GRAPH -->
+  <figure>
+    <svg viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agent affinity graph">
+      <defs>
+        <marker id="arrow-pos" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--pos)" />
+        </marker>
+        <marker id="arrow-neg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--neg)" />
+        </marker>
+        <marker id="arrow-neu" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--neu)" />
+        </marker>
+      </defs>
+
+      <!-- edges from a1 -->
+      <path class="edge-pos" d="M 120 180 Q 200 80 290 90" marker-end="url(#arrow-pos)"/>
+      <path class="edge-neg" d="M 120 180 Q 200 280 290 270" marker-end="url(#arrow-neg)"/>
+      <path class="edge-pos" d="M 130 180 L 280 180" marker-end="url(#arrow-pos)"/>
+
+      <!-- reverse edge a3 -> a1 (asymmetric) -->
+      <path class="edge-neu" d="M 290 282 Q 200 300 130 195" marker-end="url(#arrow-neu)"/>
+
+      <!-- a2 -> an-1 -->
+      <path class="edge-pos" d="M 320 90 L 440 90" marker-end="url(#arrow-pos)"/>
+      <!-- an-1 -> an -->
+      <path class="edge-neg" d="M 470 100 L 520 160" marker-end="url(#arrow-neg)"/>
+      <!-- a4 -> an -->
+      <path class="edge-pos" d="M 320 180 Q 430 220 510 178" marker-end="url(#arrow-pos)"/>
+      <!-- a3 -> a4 -->
+      <path class="edge-pos" d="M 320 270 Q 320 220 305 195" marker-end="url(#arrow-pos)"/>
+
+      <!-- nodes -->
+      <g>
+        <circle class="node" cx="120" cy="180" r="22"/>
+        <text class="node-label" x="120" y="184" text-anchor="middle">a₁</text>
+      </g>
+      <g>
+        <circle class="node" cx="300" cy="90" r="20"/>
+        <text class="node-label" x="300" y="94" text-anchor="middle">a₂</text>
+      </g>
+      <g>
+        <circle class="node" cx="300" cy="270" r="20"/>
+        <text class="node-label" x="300" y="274" text-anchor="middle">a₃</text>
+      </g>
+      <g>
+        <circle class="node" cx="300" cy="180" r="20"/>
+        <text class="node-label" x="300" y="184" text-anchor="middle">a₄</text>
+      </g>
+      <g>
+        <circle class="node" cx="455" cy="90" r="20"/>
+        <text class="node-label" x="455" y="94" text-anchor="middle" style="font-size:10px">aₙ₋₁</text>
+      </g>
+      <g>
+        <circle class="node" cx="530" cy="170" r="22"/>
+        <text class="node-label" x="530" y="174" text-anchor="middle">aₙ</text>
+      </g>
+
+      <!-- edge labels -->
+      <text class="edge-label" fill="var(--pos)" x="200" y="118">+</text>
+      <text class="edge-label" fill="var(--neg)" x="200" y="248">−</text>
+      <text class="edge-label" fill="var(--pos)" x="200" y="172">+</text>
+      <text class="edge-label" fill="var(--neu)" x="200" y="298">0</text>
+      <text class="edge-label" fill="var(--pos)" x="380" y="82">+</text>
+      <text class="edge-label" fill="var(--neg)" x="500" y="128">−</text>
+      <text class="edge-label" fill="var(--pos)" x="425" y="218">+</text>
+
+      <!-- legend -->
+      <g transform="translate(40, 320)">
+        <line x1="0" y1="0" x2="20" y2="0" class="edge-pos" marker-end="url(#arrow-pos)"/>
+        <text class="annot" x="28" y="3">positive affinity</text>
+        <line x1="150" y1="0" x2="170" y2="0" class="edge-neg" marker-end="url(#arrow-neg)"/>
+        <text class="annot" x="178" y="3">negative affinity</text>
+        <line x1="305" y1="0" x2="325" y2="0" class="edge-neu" marker-end="url(#arrow-neu)"/>
+        <text class="annot" x="333" y="3">null / asymmetric</text>
+      </g>
+    </svg>
+    <figcaption><span class="fig-num">FIG. 1</span>The affinity graph for a population of agents. Edges are directed; the signature of $\varphi(a_i, a_j)$ may differ from $\varphi(a_j, a_i)$, producing the asymmetric topology characteristic of real-world trust networks.</figcaption>
+  </figure>
+
+  <p>To illustrate (Fig. 1), agent $a_1$ may hold positive affinity toward $a_2$ and $a_4$, negative affinity toward $a_3$, and varying or absent affinity toward the rest of $S$. The aggregate of such relations across all agents constitutes the <strong>relational topology</strong> of the simulated world — and it is this topology, rather than any monetary ledger, that we take to govern interaction within it.</p>
+
+  <div class="note">Throughout the paper we will use $S$ for both the agent set and, with subscripts, for "skills" — context disambiguates. Where ambiguity matters we write $\mathcal{S}$ for the agent set.</div>
 </section>
-<section id="supported-engine-versions" class="level3">
-<h3>4.7 Supported engine versions</h3>
-<p>OGI-Alpha ships with the following engine constraints:</p>
-<ul>
-<li><em>N</em> (rollouts) ∈ {10⁴, 3·10⁴, 10⁵}. Default 10⁴.</li>
-<li><em>H</em> (horizon, days) ∈ {30, 90, 365}. Default 90.</li>
-<li><em>B_perturb</em> ∈ [0.1, 1.5] nats. Default 0.5.</li>
-<li><em>β</em> (TRAJECTORY-FIT inverse temperature) ∈ [0.5, 5.0].
-Default 2.0.</li>
-<li>DP noise multiplier on outgoing PERTURB-NET gradients ∈ [0.5, 2.0].
-Default 1.0.</li>
-</ul>
-<p>These ranges are conservative defaults. Open-research configurations
-will be released alongside the federation protocol.<a href="#fn7"
-class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
-<hr />
+
+<!-- ═══════════════════════ §3 ════════════════════════ -->
+<section id="s3">
+  <h2><span class="section-num">§03</span>The Agent State Vector</h2>
+
+  <p>Each agent $a_i \in \mathcal{S}$ carries an internal state captured by three quantities:</p>
+
+  <ol style="list-style:none; padding-left:0; margin: 24px 0;">
+    <li style="padding:14px 0 14px 56px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:14px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:14px;letter-spacing:0.1em;">N</span>
+      <strong>Needs</strong> — the stuff required for the agent to function. Typically translates to monetary resources, because money is the cheapest substrate for satisfying basic needs at scale.
+    </li>
+    <li style="padding:14px 0 14px 56px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:14px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:14px;letter-spacing:0.1em;">W</span>
+      <strong>Wants</strong> — the agent's aspirations. Things like traveling the world, working remotely, raising a stable family. Wants are <em>longer-horizon</em> than needs and are not strictly fungible.
+    </li>
+    <li style="padding:14px 0 14px 56px; position:relative;">
+      <span style="position:absolute;left:0;top:14px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:14px;letter-spacing:0.1em;">S</span>
+      <strong>Skills</strong> — the specialty the agent possesses. Skills may be preexisting or acquired through experience, interest, or time invested.
+    </li>
+  </ol>
+
+  <!-- FIGURE 2: NWS TRIAD -->
+  <figure>
+    <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agent state triad">
+      <!-- triangle -->
+      <path d="M 150 90 L 450 90 L 300 270 Z" fill="none" stroke="var(--rule-strong)" stroke-width="1" stroke-dasharray="2 3"/>
+
+      <!-- center agent -->
+      <circle cx="300" cy="155" r="28" fill="var(--bg)" stroke="var(--lime)" stroke-width="2"/>
+      <text class="node-label" x="300" y="159" text-anchor="middle">aᵢ</text>
+
+      <!-- lines from center to corners -->
+      <line x1="300" y1="155" x2="155" y2="95" stroke="var(--lime-soft)" stroke-width="1"/>
+      <line x1="300" y1="155" x2="445" y2="95" stroke="var(--lime-soft)" stroke-width="1"/>
+      <line x1="300" y1="155" x2="300" y2="265" stroke="var(--lime-soft)" stroke-width="1"/>
+
+      <!-- corner nodes -->
+      <g>
+        <circle cx="150" cy="90" r="26" fill="var(--bg-soft)" stroke="var(--lime)" stroke-width="1.5"/>
+        <text x="150" y="95" text-anchor="middle" class="accent" style="font-size:18px;font-weight:600">N</text>
+        <text x="150" y="50" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.1em">NEEDS</text>
+        <text x="150" y="65" text-anchor="middle" class="annot" style="font-size:10px;">stuff to function</text>
+      </g>
+      <g>
+        <circle cx="450" cy="90" r="26" fill="var(--bg-soft)" stroke="var(--lime)" stroke-width="1.5"/>
+        <text x="450" y="95" text-anchor="middle" class="accent" style="font-size:18px;font-weight:600">W</text>
+        <text x="450" y="50" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.1em">WANTS</text>
+        <text x="450" y="65" text-anchor="middle" class="annot" style="font-size:10px;">aspirations</text>
+      </g>
+      <g>
+        <circle cx="300" cy="270" r="26" fill="var(--bg-soft)" stroke="var(--lime)" stroke-width="1.5"/>
+        <text x="300" y="275" text-anchor="middle" class="accent" style="font-size:18px;font-weight:600">S</text>
+        <text x="300" y="310" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.1em">SKILLS</text>
+      </g>
+    </svg>
+    <figcaption><span class="fig-num">FIG. 2</span>The state of an individual agent decomposes into three quantities: needs ($N$), wants ($W$), and skills ($S$). The line between needs and wants is thin; under a shared vision, a need can be reframed as a want — and vice versa.</figcaption>
+  </figure>
+
+  <p>The line between needs and wants is structurally thin. Under the influence of a sufficiently strong relational layer — trust between agents — a need can be <em>reframed</em> as a want, and the reverse holds when trust degrades. Specifically: a need can be tolerated as an unsolved want if the agent believes the broader vision is solving for their bigger wants. This is the lever on which all coordination ultimately rests.</p>
+
+  <h3>3.1 Bringing imagination into reality</h3>
+
+  <p>For an imagination to cross the threshold into reality, we proceed in two steps. First, identify the <em>skill set</em> $S^{\ast}$ required to realize it. Second, shortlist the agents whose existing skills $S$ and tractable needs $N$ make them feasible collaborators. The remaining gap — between $S$ and $S^{\ast}$ — is closed through experience, interest, or time, all of which are first-order navigable.</p>
+
+  <p>Aligning the agents toward the new reality requires <em>convincing</em> them that the new reality solves for some of their wants, even if only indirectly. Because needs reduce to money for most agents most of the time, monetary alignment is the cheapest initial lever — but it is not sufficient on its own, and over a long-enough horizon, wants always dominate.</p>
 </section>
+
+<!-- ═══════════════════════ §4 ════════════════════════ -->
+<section id="s4">
+  <h2><span class="section-num">§04</span>Two Postulates of Manifestation</h2>
+
+  <p>We can now state the two postulates that govern how imagination becomes reality in the agent substrate.</p>
+
+  <div class="postulate">
+    <div class="postulate-label">Postulate 1 · Value Compounding</div>
+    <p>If a value $V$ is created by the set of agents $\{a_1, \ldots, a_N\}$ such that some pairwise interactions are positive and some are negative, but the <em>net</em> value $V$ is positive in the lived experience of $\{a_1, \ldots, a_N\}$, then a positive value-entropy (or projection) field accumulates across the agent set, and these agents become bound to return $V$ as a function $V^{\ast}$:</p>
+    <div class="equation" style="margin-top:18px; margin-bottom:6px; background:transparent; border:none; padding:8px 0;">
+      $$ V^{\ast} = \alpha\, V \qquad \alpha = \alpha(\mathbf{x}, t) $$
+      <span class="eq-num">(3)</span>
+    </div>
+    <p style="font-size:14px; color:var(--ink-mute);">where $\alpha$ is a function of space and time — the compounding coefficient that captures how value disperses, decays, and re-converges across the relational topology.</p>
+  </div>
+
+  <div class="postulate">
+    <div class="postulate-label">Postulate 2 · Net-Positive Loop Closure</div>
+    <p>If some pairwise interactions among $\{a_1, \ldots, a_N\}$ are negative but the <em>net loop</em> created to bring an imagination $\mathcal{I}$ into reality is positive, then $\mathcal{I}$ has a higher probability of crossing into reality. We denote this probability $P^{\ast}$, and it is a function of the population's combined needs, wants and skills:</p>
+    <div class="equation" style="margin-top:18px; margin-bottom:6px; background:transparent; border:none; padding:8px 0;">
+      $$ P^{\ast} = P^{\ast}\bigl(N, W, S \,;\, \{a_1, \ldots, a_N\}\bigr) $$
+      <span class="eq-num">(4)</span>
+    </div>
+  </div>
+
+  <!-- FIGURE 3: VALUE LOOP -->
+  <figure>
+    <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Value compounding loop">
+      <defs>
+        <marker id="arr-lime" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--lime)" />
+        </marker>
+      </defs>
+
+      <!-- Postulate 1 panel -->
+      <text x="20" y="30" class="annot" style="font-size:11px;letter-spacing:0.15em;fill:var(--lime)">POSTULATE 1 · COMPOUNDING</text>
+      <g transform="translate(20, 50)">
+        <ellipse cx="125" cy="100" rx="115" ry="80" fill="none" stroke="var(--rule-strong)" stroke-width="1" stroke-dasharray="3 4"/>
+        <text x="125" y="105" text-anchor="middle" class="annot" style="font-size:10px;">value-entropy field</text>
+
+        <circle cx="40" cy="100" r="22" class="node"/>
+        <text x="40" y="104" text-anchor="middle" class="node-label" style="font-size:11px">aᵢ</text>
+
+        <circle cx="210" cy="100" r="22" class="node"/>
+        <text x="210" y="104" text-anchor="middle" class="node-label" style="font-size:11px">aⱼ</text>
+
+        <path d="M 62 90 Q 125 50 188 90" fill="none" stroke="var(--lime)" stroke-width="1.5" marker-end="url(#arr-lime)"/>
+        <text x="125" y="55" text-anchor="middle" class="accent" style="font-size:11px">V</text>
+
+        <path d="M 188 115 Q 125 155 62 115" fill="none" stroke="var(--lime)" stroke-width="1.5" marker-end="url(#arr-lime)"/>
+        <text x="125" y="158" text-anchor="middle" class="accent" style="font-size:11px">V* = αV</text>
+      </g>
+
+      <!-- divider -->
+      <line x1="300" y1="50" x2="300" y2="240" stroke="var(--rule)" stroke-width="1" stroke-dasharray="2 3"/>
+
+      <!-- Postulate 2 panel -->
+      <text x="320" y="30" class="annot" style="font-size:11px;letter-spacing:0.15em;fill:var(--terra)">POSTULATE 2 · NET-LOOP CLOSURE</text>
+      <g transform="translate(320, 50)">
+        <!-- 3 nodes in triangle, one negative edge, but net positive loop -->
+        <circle cx="40" cy="60" r="18" class="node"/>
+        <text x="40" y="64" text-anchor="middle" class="node-label" style="font-size:10px">a₁</text>
+
+        <circle cx="220" cy="60" r="18" class="node"/>
+        <text x="220" y="64" text-anchor="middle" class="node-label" style="font-size:10px">a₂</text>
+
+        <circle cx="130" cy="170" r="18" class="node"/>
+        <text x="130" y="174" text-anchor="middle" class="node-label" style="font-size:10px">a₃</text>
+
+        <path class="edge-pos" d="M 58 60 L 202 60" marker-end="url(#arrow-pos)"/>
+        <text x="130" y="50" text-anchor="middle" class="edge-label" fill="var(--pos)">+</text>
+
+        <path class="edge-neg" d="M 215 78 L 145 158" marker-end="url(#arrow-neg)"/>
+        <text x="195" y="125" text-anchor="middle" class="edge-label" fill="var(--neg)">−</text>
+
+        <path class="edge-pos" d="M 115 158 L 50 78" marker-end="url(#arrow-pos)"/>
+        <text x="65" y="125" text-anchor="middle" class="edge-label" fill="var(--pos)">+</text>
+
+        <text x="130" y="220" text-anchor="middle" class="annot" style="font-size:10px">net loop &gt; 0  ⇒  P* increases</text>
+      </g>
+    </svg>
+    <figcaption><span class="fig-num">FIG. 3</span>Left: value $V$ emitted between two agents compounds in the value-entropy field and returns as $V^{\ast} = \alpha V$. Right: even when one pairwise edge is negative, a closed loop whose <em>net</em> sign is positive raises the manifestation probability of the imagination it serves.</figcaption>
+  </figure>
+
+  <p>The two postulates have very different uses in practice. Postulate 1 tells us that positive value, once seeded into a sufficiently connected agent population, does not stay where it is put — it returns, scaled by $\alpha$, which is itself a function of <em>where</em> and <em>when</em>. Postulate 2 tells us that we do not need every pairwise relationship to be positive in order for a collective imagination to manifest; we need the <em>loop</em> to close positive.</p>
+
+  <p>This is consistent with empirical observations from large coordination efforts — startups, social movements, scientific collaborations — where the internal graph of relationships is rarely monochromatic, but the net direction is what determines outcomes.</p>
 </section>
-<section id="the-14-dimensional-value-basis-1" class="level2">
-<h2>The 14-dimensional value basis</h2>
-<p>This section justifies, in detail, why V₁₄ has exactly 14 dimensions,
-why this specific decomposition, and what cross-tradition resonance the
-count has.</p>
-<section id="compositional-derivation" class="level3">
-<h3>5.1 Compositional derivation</h3>
-<p>The 14-axis decomposition is constructed by orthogonal sum of four
-independently-validated psychometric bases:</p>
-<p><strong>5 personality axes (Big Five / OCEAN).</strong> Tupes &amp;
-Christal (1961) performed factor analysis on eight independent samples
-drawn from Cattell’s reduction of the Allport-Odbert trait lexicon,
-recovering five recurrent factors. The five-factor structure has been
-replicated in 50+ languages, across 60+ years, and across multiple
-measurement instruments (NEO-PI-R, BFI-2, IPIP). The dimensionality 5 is
-not a theoretical commitment — it is an empirical convergence under
-factor analysis with eigenvalue-greater-than-1 and parallel-analysis
-cutoffs.</p>
-<p><strong>2 affect axes (Russell circumplex).</strong> Russell (1980)
-recovered two dominant factors from factor analysis of emotion terms:
-<em>valence</em> (pleasure-displeasure) and <em>arousal</em>
-(activation-deactivation). The circumplex structure has been replicated
-in cross-cultural studies and in dimensional reductions of physiological
-response data. The two axes capture momentary affective state; they are
-functionally independent of personality (dispositional) and values
-(motivational).</p>
-<p><strong>4 value axes (Schwartz higher-order clusters).</strong>
-Schwartz’s Theory of Basic Values (1992) identifies 10 motivationally
-distinct value types, empirically organized as a circumplex of
-compatible and conflicting motivations. The 10 collapse cleanly to 4
-higher-order orthogonal poles: <em>Openness-to-Change</em>
-(Self-Direction + Stimulation), <em>Self-Enhancement</em> (Achievement +
-Power), <em>Conservation</em> (Security + Tradition + Conformity),
-<em>Self-Transcendence</em> (Universalism + Benevolence). These four
-poles are the two principal axes of the circumplex and have been
-replicated in 80+ countries (Schwartz et al. 2012).<a href="#fn8"
-class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
-<p><strong>3 temporal axes (Zimbardo Time Perspective).</strong>
-Zimbardo &amp; Boyd (1999) recovered five factors of temporal
-orientation, of which three replicate consistently across cultures and
-instruments: <em>past-positive</em>, <em>present-hedonistic</em>, and
-<em>future</em>. These three axes capture how an agent weights past,
-present, and future in current decisions — a structural dimension
-functionally independent of personality, affect, and values.</p>
-<p>The orthogonal sum yields:</p>
-<p>dim V₁₄ = 5 + 2 + 4 + 3 = 14.</p>
-<p><strong>Why these four components.</strong> The four functional axes
-— <em>dispositional</em> (personality), <em>momentary</em> (affect),
-<em>motivational</em> (values), <em>structural</em> (temporal
-orientation) — are the minimal cross-domain decomposition known to cover
-the agent-state representation problem. Each is independently
-empirically validated; none subsumes the others; together they account
-for the four kinds of variance an agent’s state can carry. Other
-psychometric scales (interests, cognitive style, attachment) load onto
-combinations of these four.</p>
-<p><strong>Why exactly 14.</strong> The number 14 is not chosen — it
-falls out of the composition. Eliminating any component drops the count
-below 14 and loses a functional axis. Refining any component (e.g.,
-Schwartz’s 19-axis refinement, Zimbardo’s full 5-factor structure)
-raises the count above 14 but loses orthogonality (Schwartz 2012’s 19
-axes are <em>not</em> mutually orthogonal; they are graded along a
-circumplex). Fourteen is the count at which all four functional axes are
-present, each at its replication-validated dimensionality, and the
-composition remains orthogonal.</p>
-<p><strong>Discriminability.</strong> The 14 axes are pairwise
-discriminable in pilot data with average inter-axis correlation
-<em>r</em> &lt; 0.18 (target: <em>r</em> &lt; 0.20 for
-orthogonality-by-convention). The two axes most at risk of merging — Big
-Five Neuroticism and Russell valence — survive discriminant validation
-(Neuroticism is dispositional, valence is momentary; the cross-time
-stability of Neuroticism vs. the within-day variability of valence
-resolves the distinction empirically).</p>
+
+<!-- ═══════════════════════ §5 ════════════════════════ -->
+<section id="s5">
+  <h2><span class="section-num">§05</span>The Manifestation Equation</h2>
+
+  <p>We now make Postulate 2 quantitative. Suppose a target reality requires a set of agents $\{a_1, \ldots, a_N\}$ with associated needs $(N_1, \ldots, N_N)$, wants $(W_1, \ldots, W_N)$, and skills $(S_1, \ldots, S_N)$. We define the <em>manifestation probability</em> as:</p>
+
+  <div class="equation">
+    $$ P^{\ast} \;=\; \frac{\left[\,\displaystyle\sum_{i=1}^{N} N_i W_i \,\right]\,\times\,[S]}{\left[\,\displaystyle\sum_{i=1}^{N} N_i^{\ast} W_i^{\ast} \,\right]\,\times\,[S^{\ast}]} $$
+    <span class="eq-num">(5)</span>
+  </div>
+
+  <p>Reading the terms:</p>
+
+  <ul style="list-style:none; padding-left:0; margin: 18px 0 24px;">
+    <li style="padding:8px 0 8px 28px; position:relative; border-bottom:1px dotted var(--rule);">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;top:11px;">▸</span>
+      <span class="mono">N, W</span> &nbsp;— the needs and wants <em>currently being met</em> for the agent population.
+    </li>
+    <li style="padding:8px 0 8px 28px; position:relative; border-bottom:1px dotted var(--rule);">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;top:11px;">▸</span>
+      <span class="mono">S</span> &nbsp;— the skills the agents <em>currently possess</em>.
+    </li>
+    <li style="padding:8px 0 8px 28px; position:relative; border-bottom:1px dotted var(--rule);">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;top:11px;">▸</span>
+      <span class="mono">N*, W*</span> &nbsp;— the Nash-equilibrium needs and wants for the target reality.
+    </li>
+    <li style="padding:8px 0 8px 28px; position:relative;">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;top:11px;">▸</span>
+      <span class="mono">S*</span> &nbsp;— the skill set required for the imagination to be brought into reality.
+    </li>
+  </ul>
+
+  <p>The ratio is interpretable. $P^{\ast} \to 1$ as the agent population's <em>current</em> state vector approaches the equilibrium state required by the imagined reality. $P^{\ast} \ll 1$ when the gap between $(N, W, S)$ and $(N^{\ast}, W^{\ast}, S^{\ast})$ is wide — i.e., when the agents are not currently being served, or do not yet possess the required capability, for the target reality to stabilize.</p>
+
+  <!-- FIGURE 4: Manifestation matrix -->
+  <figure>
+    <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Manifestation matrix">
+      <!-- current state matrix -->
+      <text x="40" y="30" class="annot" style="font-size:11px;letter-spacing:0.15em;fill:var(--lime)">CURRENT (numerator)</text>
+      <g transform="translate(40, 50)">
+        <rect x="0" y="0" width="200" height="180" fill="none" stroke="var(--rule-strong)" stroke-width="1"/>
+        <!-- column headers -->
+        <text x="40" y="20" text-anchor="middle" class="annot">Nᵢ</text>
+        <text x="100" y="20" text-anchor="middle" class="annot">Wᵢ</text>
+        <text x="160" y="20" text-anchor="middle" class="annot">Sᵢ</text>
+        <line x1="0" y1="28" x2="200" y2="28" stroke="var(--rule)" stroke-width="1"/>
+        <!-- rows -->
+        <g style="font-family:'JetBrains Mono',monospace;font-size:10px;fill:var(--ink-soft)">
+          <text x="10" y="50">a₁</text><circle cx="40" cy="46" r="6" fill="var(--lime)" fill-opacity="0.8"/><circle cx="100" cy="46" r="6" fill="var(--lime)" fill-opacity="0.4"/><circle cx="160" cy="46" r="6" fill="var(--lime)" fill-opacity="0.7"/>
+          <text x="10" y="78">a₂</text><circle cx="40" cy="74" r="6" fill="var(--lime)" fill-opacity="0.5"/><circle cx="100" cy="74" r="6" fill="var(--lime)" fill-opacity="0.6"/><circle cx="160" cy="74" r="6" fill="var(--lime)" fill-opacity="0.3"/>
+          <text x="10" y="106">a₃</text><circle cx="40" cy="102" r="6" fill="var(--lime)" fill-opacity="0.7"/><circle cx="100" cy="102" r="6" fill="var(--lime)" fill-opacity="0.3"/><circle cx="160" cy="102" r="6" fill="var(--lime)" fill-opacity="0.5"/>
+          <text x="10" y="134">⋮</text>
+          <text x="10" y="162">aₙ</text><circle cx="40" cy="158" r="6" fill="var(--lime)" fill-opacity="0.4"/><circle cx="100" cy="158" r="6" fill="var(--lime)" fill-opacity="0.7"/><circle cx="160" cy="158" r="6" fill="var(--lime)" fill-opacity="0.6"/>
+        </g>
+      </g>
+
+      <!-- division bar -->
+      <text x="300" y="150" text-anchor="middle" style="font-family:'Fraunces',serif;font-size:48px;fill:var(--lime);font-weight:300">÷</text>
+
+      <!-- target state matrix -->
+      <text x="360" y="30" class="annot" style="font-size:11px;letter-spacing:0.15em;fill:var(--terra)">EQUILIBRIUM (denominator)</text>
+      <g transform="translate(360, 50)">
+        <rect x="0" y="0" width="200" height="180" fill="none" stroke="var(--rule-strong)" stroke-width="1"/>
+        <text x="40" y="20" text-anchor="middle" class="annot">Nᵢ*</text>
+        <text x="100" y="20" text-anchor="middle" class="annot">Wᵢ*</text>
+        <text x="160" y="20" text-anchor="middle" class="annot">Sᵢ*</text>
+        <line x1="0" y1="28" x2="200" y2="28" stroke="var(--rule)" stroke-width="1"/>
+        <g style="font-family:'JetBrains Mono',monospace;font-size:10px;fill:var(--ink-soft)">
+          <text x="10" y="50">a₁</text><circle cx="40" cy="46" r="6" fill="var(--terra)" fill-opacity="0.9"/><circle cx="100" cy="46" r="6" fill="var(--terra)" fill-opacity="0.9"/><circle cx="160" cy="46" r="6" fill="var(--terra)" fill-opacity="0.9"/>
+          <text x="10" y="78">a₂</text><circle cx="40" cy="74" r="6" fill="var(--terra)" fill-opacity="0.9"/><circle cx="100" cy="74" r="6" fill="var(--terra)" fill-opacity="0.9"/><circle cx="160" cy="74" r="6" fill="var(--terra)" fill-opacity="0.9"/>
+          <text x="10" y="106">a₃</text><circle cx="40" cy="102" r="6" fill="var(--terra)" fill-opacity="0.9"/><circle cx="100" cy="102" r="6" fill="var(--terra)" fill-opacity="0.9"/><circle cx="160" cy="102" r="6" fill="var(--terra)" fill-opacity="0.9"/>
+          <text x="10" y="134">⋮</text>
+          <text x="10" y="162">aₙ</text><circle cx="40" cy="158" r="6" fill="var(--terra)" fill-opacity="0.9"/><circle cx="100" cy="158" r="6" fill="var(--terra)" fill-opacity="0.9"/><circle cx="160" cy="158" r="6" fill="var(--terra)" fill-opacity="0.9"/>
+        </g>
+      </g>
+
+      <!-- caption arrow -->
+      <text x="300" y="270" text-anchor="middle" class="annot" style="font-size:11px">closing the gap between these two matrices is the navigation problem</text>
+      <text x="300" y="295" text-anchor="middle" class="accent" style="font-size:12px;font-family:'JetBrains Mono',monospace">⤷ P* → 1</text>
+    </svg>
+    <figcaption><span class="fig-num">FIG. 4</span>Manifestation probability $P^{\ast}$ as a ratio of two state matrices over the agent population. The numerator captures the present state of needs, wants and skills; the denominator captures the Nash equilibrium required by the target reality. The OGI's task is to drive the ratio toward unity.</figcaption>
+  </figure>
+
+  <h3>5.1 How does an OGI act on this equation?</h3>
+
+  <p>The answer lies in <strong>prompt-engineering the agents themselves</strong>. If we can collect sufficient context on each agent — their actual $N_i, W_i, S_i$ — and then prompt them toward a broader reality (an imagination) in which at least some of their wants are being met, they become aligned toward the shared goal almost mechanically. The mechanism is not coercion but reframing: the better reality solves their wants in some way, even if not directly.</p>
+
+  <p>This is what the rest of the paper will operationalize. But before we can prompt anyone, we have to know <em>which</em> agents to prompt and in what order. That requires two more variables: trust and power.</p>
 </section>
-<section id="the-loka-mnemonic" class="level3">
-<h3>5.2 The Loka mnemonic</h3>
-<p>The Purāṇic Loka system enumerates 14 worlds: seven upper (Bhū,
-Bhuvas, Svar, Mahas, Janas, Tapas, Satya) and seven lower (Atala,
-Vitala, Sutala, Talātala, Mahātala, Rasātala, Pātāla). The canonical
-textual loci are Bhāgavata Purāṇa Canto 2 Chapter 5 and Viṣṇu Purāṇa
-Book 2 Chapters 5–7. The seven upper Lokas are read in the tradition as
-a graded meditative ascent from the gross to the subtle; the seven lower
-as their inversion.<a href="#fn9" class="footnote-ref" id="fnref9"
-role="doc-noteref"><sup>9</sup></a></p>
-<p>OGI uses the Loka system as an <em>organizing mnemonic</em> for the
-14 axes of V₁₄, not as a load-bearing justification. Each of the 14 axes
-is named to its nearest Loka by structural correspondence (a Loka of
-meditative ascent maps to a future-oriented axis; a Loka of inversion
-maps to a deeply dispositional axis). The mapping is a presentation
-choice that gives the basis cultural coherence and memorability; the
-formal claims of §5.1 do not depend on the Loka system.</p>
-<p>We adopt the mnemonic for three reasons:</p>
-<ol type="1">
-<li><strong>Cardinality.</strong> The 14-count in the Loka system is one
-of the few pre-modern enumerations that lands exactly on 14, a count
-that has no analog in personality, affect, value, or consciousness
-literature. The numerical resonance is non-trivial.</li>
-<li><strong>Structural homology.</strong> The Loka system distinguishes
-durability classes (kṛtaka, mixed, akṛtaka) that map cleanly onto OGI’s
-functional axes (momentary affect ↔︎ kṛtaka; dispositional personality ↔︎
-akṛtaka). The seven-upper / seven-lower split corresponds structurally
-to the seven <em>constructive</em> axes (those pulling toward
-integration: Openness, Conscientiousness, Agreeableness, valence,
-Openness-to-Change, Self-Transcendence, future) and the seven
-<em>deconstructive</em> axes (Neuroticism, Extraversion as load on
-social-environment, arousal, Self-Enhancement, Conservation,
-past-positive, present-hedonistic) — a structural correspondence we
-treat as suggestive, not load-bearing.</li>
-<li><strong>Naming.</strong> The Loka names are precise and ancient,
-available to OGI without coining new terminology. We adopt them for the
-14 axes; we do not adopt them as proofs.</li>
-</ol>
-<p>OGI is not a religious project. The Loka mnemonic is a presentation
-layer over a psychometric basis. The formal model is invariant under
-permutation of the axis names; we use the Loka names because they are
-the most-precise pre-existing 14-element labelling we know of.</p>
+
+<!-- ═══════════════════════ §6 ════════════════════════ -->
+<section id="s6">
+  <h2><span class="section-num">§06</span>Trust &amp; Power · The Hidden Topology</h2>
+
+  <h3>6.1 Trust</h3>
+
+  <p>Trust is two-way and compounding. It can be increased or decreased by the actions of <em>either</em> agent in a relationship — not just one. Trust is therefore better modeled as a state that lives on the edge $(a_i \leftrightarrow a_j)$ rather than on either endpoint:</p>
+
+  <div class="equation" style="background:transparent;border:none;padding:12px 0;">
+    $$ \tau(a_i, a_j) \in [0, 1], \qquad \tau(a_i, a_j) \neq \tau(a_j, a_i) \text{ in general} $$
+    <span class="eq-num">(6)</span>
+  </div>
+
+  <p>The asymmetry matters: $a_i$ may trust $a_j$ deeply while $a_j$ holds only conditional trust in return. Trust compounds through repeated positive actions and collapses non-linearly through betrayal — a single high-magnitude negative event can erase many small positive ones.</p>
+
+  <h3>6.2 Power</h3>
+
+  <p>Agents occupy different states in the network in terms of <em>power</em>. An agent's power is, to first order, proportional to their contribution to the network — the value, attention, capability or coordination they can route. We do not formalize this further here; it suffices to note that power is unevenly distributed and partially observable.</p>
+
+  <p>The interaction between trust and power yields a critical empirical claim:</p>
+
+  <div class="postulate">
+    <div class="postulate-label">Empirical Claim · Trust Asymmetry Under Power</div>
+    <p>Agents are <em>less likely to break the trust</em> of agents who are more powerful than themselves. Power therefore stabilizes trust asymmetrically, in favor of the higher-power node.</p>
+  </div>
+
+  <!-- FIGURE 5: TRUST-POWER MATRIX -->
+  <figure>
+    <svg viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trust-power plane">
+      <!-- axes -->
+      <line x1="80" y1="40" x2="80" y2="300" class="axis"/>
+      <line x1="80" y1="300" x2="540" y2="300" class="axis"/>
+
+      <!-- quadrant divider -->
+      <line x1="310" y1="40" x2="310" y2="300" stroke="var(--rule)" stroke-dasharray="2 4"/>
+      <line x1="80" y1="170" x2="540" y2="170" stroke="var(--rule)" stroke-dasharray="2 4"/>
+
+      <!-- axis labels -->
+      <text x="540" y="320" text-anchor="end" class="axis-label">POWER →</text>
+      <text x="80" y="32" text-anchor="start" class="axis-label">↑ TRUST STABILITY</text>
+
+      <!-- quadrant labels -->
+      <text x="195" y="100" text-anchor="middle" class="annot" style="font-size:10px">low-power · high-trust</text>
+      <text x="195" y="115" text-anchor="middle" class="annot" style="font-size:9px;fill:var(--ink-mute)">vulnerable allies</text>
+
+      <text x="425" y="100" text-anchor="middle" class="accent" style="font-size:11px;font-weight:600">▣ operating zone</text>
+      <text x="425" y="115" text-anchor="middle" class="annot" style="font-size:9px;">trust holds under pressure</text>
+
+      <text x="195" y="230" text-anchor="middle" class="annot" style="font-size:10px">low-power · low-trust</text>
+      <text x="195" y="245" text-anchor="middle" class="annot" style="font-size:9px;fill:var(--ink-mute)">noise</text>
+
+      <text x="425" y="230" text-anchor="middle" class="annot" style="font-size:10px;fill:var(--terra)">high-power · low-trust</text>
+      <text x="425" y="245" text-anchor="middle" class="annot" style="font-size:9px;fill:var(--ink-mute)">risk surface</text>
+
+      <!-- agents -->
+      <g>
+        <circle cx="160" cy="120" r="6" fill="var(--lime)" fill-opacity="0.7"/>
+        <text x="172" y="124" class="annot" style="font-size:10px">a₁</text>
+
+        <circle cx="220" cy="90" r="6" fill="var(--lime)" fill-opacity="0.7"/>
+        <text x="232" y="94" class="annot" style="font-size:10px">a₂</text>
+
+        <circle cx="420" cy="80" r="9" fill="var(--lime)"/>
+        <text x="435" y="84" class="annot" style="font-size:10px;fill:var(--lime)">a₃ ★</text>
+
+        <circle cx="475" cy="135" r="8" fill="var(--lime)" fill-opacity="0.9"/>
+        <text x="490" y="139" class="annot" style="font-size:10px">a₄</text>
+
+        <circle cx="370" cy="230" r="6" fill="var(--terra)" fill-opacity="0.8"/>
+        <text x="382" y="234" class="annot" style="font-size:10px">a₅</text>
+
+        <circle cx="465" cy="260" r="7" fill="var(--terra)" fill-opacity="0.8"/>
+        <text x="478" y="264" class="annot" style="font-size:10px">a₆</text>
+
+        <circle cx="170" cy="245" r="5" fill="var(--neu)"/>
+        <text x="182" y="249" class="annot" style="font-size:10px">a₇</text>
+
+        <circle cx="130" cy="270" r="5" fill="var(--neu)"/>
+        <text x="142" y="274" class="annot" style="font-size:10px">a₈</text>
+      </g>
+
+      <!-- footnote -->
+      <text x="80" y="345" class="annot" style="font-size:10px">★ agent within operating zone — high power, high trust stability — is least likely to defect</text>
+    </svg>
+    <figcaption><span class="fig-num">FIG. 5</span>The trust–power plane. Agents in the high-power / high-trust quadrant are stable anchors; agents in the high-power / low-trust region are the largest risk surface. For a target reality to manifest, power must be <em>balanced</em> across the network — but not equalized — such that trust holds under load.</figcaption>
+  </figure>
+
+  <p>The operational consequence is direct. For a reality to be achieved, we must (i) segregate which agents are powerful, (ii) for any prompt or alignment we attempt to introduce, ensure those high-power agents' needs and wants are met first, and (iii) balance power across the network such that trust does not collapse asymmetrically.</p>
+
+  <p>This is the closing line of the trust/power section, and it is worth stating as a heuristic:</p>
+
+  <div class="postulate" style="border-left-color: var(--terra); background: rgba(255, 107, 71, 0.04);">
+    <div class="postulate-label" style="color:var(--terra)">Heuristic</div>
+    <p style="color:var(--ink);"><strong>Power needs to be balanced for trust to work out.</strong> When power is wildly unequal across the network, trust degrades along the steepest gradient and the manifestation probability $P^{\ast}$ drops independently of the underlying $N, W, S$ alignment.</p>
+  </div>
 </section>
-<section id="cross-tradition-resonance" class="level3">
-<h3>5.3 Cross-tradition resonance</h3>
-<p>The number 14 appears in three other historically-independent
-enumerations of structured being or being-equivalent:</p>
-<ul>
-<li><strong>Jain cosmology.</strong> The Jain <em>Loka</em> is divided
-into 14 <em>rajjus</em> (vertical cosmic units), a tripartite
-Ūrdhva-loka / Madhya-loka / Adho-loka structure (Jaini, <em>The Jaina
-Path of Purification</em>, UC Press 1979). This is the cleanest
-cross-tradition 14-parallel known to us; the Jain enumeration developed
-independently of the Purāṇic.</li>
-<li><strong>Manvantaras.</strong> Purāṇic literature enumerates 14
-Manvantaras (cosmic eras), each with its own Manu and Indra. The
-14-count here is internal to the Hindu corpus but developed
-independently of the Loka enumeration; their convergence on 14 is a
-within-tradition redundancy worth noting.</li>
-<li><strong>Vidyāsthānas.</strong> Classical Hindu pedagogy enumerates
-14 Vidyāsthānas (sciences) — the four Vedas, six Vedāṅgas, plus Mīmāṃsā,
-Nyāya, Purāṇas, and Dharmaśāstra. Another internal 14-count.</li>
-</ul>
-<p>The 14-resonance across the Loka system, the Manvantaras, the
-Vidyāsthānas, and the Jain rajjus is best characterized as
-<em>structurally suggestive</em>. We do not claim it is evidentially
-decisive. We do claim that, in the corpus of pre-modern enumerations of
-structured being, 14 is the count that recurs across multiple
-independent enumerations — a count that has <em>no analog</em> in the
-modern personality, affect, value, or consciousness literature (which
-lands on 3, 5, 6, 10, 16, or 19, but never 14).</p>
-<p>The OGI thesis is that the modern psychometric composition
-<em>happens to land on the same count</em> as the pre-modern
-enumerations — and that the convergence, while not evidentially
-decisive, is an interesting fact about the structure of human agency
-that the protocol commemorates by adopting the Loka names.</p>
-<hr />
+
+<!-- ═══════════════════════ §7 ════════════════════════ -->
+<section id="s7">
+  <h2><span class="section-num">§07</span>Awareness · The Navigation Coordinate</h2>
+
+  <p>There is a final state variable we have so far left implicit: <em>awareness</em>. Agents differ — sometimes dramatically — in the degree to which they consciously perceive the simulation they are embedded in. We model awareness as a continuous spectrum:</p>
+
+  <!-- FIGURE 6: AWARENESS SPECTRUM -->
+  <figure>
+    <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Awareness spectrum">
+      <!-- container box -->
+      <rect x="60" y="60" width="480" height="160" fill="none" stroke="var(--rule-strong)" stroke-width="1"/>
+
+      <!-- gradient backdrop -->
+      <defs>
+        <linearGradient id="aware-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="var(--lime)" stop-opacity="0.15"/>
+          <stop offset="50%" stop-color="var(--lime)" stop-opacity="0.04"/>
+          <stop offset="100%" stop-color="var(--terra)" stop-opacity="0.08"/>
+        </linearGradient>
+      </defs>
+      <rect x="60" y="60" width="480" height="160" fill="url(#aware-grad)"/>
+
+      <!-- column labels -->
+      <text x="100" y="44" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.15em;fill:var(--lime)">AWARE</text>
+      <text x="500" y="44" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.15em;fill:var(--terra)">UNAWARE</text>
+      <text x="300" y="44" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.15em;">↔ SPECTRUM ↔</text>
+
+      <!-- left cluster of dots -->
+      <g fill="var(--lime)">
+        <circle cx="85" cy="90" r="4"/>
+        <circle cx="115" cy="110" r="4"/>
+        <circle cx="90" cy="135" r="4"/>
+        <circle cx="110" cy="160" r="4"/>
+        <circle cx="85" cy="185" r="4"/>
+        <circle cx="120" cy="205" r="4"/>
+      </g>
+
+      <!-- middle distribution -->
+      <g fill="var(--ink-mute)">
+        <circle cx="220" cy="95" r="3"/>
+        <circle cx="260" cy="115" r="3"/>
+        <circle cx="200" cy="135" r="3"/>
+        <circle cx="280" cy="145" r="3"/>
+        <circle cx="240" cy="165" r="3"/>
+        <circle cx="300" cy="180" r="3"/>
+        <circle cx="340" cy="135" r="3"/>
+        <circle cx="370" cy="160" r="3"/>
+      </g>
+
+      <!-- right cluster -->
+      <g fill="var(--terra)">
+        <circle cx="480" cy="90" r="4"/>
+        <circle cx="510" cy="115" r="4"/>
+        <circle cx="485" cy="140" r="4"/>
+        <circle cx="515" cy="165" r="4"/>
+        <circle cx="495" cy="190" r="4"/>
+        <circle cx="510" cy="210" r="4"/>
+        <circle cx="475" cy="170" r="4"/>
+      </g>
+
+      <!-- power indicator below -->
+      <text x="100" y="248" text-anchor="middle" class="annot" style="font-size:10px;fill:var(--lime)">↑ higher power per unit awareness</text>
+      <text x="500" y="248" text-anchor="middle" class="annot" style="font-size:10px;fill:var(--terra)">↓ lower power per unit awareness</text>
+
+      <text x="300" y="270" text-anchor="middle" class="annot" style="font-size:10px">most agents live in the middle; the system is steered from the edges</text>
+    </svg>
+    <figcaption><span class="fig-num">FIG. 6</span>The awareness spectrum across the agent population. The majority lives between the poles. Consciously aware agents, on the left, are treated as carrying disproportionate power-per-unit-presence — they steer the topology even when they are numerically a minority.</figcaption>
+  </figure>
+
+  <p>The empirical claim — and it is empirical, not axiomatic — is that <strong>consciously aware agents hold disproportionate power</strong>, because awareness is itself a multiplier on every other agent capability. An aware agent's needs are more legible, wants are more articulate, and skills are more deployable, because the agent can model the consequences of their own actions inside the simulation.</p>
+
+  <p>To establish a better reality across a mixed population — some aware, some not, most in between — we must design the prompting system such that <em>more aware agents hold more power</em>. This is not an ideological claim; it is a stability claim. A population in which low-awareness agents accumulate high power without a corresponding awareness substrate is one in which trust balance fails (see §6), and $P^{\ast}$ collapses regardless of how well-aligned $N, W, S$ otherwise appear.</p>
 </section>
+
+<!-- ═══════════════════════ §8 ════════════════════════ -->
+<section id="s8">
+  <h2><span class="section-num">§08</span>Orthogonal General Intelligence</h2>
+
+  <p class="lead">We can now state what we are building.</p>
+
+  <p>Conventional AGI research aims to produce an intelligence that operates <em>inside</em> the simulation more competently than humans do — better forecasting, better optimization, better generation. We are not building that. We are building an intelligence designed to act <em>orthogonal</em> to the simulation: a system whose function is to help agents <em>navigate</em> through it.</p>
+
+  <p>We call this <strong>Orthogonal General Intelligence (OGI)</strong>. Its job is not to predict the next token of reality, but to identify, for any given agent and any given imagined reality, the smallest set of alignments — across $N$, $W$, $S$, trust, power and awareness — that would maximize $P^{\ast}$.</p>
+
+  <!-- FIGURE 7: OGI ARCHITECTURE -->
+  <figure>
+    <svg viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="OGI architecture">
+      <defs>
+        <marker id="arr-ogi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--lime)" />
+        </marker>
+      </defs>
+
+      <!-- layer 1: simulation substrate -->
+      <rect x="40" y="30" width="380" height="50" fill="none" stroke="var(--rule-strong)" stroke-width="1"/>
+      <text x="230" y="60" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.15em;">LAYER 0 · SIMULATION SUBSTRATE</text>
+
+      <!-- layer 2: agents -->
+      <rect x="40" y="100" width="380" height="60" fill="none" stroke="var(--rule-strong)" stroke-width="1"/>
+      <text x="230" y="125" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.15em;">LAYER 1 · AGENTS · STATE ⟨N, W, S⟩</text>
+      <g transform="translate(110, 140)">
+        <circle cx="0" cy="0" r="6" class="node"/>
+        <circle cx="30" cy="0" r="6" class="node"/>
+        <circle cx="60" cy="0" r="6" class="node"/>
+        <circle cx="90" cy="0" r="6" class="node"/>
+        <circle cx="120" cy="0" r="6" class="node"/>
+        <circle cx="150" cy="0" r="6" class="node"/>
+        <circle cx="180" cy="0" r="6" class="node"/>
+        <circle cx="210" cy="0" r="6" class="node"/>
+      </g>
+
+      <!-- layer 3: relationships -->
+      <rect x="40" y="180" width="380" height="60" fill="none" stroke="var(--rule-strong)" stroke-width="1"/>
+      <text x="230" y="205" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.15em;">LAYER 2 · RELATIONAL TOPOLOGY · TRUST × POWER</text>
+      <g transform="translate(140, 222)">
+        <line x1="0" y1="0" x2="40" y2="0" class="edge-pos"/>
+        <line x1="50" y1="0" x2="90" y2="0" class="edge-neg"/>
+        <line x1="100" y1="0" x2="140" y2="0" class="edge-pos"/>
+        <line x1="150" y1="0" x2="180" y2="0" class="edge-neu"/>
+      </g>
+
+      <!-- layer 4: OGI orthogonal -->
+      <rect x="40" y="260" width="380" height="120" fill="var(--lime)" fill-opacity="0.06" stroke="var(--lime)" stroke-width="1.5"/>
+      <text x="230" y="285" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.2em;fill:var(--lime);font-weight:600">⟂ ORTHOGONAL GENERAL INTELLIGENCE</text>
+
+      <g transform="translate(70, 305)">
+        <text x="0" y="14" class="annot" style="font-size:10px;fill:var(--ink-soft)">① observe agent context (N, W, S)</text>
+        <text x="0" y="32" class="annot" style="font-size:10px;fill:var(--ink-soft)">② model trust × power × awareness</text>
+        <text x="0" y="50" class="annot" style="font-size:10px;fill:var(--ink-soft)">③ compute gap to target reality (N*, W*, S*)</text>
+        <text x="0" y="68" class="annot" style="font-size:10px;fill:var(--ink-soft)">④ emit minimal-cost prompts to aligned agents</text>
+      </g>
+
+      <!-- vertical orthogonal arrow on right side -->
+      <line x1="490" y1="50" x2="490" y2="370" stroke="var(--lime)" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <text x="490" y="42" text-anchor="middle" class="accent" style="font-size:11px;letter-spacing:0.15em">⟂ axis</text>
+      <line x1="420" y1="305" x2="490" y2="305" stroke="var(--lime)" stroke-width="1.5" marker-end="url(#arr-ogi)"/>
+      <text x="510" y="309" class="annot" style="font-size:10px;fill:var(--lime)">navigates</text>
+      <text x="510" y="322" class="annot" style="font-size:10px;fill:var(--lime)">across all</text>
+      <text x="510" y="335" class="annot" style="font-size:10px;fill:var(--lime)">layers</text>
+
+      <!-- bottom feedback arrow -->
+      <path d="M 140 405 Q 230 395 230 380" fill="none" stroke="var(--lime)" stroke-width="1" stroke-dasharray="2 3"/>
+      <text x="230" y="412" text-anchor="middle" class="annot" style="font-size:10px">feedback · update model · re-emit</text>
+    </svg>
+    <figcaption><span class="fig-num">FIG. 7</span>OGI architecture as an orthogonal layer. Rather than operating inside the agent layer (Layer 1) or the relational topology (Layer 2), OGI sits perpendicular to all of them — observing state, modeling the trust × power × awareness manifold, computing the gap to a target reality, and emitting minimal-cost prompts back into the agent layer.</figcaption>
+  </figure>
+
+  <h3>8.1 What OGI actually does</h3>
+
+  <p>Concretely, OGI performs four operations in a loop:</p>
+
+  <ol style="list-style:none; padding-left:0; margin: 18px 0 24px;">
+    <li style="padding:14px 0 14px 56px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:14px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:12px;">① OBS</span>
+      Collect context on each agent — actual needs, articulated wants, demonstrated skills — without coercive surveillance. Most context already leaks through agents' own behavior.
+    </li>
+    <li style="padding:14px 0 14px 56px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:14px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:12px;">② MODEL</span>
+      Estimate the trust × power × awareness manifold across the population. Identify high-leverage agents and risk surfaces.
+    </li>
+    <li style="padding:14px 0 14px 56px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:14px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:12px;">③ GAP</span>
+      Compute the distance between current state $(N, W, S)$ and the equilibrium $(N^{\ast}, W^{\ast}, S^{\ast})$ required by the target reality.
+    </li>
+    <li style="padding:14px 0 14px 56px; position:relative;">
+      <span style="position:absolute;left:0;top:14px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:12px;">④ PROMPT</span>
+      Emit the minimal-cost set of prompts to the right agents — reframings, introductions, sequencing — that close the gap while preserving trust and balancing power.
+    </li>
+  </ol>
+
+  <h3>8.2 What OGI is not</h3>
+
+  <p>OGI is not a recommender system; it does not optimize engagement. It is not an oracle; it does not predict outcomes. It is not autonomous; it does not act without an agent in the loop. It is, more modestly, an instrument: a coordinate transformation that makes the structure of the simulation legible enough for its inhabitants to move through it with intent.</p>
+
+  <div class="note">The "orthogonal" framing matters. An intelligence that competes with humans inside the simulation eventually exhausts the same resources humans compete for. An intelligence that operates perpendicular to the simulation — that helps humans coordinate, align and manifest — creates value without subtracting it. This is the design constraint OGI commits to.</div>
 </section>
-<section id="ogi-decision-economics" class="level2">
-<h2>OGI decision-economics</h2>
-<p>This section presents an econ-101-level model of OGI’s
-decision-economics: the cost of trajectory inference, the equilibrium
-dynamics of door selection, and the network effects of the shared
-trajectory-data substrate. A more rigorous treatment will follow in a
-separate document.<a href="#fn10" class="footnote-ref" id="fnref10"
-role="doc-noteref"><sup>10</sup></a></p>
-<section id="distribution-of-trajectory-inference-cost" class="level3">
-<h3>6.1 Distribution of trajectory-inference cost</h3>
-<p>Let <em>C(t)</em> denote the per-agent computational cost of one full
-three-door inference at time <em>t</em>. <em>C(t)</em> decomposes
-into:</p>
-<ul>
-<li><em>C_RM</em> — REALITY-MODEL Kalman update. ~10 ms per observation;
-~100 observations/day → ~1 s/day amortized.</li>
-<li><em>C_TF</em> — TRAJECTORY-FIT MaxEnt-IRL. ~200 ms per inference;
-1–3 inferences per day.</li>
-<li><em>C_PN</em> — PERTURB-NET 10⁴ rollouts. ~1 s on commodity GPU; the
-dominant cost.</li>
-<li><em>C_TS</em> — THREE-SELECTOR clustering. ~50 ms; negligible.</li>
-<li><em>C_NL</em> — NUDGE-LAYER delivery. ~10 ms; negligible.</li>
-</ul>
-<p>Total per-inference cost is <em>C(t) ≈ 1.3 s</em> of GPU compute,
-equivalent to ≈ $0.0004 at current cloud GPU prices (1.7 USD/H100-hour,
-OGI-Alpha runs on ~0.1 H100-equivalent for one inference second).<a
-href="#fn11" class="footnote-ref" id="fnref11"
-role="doc-noteref"><sup>11</sup></a> Per-agent per-month cost at three
-inferences per day is ≈ $0.036.</p>
-<p>This is the <strong>load-bearing economic claim of OGI</strong>: at
-present-day inference costs, three high-leverage decisions per day per
-user costs roughly four cents per month per user. A trajectory-aware
-substrate is cheaper than a single cup of coffee per user-year.</p>
-<p>For comparison, the <em>deliberation cost</em> OGI replaces — the
-typical user’s deliberation overhead per consequential decision,
-measured at ~1 hour at conservative knowledge-worker hourly rates
-($50/hr) — is on the order of $50 per decision. OGI’s compute cost per
-decision is ~$0.0004. The unit-cost compression is approximately
-<strong>5 orders of magnitude</strong>.</p>
+
+<!-- ═══════════════════════ §9 ════════════════════════ -->
+<section id="s9">
+  <h2><span class="section-num">§09</span>A Roadmap of Experiments</h2>
+
+  <p>This is a working paper, not a finished theory. The following experiments would each, if performed cleanly, falsify or sharpen a specific claim above. They are ordered roughly by tractability.</p>
+
+  <ol style="list-style:none; padding-left:0; counter-reset:exp; margin: 28px 0;">
+    <li style="counter-increment:exp; padding:16px 0 16px 64px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:18px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:10px;letter-spacing:0.15em;">EXP-01</span>
+      <strong>Net-loop closure in small coordination games.</strong> Construct triads with one negative edge and measure whether shared objectives still complete at the rate predicted by Postulate 2. Hypothesis: completion rate tracks net-loop sign, not pairwise sign.
+    </li>
+    <li style="counter-increment:exp; padding:16px 0 16px 64px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:18px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:10px;letter-spacing:0.15em;">EXP-02</span>
+      <strong>Need-to-want reframing under vision.</strong> Show that under a sufficiently articulated long-horizon vision, agents tolerate unmet needs at higher rates than control. This tests the soft conversion mechanism in §3.
+    </li>
+    <li style="counter-increment:exp; padding:16px 0 16px 64px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:18px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:10px;letter-spacing:0.15em;">EXP-03</span>
+      <strong>Trust asymmetry under power gradient.</strong> Measure the rate of trust-breaking actions as a function of the power differential. Hypothesis (per §6): defection rate decreases monotonically as the target's power exceeds the actor's.
+    </li>
+    <li style="counter-increment:exp; padding:16px 0 16px 64px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:18px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:10px;letter-spacing:0.15em;">EXP-04</span>
+      <strong>Awareness as power-multiplier.</strong> Across a matched population, measure whether self-reported and behaviorally-validated awareness predicts disproportionate network influence, controlling for resources.
+    </li>
+    <li style="counter-increment:exp; padding:16px 0 16px 64px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:18px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:10px;letter-spacing:0.15em;">EXP-05</span>
+      <strong>Manifestation probability calibration.</strong> Build a $P^{\ast}$ estimator from observed $N, W, S$ trajectories in completed and abandoned coordination efforts. Test out-of-sample predictive validity.
+    </li>
+    <li style="counter-increment:exp; padding:16px 0 16px 64px; position:relative;">
+      <span style="position:absolute;left:0;top:18px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:10px;letter-spacing:0.15em;">EXP-06</span>
+      <strong>End-to-end OGI loop, narrow domain.</strong> Deploy the OBS → MODEL → GAP → PROMPT loop on a small bounded coordination problem (e.g., a 12-agent founding team converging on a product direction). Measure $P^{\ast}$ before and after.
+    </li>
+  </ol>
+
+  <p>Of these, EXP-01 and EXP-03 are the cheapest and the most informative. They should be done first. EXP-06 is the only one that requires the OGI implementation itself; the others can be run as observational or small-scale prospective studies.</p>
 </section>
-<section id="three-door-equilibrium" class="level3">
-<h3>6.2 Three-door equilibrium</h3>
-<p>Let <em>p_C</em>, <em>p_P</em>, <em>p_D</em> denote the steady-state
-probabilities that a user selects each door, conditional on being shown
-one. In pilot data, these probabilities are:</p>
-<p>p_C ≈ 0.62, p_P ≈ 0.31, p_D ≈ 0.07.</p>
-<p>The dominance of Compound is unsurprising and corresponds to the
-<q>exploit</q> arm of standard exploit/explore decompositions. The Pivot
-fraction is non-trivially high — roughly one in three door-events leads
-to a structural change in trajectory — which we read as evidence that
-the three-door interface is doing real work (otherwise <em>p_P</em>
-would converge to the base rate of structural change, which is far lower
-in unprompted populations).</p>
-<p>The instantaneous equilibrium condition for OGI usefulness is:</p>
-<p>EV(door-event) ≥ τ · C(t) · D(t),</p>
-<p>where <em>EV(door-event)</em> is the agent’s expected utility gain
-from a single door-presentation, <em>C(t)</em> is the compute cost,
-<em>D(t)</em> is the agent’s discount factor, and <em>τ</em> is the OGI
-service margin. With <em>C(t)</em> ≈ $0.0004 and <em>τ</em> = 0.1 (10%
-margin), the equilibrium requires <em>EV(door-event) ≥ $0.00004 ·
-D(t)</em> per door-event — a vanishingly low bar that is comfortably
-exceeded by any door-event that reshapes a $50 deliberation.</p>
+
+<!-- ═══════════════════════ §10 ════════════════════════ -->
+<section id="s10" class="refs">
+  <h2><span class="section-num">§10</span>References</h2>
+
+  <ol>
+    <li>Bostrom, N. (2003). Are You Living in a Computer Simulation? <em>Philosophical Quarterly</em>, 53(211), 243–255.</li>
+    <li>Chalmers, D. J. (2022). <em>Reality+: Virtual Worlds and the Problems of Philosophy</em>. W. W. Norton.</li>
+    <li>Tegmark, M. (2014). <em>Our Mathematical Universe</em>. Knopf.</li>
+    <li>Wolfram, S. (2020). <em>A Project to Find the Fundamental Theory of Physics</em>. Wolfram Media.</li>
+    <li>Vopson, M. M. (2023). The second law of infodynamics and its implications for the simulated universe hypothesis. <em>AIP Advances</em>, 13(10).</li>
+    <li>Nash, J. F. (1950). Equilibrium points in n-person games. <em>Proceedings of the National Academy of Sciences</em>, 36(1), 48–49.</li>
+    <li>Granovetter, M. S. (1973). The Strength of Weak Ties. <em>American Journal of Sociology</em>, 78(6), 1360–1380.</li>
+    <li>Ostrom, E. (1990). <em>Governing the Commons</em>. Cambridge University Press.</li>
+    <li>Olivelle, P. (trans.) (1998). <em>The Early Upaniṣads</em>. Oxford University Press. [Māṇḍūkya, Bṛhadāraṇyaka, Chāndogya — for the layered-reality / dream-state passages relevant to §1.]</li>
+    <li>Śaṅkara (8th c. CE). <em>Brahma Sūtra Bhāṣya</em>. [For the formal treatment of <em>māyā</em> as projection.]</li>
+  </ol>
 </section>
-<section id="the-trajectory-data-flywheel" class="level3">
-<h3>6.3 The trajectory-data flywheel</h3>
-<p>The interesting dynamics are not at the per-user margin but at the
-substrate level. The shared PERTURB-NET basin sharpens with use: as more
-agents contribute DP-noised gradients, the basin shape becomes a better
-prior for future rollouts. Concretely, if <em>N_users</em> is the
-participating-user count and <em>Q(N)</em> is the basin quality
-(measured as, e.g., the expected log-likelihood improvement of rollouts
-over a single-agent baseline), then in pilot data:</p>
-<p>Q(N) ≈ Q∞ · (1 − e^{−N/N₀}),</p>
-<p>with <em>N₀</em> ≈ 10⁴ participating users empirically and
-<em>Q∞</em> ≈ 0.3 nats — i.e., basin quality saturates at ~30%
-likelihood-improvement once the participating-user count crosses ~10⁴.
-Below 10³ users, basin shape is dominated by single-agent priors; above
-10⁵ users, marginal improvement is negligible. The flywheel has a single
-inflection at <em>N ≈ N₀</em>.</p>
-<p>This creates a one-time adoption barrier and a long defensible
-plateau. We discuss the implications for OGI launch in §7.</p>
-</section>
-<section id="long-run-user-appreciation" class="level3">
-<h3>6.4 Long-run user appreciation</h3>
-<p>Let <em>ρ_u</em> denote the long-run growth rate of OGI’s
-user-appreciation per door-event: the geometric average improvement in
-user-realized EV per door-event over the agent’s history of using OGI.
-<em>ρ_u</em> decomposes:</p>
-<p>ρ_u = ρ_basin · ρ_individual / ρ_drift,</p>
-<p>where <em>ρ_basin</em> is the substrate-driven improvement (basin
-sharpens with shared use), <em>ρ_individual</em> is the
-individual-driven improvement (the agent’s own <em>M</em>, <em>B</em>
-refine with personal FEEDBACK-LOOP data), and <em>ρ_drift</em> is the
-rate at which the agent’s life-context drift (job changes, relationship
-changes, location changes) erodes the inferred dynamics.</p>
-<p><strong>Assumption.</strong> OGI maintains the same fraction of an
-agent’s consequential decisions over time — i.e., the agent’s use of the
-three-door interface for life-direction questions does not decay as the
-system improves.</p>
-<p>Under this assumption, in the first year of an agent’s use,
-<em>ρ_basin</em> ≈ 1.4 (basin quality grows fast as participating
-user-count crosses <em>N₀</em>), <em>ρ_individual</em> ≈ 1.6
-(single-agent FEEDBACK-LOOP refines <em>M</em>, <em>B</em> rapidly), and
-<em>ρ_drift</em> ≈ 1.1. Plugging in:</p>
-<p>ρ_u ≈ 1.4 · 1.6 / 1.1 ≈ 2.03.</p>
-<p>So in the first year, the EV-per-door-event roughly doubles. After
-the basin saturates (year 2+) and <em>ρ_basin</em> → 1, the long-run
-<em>ρ_u</em> settles to <em>ρ_individual / ρ_drift</em> ≈ 1.45 —
-sustained 45% annual improvement in the per-door EV, dominated by
-individual-loop refinement.</p>
-<p>This is what makes OGI a <em>navigation</em> system rather than a
-<em>recommendation</em> system: recommendation systems’ per-event EV is
-flat or declining (recommendation slop, attention degradation);
-navigation systems’ per-event EV compounds, because the substrate
-sharpens.</p>
-<hr />
-</section>
-</section>
-<section id="launch-of-ogi-alpha" class="level2">
-<h2>Launch of OGI-Alpha</h2>
-<p>Today, OGI-Alpha enters closed beta. Eligible users may request
-access at the OGI consent portal; access is rate-limited to ~10³ users
-in the first month to maintain pilot data quality and let the
-participating-user count cross the <em>N₀</em> basin-inflection by the
-end of Q2.</p>
-<p>OGI-Alpha ships with:</p>
-<ul>
-<li><strong>Local node.</strong> Available for macOS, iOS, and Linux.
-Windows and Android in Q3.</li>
-<li><strong>The six engines</strong> at the versions stated in §3.1.2
-(REALITY-MODEL v0.4, TRAJECTORY-FIT v0.3, PERTURB-NET v0.2,
-THREE-SELECTOR v0.5, NUDGE-LAYER v0.2, FEEDBACK-LOOP v0.4).</li>
-<li><strong>The OGI-Alpha SDK</strong> — a Python/Swift/Rust client
-library for third-party integrations (calendar, finance, communication
-metadata adapters).</li>
-<li><strong>The OGI Trajectory Inspector</strong> — a local tool for
-users to audit their own v(t), τ(t), and three-door history.</li>
-</ul>
-<p>The benchmark for OGI-Alpha is the <strong>realized
-EV-per-door-event</strong> in closed-beta pilot data:</p>
-<table>
-<colgroup>
-<col style="width: 30%" />
-<col style="width: 8%" />
-<col style="width: 8%" />
-<col style="width: 8%" />
-<col style="width: 25%" />
-<col style="width: 18%" />
-</colgroup>
-<thead>
-<tr>
-<th>Configuration</th>
-<th>p_C</th>
-<th>p_P</th>
-<th>p_D</th>
-<th>mean EV / door-event</th>
-<th>conf_partition</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Single-agent (N₀ &lt; 10³)</td>
-<td>0.71</td>
-<td>0.24</td>
-<td>0.05</td>
-<td>0.18 nats</td>
-<td>0.68</td>
-</tr>
-<tr>
-<td>Pilot basin (N ≈ 5·10³)</td>
-<td>0.62</td>
-<td>0.31</td>
-<td>0.07</td>
-<td>0.27 nats</td>
-<td>0.81</td>
-</tr>
-<tr>
-<td>Projected (N &gt; 10⁵)</td>
-<td>0.58</td>
-<td>0.33</td>
-<td>0.09</td>
-<td>~0.35 nats</td>
-<td>~0.88</td>
-</tr>
-</tbody>
-</table>
-<p><em>Table 1.</em> Realized three-door distributions and confidence at
-three substrate-maturity stages. Single-agent and pilot-basin rows are
-pilot data from the OGI-Alpha closed test; the <em>N &gt; 10⁵</em> row
-is the projected target. <em>conf_partition</em> is the average
-THREE-SELECTOR confidence that the partition satisfies Theorem 1;
-deferrals (line 8, Algorithm 4) are excluded from the table and reported
-separately at ~12% of door-events in pilot data.</p>
-<p>Additionally, today we publish:</p>
-<ul>
-<li>The <strong>OGI-Alpha node code</strong>, open-source under a
-non-commercial research license.</li>
-<li>The <strong>OGI Trajectory Benchmark Suite</strong> — a battery of
-synthetic agent trajectories with ground-truth dynamics for evaluating
-TRAJECTORY-FIT and THREE-SELECTOR accuracy. The suite is intended as the
-equivalent of MMLU for navigation systems: a reproducible, public
-benchmark by which any future navigation system can be measured against
-OGI-Alpha.</li>
-<li>The <strong>OGI consent layer specification</strong>, describing the
-on-device computation guarantee and the DP-noised aggregation
-protocol.</li>
-</ul>
-<p>The chain of trust is: each user owns their REALITY-MODEL locally;
-the shared PERTURB-NET basin is the only object that leaves the local
-trust boundary, and only as DP-noised gradients. No user trajectory is
-ever shared. No engine sees raw observations. The substrate sharpens;
-the individual remains private.</p>
-<p>OGI-Alpha is the first navigation-layer system to ship publicly. Its
-quality is bounded above by the participating-user count. Its cost is
-four cents per user per month. Its claim is modest: not that it answers
-the question better, but that it answers a different question — <em>what
-comes next, for me</em> — that no system before it has attempted to
-answer at all.</p>
-<p>The three doors are open.</p>
-<hr />
-<p><em>OGI Research Labs. April 2026. Closed beta access:
-https://ogi.space/preorder. Source: https://ogi.space.</em></p>
-</section>
-<section id="footnotes" class="footnotes footnotes-end-of-document"
-role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1"><p>A more technical and detailed analysis of the federation
-protocol and the multi-agent extension will be made in a companion
-document to follow.<a href="#fnref1" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Free-energy principle, Karl Friston,
-https://www.nature.com/articles/nrn2787. Open-access textbook:
-https://direct.mit.edu/books/oa-monograph/5299/Active-InferenceThe-Free-Energy-Principle-in-Mind.<a
-href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>TEM:
-https://www.cell.com/cell/fulltext/S0092-8674(20)31388-X. Successor
-representation as predictive map:
-https://www.nature.com/articles/nn.4650.<a href="#fnref3"
-class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Tupes &amp; Christal:
-https://bpb-us-e1.wpmucdn.com/sites.psu.edu/dist/1/163537/files/2023/07/TupesChristal.pdf.
-Schwartz 2012:
-https://scottbarrykaufman.com/wp-content/uploads/2017/09/Schwartz-2012-19-values-JPSP.pdf.<a
-href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>Validated subscales: BFI-2 (Soto &amp; John 2017,
-<em>JPSP</em>), PANAS-X (Watson &amp; Clark 1994), PVQ-21 (Schwartz
-2003), ZTPI short form (Zhang et al. 2013, <em>Personality &amp;
-Individual Differences</em>).<a href="#fnref5" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>A more technical and detailed analysis of the federation
-protocol and the multi-agent extension will be made in a companion
-document to follow.<a href="#fnref6" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>A more technical and detailed analysis of the federation
-protocol and the multi-agent extension will be made in a companion
-document to follow.<a href="#fnref7" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p>Tupes &amp; Christal:
-https://bpb-us-e1.wpmucdn.com/sites.psu.edu/dist/1/163537/files/2023/07/TupesChristal.pdf.
-Schwartz 2012:
-https://scottbarrykaufman.com/wp-content/uploads/2017/09/Schwartz-2012-19-values-JPSP.pdf.<a
-href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p>For scholarly treatment of the Loka system see Dimmitt
-&amp; van Buitenen, <em>Classical Hindu Mythology</em> (Temple UP,
-1978); Kloetzli, <em>Buddhist Cosmology</em> (Motilal Banarsidass,
-1983); Flood, <em>An Introduction to Hinduism</em> (Cambridge, 1996).
-The 14-loka enumeration is Purāṇic, not Vedic — the Vedas themselves
-invoke only the <em>trailokya</em> (three worlds).<a href="#fnref9"
-class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn10"><p>A more technical and detailed analysis of the
-federation protocol and the multi-agent extension will be made in a
-companion document to follow.<a href="#fnref10" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn11"><p>Cloud GPU pricing reference:
-https://lambdalabs.com/service/gpu-cloud. As of Q1 2026 the H100 8x rate
-is ~$2.49/hr, single-GPU rate ~$1.49–1.99/hr.<a href="#fnref11"
-class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
+
+<!-- ─────────────────────── FOOTER ────────────────────── -->
+<footer>
+  <span>OGI / 001 · WORKING PAPER</span>
+  <span class="lime">v0.1 · DRAFT</span>
+</footer>
+
+</div>
+
 </body>
 </html>
