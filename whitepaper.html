@@ -314,6 +314,84 @@ code, .mono {
   font-weight: 600;
 }
 
+/* ── CASE STUDY ────────────────────────────── */
+.case {
+  margin: 28px 0;
+  padding: 24px 28px;
+  background: rgba(255, 107, 71, 0.025);
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--terra);
+}
+
+.case-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--terra);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.case p { color: var(--ink); }
+.case p:last-child { margin-bottom: 0; }
+
+.matrix-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 20px 0;
+}
+
+@media (max-width: 640px) {
+  .matrix-grid { grid-template-columns: 1fr; }
+}
+
+table.state-matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+table.state-matrix th,
+table.state-matrix td {
+  padding: 7px 6px;
+  text-align: center;
+  border-bottom: 1px solid var(--rule);
+}
+
+table.state-matrix th {
+  color: var(--ink-mute);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  font-size: 10px;
+}
+
+table.state-matrix td:first-child,
+table.state-matrix th:first-child {
+  text-align: left;
+  color: var(--ink-soft);
+}
+
+table.state-matrix .lime-cell { color: var(--lime); }
+table.state-matrix .terra-cell { color: var(--terra); }
+table.state-matrix tr.total td {
+  border-top: 1px solid var(--rule-strong);
+  border-bottom: none;
+  color: var(--ink);
+  font-weight: 600;
+  padding-top: 10px;
+}
+
+.matrix-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
 /* ── FIGURES ───────────────────────────────── */
 figure {
   margin: 40px 0;
@@ -453,7 +531,7 @@ svg .accent { fill: var(--lime); }
 <!-- ─────────────────────── HEADER ────────────────────── -->
 <header class="hero">
   <div class="meta">
-    <span>Working Paper · v0.1</span>
+    <span>Working Paper · v0.2</span>
     <span class="tag">⟶ OGI / 001</span>
   </div>
 
@@ -464,7 +542,7 @@ svg .accent { fill: var(--lime); }
   <p class="subtitle">A framework for modeling agent dynamics, value entropy and trust topology in a simulated reality — and the case for an orthogonal navigation intelligence built on top of it.</p>
 
   <div class="byline">
-    <div>Author &nbsp;·&nbsp; <span>Sid</span></div>
+    <div>Author &nbsp;·&nbsp; <span>Shashank Sahu</span></div>
     <div>Draft &nbsp;·&nbsp; <span id="date">Apr 28, 2026</span></div>
   </div>
 </header>
@@ -688,7 +766,116 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
 
   <p>The line between needs and wants is structurally thin. Under the influence of a sufficiently strong relational layer — trust between agents — a need can be <em>reframed</em> as a want, and the reverse holds when trust degrades. Specifically: a need can be tolerated as an unsolved want if the agent believes the broader vision is solving for their bigger wants. This is the lever on which all coordination ultimately rests.</p>
 
-  <h3>3.1 Bringing imagination into reality</h3>
+  <h3>3.1 Case · Project Helix</h3>
+
+  <div class="case">
+    <div class="case-label">Worked Example · 7-Agent Founding Team</div>
+    <p>To make the rest of the paper concrete, we introduce a single running case study and thread it through every subsequent section. The setting is deliberately generic so that the framework's claim to generality is preserved.</p>
+    <p>A four-year-old vertical SaaS company has a working core product and a recently-stabilized enterprise GTM motion. The CEO wants to ship an AI-native sibling product — internally called <strong>Project Helix</strong> — within six months. The question is not whether Helix is a good idea. The question is whether the seven agents currently in the room can <em>manifest</em> it as a real shipping reality.</p>
+    <p>The agent set is $\mathcal{S}_{\mathrm{Helix}} = \{a_1, \ldots, a_7\}$, with each agent positioned by role, tenure, and posture toward Helix.</p>
+  </div>
+
+  <!-- FIGURE 8: HELIX TEAM ORIENTATION -->
+  <figure>
+    <svg viewBox="0 0 600 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Project Helix team and orientation toward the imagination">
+      <defs>
+        <marker id="arr-lime-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--lime)" />
+        </marker>
+        <marker id="arr-terra-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--terra)" />
+        </marker>
+        <radialGradient id="helix-core" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="var(--lime)" stop-opacity="0.5"/>
+          <stop offset="60%" stop-color="var(--lime)" stop-opacity="0.1"/>
+          <stop offset="100%" stop-color="var(--lime)" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- center: Helix target -->
+      <circle cx="300" cy="210" r="60" fill="url(#helix-core)"/>
+      <circle cx="300" cy="210" r="32" fill="var(--bg)" stroke="var(--lime)" stroke-width="1.5"/>
+      <text x="300" y="208" text-anchor="middle" class="accent" style="font-size:11px;letter-spacing:0.18em;font-weight:600">HELIX</text>
+      <text x="300" y="222" text-anchor="middle" class="annot" style="font-size:9px;">imagination</text>
+
+      <!-- 7 agents arrayed around -->
+      <!-- a1 CEO - top -->
+      <g>
+        <line x1="300" y1="80" x2="300" y2="178" class="edge-pos" marker-end="url(#arr-lime-2)"/>
+        <text x="310" y="135" class="edge-label" fill="var(--pos)">++</text>
+        <circle class="node" cx="300" cy="60" r="22"/>
+        <text class="node-label" x="300" y="64" text-anchor="middle">a₁</text>
+        <text x="300" y="35" text-anchor="middle" class="annot" style="font-size:10px;letter-spacing:0.1em;">CEO</text>
+      </g>
+
+      <!-- a2 CTO - upper right -->
+      <g>
+        <line x1="450" y1="118" x2="332" y2="195" class="edge-pos" marker-end="url(#arr-lime-2)"/>
+        <text x="395" y="148" class="edge-label" fill="var(--pos)">+</text>
+        <circle class="node" cx="465" cy="105" r="22"/>
+        <text class="node-label" x="465" y="109" text-anchor="middle">a₂</text>
+        <text x="500" y="105" class="annot" style="font-size:10px;letter-spacing:0.1em;">CTO</text>
+      </g>
+
+      <!-- a7 Investor - right -->
+      <g>
+        <line x1="510" y1="210" x2="335" y2="210" class="edge-pos" stroke-dasharray="2 3" marker-end="url(#arr-lime-2)"/>
+        <text x="420" y="200" class="edge-label" fill="var(--pos)">+?</text>
+        <circle class="node" cx="530" cy="210" r="22"/>
+        <text class="node-label" x="530" y="214" text-anchor="middle">a₇</text>
+        <text x="530" y="245" text-anchor="middle" class="annot" style="font-size:10px;letter-spacing:0.1em;">INVESTOR</text>
+      </g>
+
+      <!-- a4 Head of Product - lower right -->
+      <g>
+        <line x1="450" y1="305" x2="332" y2="228" class="edge-pos" marker-end="url(#arr-lime-2)"/>
+        <text x="395" y="280" class="edge-label" fill="var(--pos)">++</text>
+        <circle class="node" cx="465" cy="320" r="22"/>
+        <text class="node-label" x="465" y="324" text-anchor="middle">a₄</text>
+        <text x="500" y="325" class="annot" style="font-size:10px;letter-spacing:0.1em;">HoP</text>
+      </g>
+
+      <!-- a5 Designer - lower -->
+      <g>
+        <line x1="300" y1="350" x2="300" y2="242" class="edge-pos" marker-end="url(#arr-lime-2)"/>
+        <text x="310" y="295" class="edge-label" fill="var(--pos)">+</text>
+        <circle class="node" cx="300" cy="370" r="22"/>
+        <text class="node-label" x="300" y="374" text-anchor="middle">a₅</text>
+        <text x="300" y="402" text-anchor="middle" class="annot" style="font-size:10px;letter-spacing:0.1em;">DESIGNER</text>
+      </g>
+
+      <!-- a6 GTM - lower left, NEGATIVE -->
+      <g>
+        <line x1="150" y1="305" x2="268" y2="228" class="edge-neg" marker-end="url(#arr-terra-2)"/>
+        <text x="200" y="280" class="edge-label" fill="var(--neg)">−</text>
+        <circle class="node" cx="135" cy="320" r="22" style="stroke:var(--terra)"/>
+        <text class="node-label" x="135" y="324" text-anchor="middle">a₆</text>
+        <text x="135" y="355" text-anchor="middle" class="annot" style="font-size:10px;letter-spacing:0.1em;fill:var(--terra)">GTM</text>
+      </g>
+
+      <!-- a3 VP Eng - upper left, NEUTRAL/AMBIGUOUS -->
+      <g>
+        <line x1="150" y1="118" x2="268" y2="195" class="edge-neu" marker-end="url(#arrow-neu)"/>
+        <text x="195" y="148" class="edge-label" fill="var(--neu)">0</text>
+        <circle class="node" cx="135" cy="105" r="22" style="stroke:var(--neu)"/>
+        <text class="node-label" x="135" y="109" text-anchor="middle">a₃</text>
+        <text x="135" y="80" text-anchor="middle" class="annot" style="font-size:10px;letter-spacing:0.1em;">VP ENG</text>
+      </g>
+
+      <!-- a2 <-> a3 friction edge -->
+      <path d="M 157 105 L 443 105" stroke="var(--terra)" stroke-width="1" stroke-dasharray="3 4" fill="none"/>
+      <text x="300" y="98" text-anchor="middle" class="edge-label" fill="var(--terra)" style="font-size:10px">φ(a₂,a₃) &lt; 0</text>
+
+    </svg>
+    <figcaption><span class="fig-num">FIG. 3</span>The Project Helix team and each agent's current orientation toward the imagined reality. Five agents are positively aligned (lime, $a_1, a_2, a_4, a_5, a_7$); one is actively negative ($a_6$, GTM, who reads Helix as a cannibalization risk); one is ambivalent ($a_3$, VP Engineering, whose stance is mediated through unresolved friction with $a_2$, shown as the dashed terracotta edge across the top).</figcaption>
+  </figure>
+
+  <div class="case">
+    <p>Each agent's state vector $(N_i, W_i, S_i)$ varies meaningfully across the population. $a_1$ (CEO) and $a_2$ (CTO) have all needs met and most wants articulated, but $a_2$'s craft-want has been frustrated by 18 months of operational load. $a_3$ (VP Engineering, hired one year ago) joined with a clear want to <em>own</em> a technical domain and feels gatekept by $a_2$. $a_6$ (Head of GTM) has just spent two years building the enterprise motion and reads Helix as a cannibalization risk. $a_7$ (lead investor) wants returns and is cautiously positive but uneasy about timing.</p>
+    <p>The relational topology already contains tension: $\varphi(a_2, a_3) < 0$ and $\varphi(a_3, a_2) < 0$ — mutual mild negative affinity along the CTO ↔ VP Eng edge. We will return to this edge specifically in §4, because it is the cleanest available instance of <em>Postulate 2 in the field</em>.</p>
+  </div>
+
+  <h3>3.2 Bringing imagination into reality</h3>
 
   <p>For an imagination to cross the threshold into reality, we proceed in two steps. First, identify the <em>skill set</em> $S^{\ast}$ required to realize it. Second, shortlist the agents whose existing skills $S$ and tractable needs $N$ make them feasible collaborators. The remaining gap — between $S$ and $S^{\ast}$ — is closed through experience, interest, or time, all of which are first-order navigable.</p>
 
@@ -776,12 +963,17 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
         <text x="130" y="220" text-anchor="middle" class="annot" style="font-size:10px">net loop &gt; 0  ⇒  P* increases</text>
       </g>
     </svg>
-    <figcaption><span class="fig-num">FIG. 3</span>Left: value $V$ emitted between two agents compounds in the value-entropy field and returns as $V^{\ast} = \alpha V$. Right: even when one pairwise edge is negative, a closed loop whose <em>net</em> sign is positive raises the manifestation probability of the imagination it serves.</figcaption>
+    <figcaption><span class="fig-num">FIG. 4</span>Left: value $V$ emitted between two agents compounds in the value-entropy field and returns as $V^{\ast} = \alpha V$. Right: even when one pairwise edge is negative, a closed loop whose <em>net</em> sign is positive raises the manifestation probability of the imagination it serves.</figcaption>
   </figure>
 
   <p>The two postulates have very different uses in practice. Postulate 1 tells us that positive value, once seeded into a sufficiently connected agent population, does not stay where it is put — it returns, scaled by $\alpha$, which is itself a function of <em>where</em> and <em>when</em>. Postulate 2 tells us that we do not need every pairwise relationship to be positive in order for a collective imagination to manifest; we need the <em>loop</em> to close positive.</p>
 
   <p>This is consistent with empirical observations from large coordination efforts — startups, social movements, scientific collaborations — where the internal graph of relationships is rarely monochromatic, but the net direction is what determines outcomes.</p>
+
+  <div class="case">
+    <div class="case-label">Helix · Postulate 2 in the Field</div>
+    <p>Returning to the Helix team from §3.1: the edge $\varphi(a_2, a_3)$ is and remains negative throughout the rest of this paper. We will <em>not</em> resolve the personal friction between CTO and VP Engineering. Postulate 2 says we don't need to. What we need is for the loop $a_1 \to a_2 \to (\text{Helix}) \to a_4 \to a_5 \to a_1$ to close positive, and for $a_3$ and $a_6$ to be reframed such that their orientation toward Helix flips from neutral/negative to positive — even if their pairwise edge to $a_2$ stays sour. The loop, not the pair, is what determines $P^{\ast}$.</p>
+  </div>
 </section>
 
 <!-- ═══════════════════════ §5 ════════════════════════ -->
@@ -864,10 +1056,64 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
       <text x="300" y="270" text-anchor="middle" class="annot" style="font-size:11px">closing the gap between these two matrices is the navigation problem</text>
       <text x="300" y="295" text-anchor="middle" class="accent" style="font-size:12px;font-family:'JetBrains Mono',monospace">⤷ P* → 1</text>
     </svg>
-    <figcaption><span class="fig-num">FIG. 4</span>Manifestation probability $P^{\ast}$ as a ratio of two state matrices over the agent population. The numerator captures the present state of needs, wants and skills; the denominator captures the Nash equilibrium required by the target reality. The OGI's task is to drive the ratio toward unity.</figcaption>
+    <figcaption><span class="fig-num">FIG. 5</span>Manifestation probability $P^{\ast}$ as a ratio of two state matrices over the agent population. The numerator captures the present state of needs, wants and skills; the denominator captures the Nash equilibrium required by the target reality. The OGI's task is to drive the ratio toward unity.</figcaption>
   </figure>
 
-  <h3>5.1 How does an OGI act on this equation?</h3>
+  <h3>5.1 Case · Helix state matrices and the current $P^{\ast}$</h3>
+
+  <div class="case">
+    <div class="case-label">Worked Example · Computing P* for Project Helix</div>
+    <p>Applying Equation (5) to the Helix team requires writing down both the current state and the equilibrium target. Values are normalized to $[0, 1]$ — read as "fraction of this quantity currently realized for this agent." For didactic clarity we adopt the element-wise reading $P^{\ast} = \sum_i N_i W_i S_i \,/\, \sum_i N_i^{\ast} W_i^{\ast} S_i^{\ast}$, which is the cleanest scalar specialization of Equation (5).</p>
+
+    <div class="matrix-grid">
+      <div>
+        <div class="matrix-caption" style="color:var(--lime)">⦿ Current state</div>
+        <table class="state-matrix">
+          <thead>
+            <tr><th></th><th>role</th><th>N</th><th>W</th><th>S</th><th>N·W·S</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>a₁</td><td>CEO</td><td>0.9</td><td>0.6</td><td>0.7</td><td class="lime-cell">0.38</td></tr>
+            <tr><td>a₂</td><td>CTO</td><td>0.9</td><td>0.4</td><td>0.9</td><td class="lime-cell">0.32</td></tr>
+            <tr><td>a₃</td><td>VP Eng</td><td>0.6</td><td>0.2</td><td>0.7</td><td class="lime-cell">0.08</td></tr>
+            <tr><td>a₄</td><td>HoP</td><td>0.8</td><td>0.5</td><td>0.8</td><td class="lime-cell">0.32</td></tr>
+            <tr><td>a₅</td><td>Designer</td><td>0.7</td><td>0.5</td><td>0.6</td><td class="lime-cell">0.21</td></tr>
+            <tr><td>a₆</td><td>GTM</td><td>0.8</td><td>0.3</td><td>0.5</td><td class="lime-cell">0.12</td></tr>
+            <tr><td>a₇</td><td>Investor</td><td>0.9</td><td>0.4</td><td>0.6</td><td class="lime-cell">0.22</td></tr>
+            <tr class="total"><td colspan="5">Σ N·W·S</td><td class="lime-cell">1.65</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="matrix-caption" style="color:var(--terra)">⦿ Equilibrium (Helix ships)</div>
+        <table class="state-matrix">
+          <thead>
+            <tr><th></th><th>role</th><th>N*</th><th>W*</th><th>S*</th><th>N*·W*·S*</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>a₁</td><td>CEO</td><td>0.9</td><td>0.8</td><td>0.8</td><td class="terra-cell">0.58</td></tr>
+            <tr><td>a₂</td><td>CTO</td><td>0.9</td><td>0.8</td><td>0.9</td><td class="terra-cell">0.65</td></tr>
+            <tr><td>a₃</td><td>VP Eng</td><td>0.8</td><td>0.8</td><td>0.8</td><td class="terra-cell">0.51</td></tr>
+            <tr><td>a₄</td><td>HoP</td><td>0.8</td><td>0.8</td><td>0.9</td><td class="terra-cell">0.58</td></tr>
+            <tr><td>a₅</td><td>Designer</td><td>0.8</td><td>0.7</td><td>0.7</td><td class="terra-cell">0.39</td></tr>
+            <tr><td>a₆</td><td>GTM</td><td>0.8</td><td>0.7</td><td>0.6</td><td class="terra-cell">0.34</td></tr>
+            <tr><td>a₇</td><td>Investor</td><td>0.9</td><td>0.7</td><td>0.7</td><td class="terra-cell">0.44</td></tr>
+            <tr class="total"><td colspan="5">Σ N*·W*·S*</td><td class="terra-cell">3.49</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p style="margin-top:18px;">The current manifestation probability is therefore:</p>
+    <div class="equation" style="background:transparent;border:none;padding:8px 0;margin:8px 0;">
+      $$ P^{\ast}_{\mathrm{Helix}} \;=\; \frac{1.65}{3.49} \;\approx\; 0.47 $$
+    </div>
+    <p>The team is at roughly the midpoint of the manifestation interval. Helix has a non-trivial chance of shipping but is far from a stable trajectory. The dominant deficits are concentrated in three cells of the current matrix: $a_2$'s low $W$ (CTO's craft-want unmet), $a_3$'s low $W$ and $N$ (VP Eng feels gatekept and under-resourced), and $a_6$'s low $W$ (GTM reads Helix as a threat to his motion). $a_1, a_4, a_5, a_7$ are already at or near their equilibrium values.</p>
+    <p>This three-cell deficit structure is the OGI's entry point. It tells us — without any further analysis — that the intervention surface is at most three agents wide. We will name those three prompts explicitly in §8.</p>
+  </div>
+
+  <h3>5.2 How does an OGI act on this equation?</h3>
 
   <p>The answer lies in <strong>prompt-engineering the agents themselves</strong>. If we can collect sufficient context on each agent — their actual $N_i, W_i, S_i$ — and then prompt them toward a broader reality (an imagination) in which at least some of their wants are being met, they become aligned toward the shared goal almost mechanically. The mechanism is not coercion but reframing: the better reality solves their wants in some way, even if not directly.</p>
 
@@ -958,7 +1204,7 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
       <!-- footnote -->
       <text x="80" y="345" class="annot" style="font-size:10px">★ agent within operating zone — high power, high trust stability — is least likely to defect</text>
     </svg>
-    <figcaption><span class="fig-num">FIG. 5</span>The trust–power plane. Agents in the high-power / high-trust quadrant are stable anchors; agents in the high-power / low-trust region are the largest risk surface. For a target reality to manifest, power must be <em>balanced</em> across the network — but not equalized — such that trust holds under load.</figcaption>
+    <figcaption><span class="fig-num">FIG. 6</span>The trust–power plane. Agents in the high-power / high-trust quadrant are stable anchors; agents in the high-power / low-trust region are the largest risk surface. For a target reality to manifest, power must be <em>balanced</em> across the network — but not equalized — such that trust holds under load.</figcaption>
   </figure>
 
   <p>The operational consequence is direct. For a reality to be achieved, we must (i) segregate which agents are powerful, (ii) for any prompt or alignment we attempt to introduce, ensure those high-power agents' needs and wants are met first, and (iii) balance power across the network such that trust does not collapse asymmetrically.</p>
@@ -968,6 +1214,13 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
   <div class="postulate" style="border-left-color: var(--terra); background: rgba(255, 107, 71, 0.04);">
     <div class="postulate-label" style="color:var(--terra)">Heuristic</div>
     <p style="color:var(--ink);"><strong>Power needs to be balanced for trust to work out.</strong> When power is wildly unequal across the network, trust degrades along the steepest gradient and the manifestation probability $P^{\ast}$ drops independently of the underlying $N, W, S$ alignment.</p>
+  </div>
+
+  <div class="case">
+    <div class="case-label">Helix · The Team on the Trust × Power Plane</div>
+    <p>Locating the Helix team on Figure 6: $a_1$ (CEO) and $a_2$ (CTO) sit firmly in the high-power, high-trust quadrant — the operating zone. $a_7$ (lead investor) sits adjacent to them, slightly outside the daily operating loop but with formal power that exceeds either co-founder's. $a_4$ (Head of Product) and $a_5$ (Lead Designer) occupy the low-to-medium power, high-trust quadrant: they are the "vulnerable allies" of the framework — fully aligned, but without the leverage to drive Helix on their own.</p>
+    <p>The interesting agents are $a_3$ and $a_6$. $a_3$ (VP Engineering) is medium-power with asymmetric trust — high downward trust from $a_1$, lower lateral trust from $a_2$. He is the trust risk surface. $a_6$ (Head of GTM) is medium-to-high power but his trust is conditional on revenue performance — a single bad quarter would relocate him to the lower-right quadrant (high-power / low-trust), the framework's largest risk region.</p>
+    <p>The operational implication is direct. Any prompt OGI emits to $a_3$ must come from, or be visibly endorsed by, an agent of higher power than $a_2$ — otherwise the trust asymmetry under power (§6.2) will cause $a_3$ to read the prompt as gatekeeping. In practice this means $a_1$ delivers the reframe to $a_3$, not $a_2$.</p>
   </div>
 </section>
 
@@ -1037,12 +1290,19 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
 
       <text x="300" y="270" text-anchor="middle" class="annot" style="font-size:10px">most agents live in the middle; the system is steered from the edges</text>
     </svg>
-    <figcaption><span class="fig-num">FIG. 6</span>The awareness spectrum across the agent population. The majority lives between the poles. Consciously aware agents, on the left, are treated as carrying disproportionate power-per-unit-presence — they steer the topology even when they are numerically a minority.</figcaption>
+    <figcaption><span class="fig-num">FIG. 7</span>The awareness spectrum across the agent population. The majority lives between the poles. Consciously aware agents, on the left, are treated as carrying disproportionate power-per-unit-presence — they steer the topology even when they are numerically a minority.</figcaption>
   </figure>
 
   <p>The empirical claim — and it is empirical, not axiomatic — is that <strong>consciously aware agents hold disproportionate power</strong>, because awareness is itself a multiplier on every other agent capability. An aware agent's needs are more legible, wants are more articulate, and skills are more deployable, because the agent can model the consequences of their own actions inside the simulation.</p>
 
   <p>To establish a better reality across a mixed population — some aware, some not, most in between — we must design the prompting system such that <em>more aware agents hold more power</em>. This is not an ideological claim; it is a stability claim. A population in which low-awareness agents accumulate high power without a corresponding awareness substrate is one in which trust balance fails (see §6), and $P^{\ast}$ collapses regardless of how well-aligned $N, W, S$ otherwise appear.</p>
+
+  <div class="case">
+    <div class="case-label">Helix · The Team on the Awareness Spectrum</div>
+    <p>Locating the Helix agents on Figure 7: $a_1, a_2, a_5, a_7$ cluster on the aware side. They read Helix strategically — as a class of product bet, a category move, a return profile — rather than as a discrete operational change. $a_4$ (HoP) is well into the aware zone; he is the most fluent reader of the simulation among the operating team.</p>
+    <p>$a_3$ (VP Eng) lives in the middle of the spectrum. His awareness is high in his own domain (engineering org design) and lower outside it (product strategy, GTM economics). $a_6$ (GTM) is the lowest-awareness agent in the operating set — not because he is less capable, but because his reading of the company is dominated by one variable (revenue rate) and he models other agents primarily through their impact on that variable. This is what makes him simultaneously high-power and low-awareness, the configuration the framework flags as the largest risk surface.</p>
+    <p>The intervention strategy is correspondingly differentiated. Prompts to $a_2$ and $a_5$ can be <em>frames</em> — abstract, future-tense, value-laden — because high-awareness agents will integrate frames into their own model. Prompts to $a_6$ must be <em>numbers</em> — concrete, present-tense, fungible — because the simulation he reads is denominated in dollars. The same imagined reality is being argued for in both cases; the carrier is different.</p>
+  </div>
 </section>
 
 <!-- ═══════════════════════ §8 ════════════════════════ -->
@@ -1115,7 +1375,7 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
       <path d="M 140 405 Q 230 395 230 380" fill="none" stroke="var(--lime)" stroke-width="1" stroke-dasharray="2 3"/>
       <text x="230" y="412" text-anchor="middle" class="annot" style="font-size:10px">feedback · update model · re-emit</text>
     </svg>
-    <figcaption><span class="fig-num">FIG. 7</span>OGI architecture as an orthogonal layer. Rather than operating inside the agent layer (Layer 1) or the relational topology (Layer 2), OGI sits perpendicular to all of them — observing state, modeling the trust × power × awareness manifold, computing the gap to a target reality, and emitting minimal-cost prompts back into the agent layer.</figcaption>
+    <figcaption><span class="fig-num">FIG. 8</span>OGI architecture as an orthogonal layer. Rather than operating inside the agent layer (Layer 1) or the relational topology (Layer 2), OGI sits perpendicular to all of them — observing state, modeling the trust × power × awareness manifold, computing the gap to a target reality, and emitting minimal-cost prompts back into the agent layer.</figcaption>
   </figure>
 
   <h3>8.1 What OGI actually does</h3>
@@ -1146,6 +1406,178 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
   <p>OGI is not a recommender system; it does not optimize engagement. It is not an oracle; it does not predict outcomes. It is not autonomous; it does not act without an agent in the loop. It is, more modestly, an instrument: a coordinate transformation that makes the structure of the simulation legible enough for its inhabitants to move through it with intent.</p>
 
   <div class="note">The "orthogonal" framing matters. An intelligence that competes with humans inside the simulation eventually exhausts the same resources humans compete for. An intelligence that operates perpendicular to the simulation — that helps humans coordinate, align and manifest — creates value without subtracting it. This is the design constraint OGI commits to.</div>
+
+  <h3>8.3 Case · OGI applied to Project Helix</h3>
+
+  <div class="case">
+    <div class="case-label">Worked Example · The Three Prompts</div>
+    <p>Returning to the Helix team a final time. The starting position is the configuration computed in §5.1: $P^{\ast}_{\mathrm{Helix}} \approx 0.47$. The agent population is ambitious but currently misaligned. The manifestation gap is real but not catastrophic. This is the typical entry point for an OGI engagement.</p>
+
+    <p style="margin-top: 18px;"><strong>① OBS.</strong> OGI ingests observable agent state under consent. For $a_2$ (CTO), commit-history and meeting-load data reveal eighteen months of declining individual-contribution time and rising operational overhead — the structural signature of a frustrated craft-want. For $a_3$ (VP Eng), 1:1 cadence and roadmap-ownership signals reveal a clear want to <em>own</em> a domain that is currently gated. For $a_6$ (Head of GTM), pipeline data and forecast-confidence signals reveal a motion that is high-leverage but fragile — and therefore acutely sensitive to perceived product fragmentation.</p>
+
+    <p><strong>② MODEL.</strong> OGI fits the trust × power × awareness manifold (§6, §7). $a_1, a_2, a_5, a_7$ are high-awareness and well-trusted, spanning the power spectrum. $a_3$ is the trust risk surface — medium power, asymmetric trust with $a_2$. $a_6$ is medium-to-high power but lower-awareness; he reads Helix tactically (revenue threat) rather than strategically (account expansion).</p>
+
+    <p><strong>③ GAP.</strong> The three under-equilibrium cells identified in §5.1 are $a_2$'s $W$, $a_3$'s $(N, W)$ pair, and $a_6$'s $W$. The minimum-cost intervention is therefore at most three agents wide. $a_1, a_4, a_5, a_7$ require no prompting — they are already at or near equilibrium.</p>
+
+    <p><strong>④ PROMPT.</strong> OGI emits exactly three prompts:</p>
+
+    <ol style="list-style:none; padding-left:0; margin: 14px 0;">
+      <li style="padding: 14px 0 14px 52px; position:relative; border-bottom: 1px dotted var(--rule);">
+        <span style="position:absolute;left:0;top:16px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;letter-spacing:0.15em;">P‑01</span>
+        <strong>To $a_2$ (CTO).</strong> Reframe Helix as the technical-frontier project his craft-want has been searching for. Surface specific decisions where he holds primary authority — model selection, inference architecture, evaluation framework. Delivered as a frame, not a number. Net effect: $W_2: 0.4 \to 0.8$.
+      </li>
+      <li style="padding: 14px 0 14px 52px; position:relative; border-bottom: 1px dotted var(--rule);">
+        <span style="position:absolute;left:0;top:16px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;letter-spacing:0.15em;">P‑02</span>
+        <strong>To $a_3$ (VP Eng).</strong> Reframe Helix as a <em>new</em> organization he gets to build from zero — not as a fight over the existing engineering org. Converts the "own a domain" want from a threat against $a_2$ into a parallel vehicle. <em>Delivered by $a_1$, not $a_2$</em>, to neutralize the trust asymmetry under power (§6). Net effect: $W_3: 0.2 \to 0.7$; $N_3: 0.6 \to 0.8$ as career-risk falls.
+      </li>
+      <li style="padding: 14px 0 14px 52px; position:relative;">
+        <span style="position:absolute;left:0;top:16px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;letter-spacing:0.15em;">P‑03</span>
+        <strong>To $a_6$ (Head of GTM).</strong> Surface enterprise-upsell pricing math that turns Helix from a cannibalization risk into a ~1.4× ARR-per-account expansion lever. Delivered as a number, not a frame, because $a_6$ reads the company through revenue. Net effect: $W_6: 0.3 \to 0.7$.
+      </li>
+    </ol>
+
+    <p>The pairwise edge $\varphi(a_2, a_3)$ remains negative after intervention. We did not — and did not need to — repair the personal friction between CTO and VP Engineering. Postulate 2 says the loop is what matters, and the loop now closes positive because $a_3$ is pursuing a parallel domain that does not require $a_2$ to surrender turf.</p>
+  </div>
+
+  <!-- FIGURE 9: BEFORE / AFTER -->
+  <figure>
+    <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Helix P* before and after the three-prompt intervention">
+      <defs>
+        <linearGradient id="bar-grad-pre" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="var(--terra)" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="var(--terra)" stop-opacity="0.9"/>
+        </linearGradient>
+        <linearGradient id="bar-grad-post" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="var(--lime)" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="var(--lime)" stop-opacity="0.95"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Title labels -->
+      <text x="150" y="30" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.18em;fill:var(--terra)">BEFORE · P* ≈ 0.47</text>
+      <text x="450" y="30" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.18em;fill:var(--lime)">AFTER · P* ≈ 0.71</text>
+
+      <!-- vertical divider -->
+      <line x1="300" y1="50" x2="300" y2="370" stroke="var(--rule)" stroke-dasharray="2 4"/>
+
+      <!-- BEFORE bars: per-agent N·W·S contribution -->
+      <g transform="translate(40, 60)">
+        <!-- a1 -->
+        <text x="0" y="22" class="annot" style="font-size:10px">a₁</text>
+        <rect x="20" y="12" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="12" width="76" height="12" fill="url(#bar-grad-pre)"/>
+        <text x="216" y="22" class="annot" style="font-size:9px">0.38</text>
+
+        <!-- a2 -->
+        <text x="0" y="48" class="annot" style="font-size:10px">a₂</text>
+        <rect x="20" y="38" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="38" width="64" height="12" fill="url(#bar-grad-pre)"/>
+        <text x="216" y="48" class="annot" style="font-size:9px">0.32</text>
+
+        <!-- a3 (low) -->
+        <text x="0" y="74" class="annot" style="font-size:10px">a₃</text>
+        <rect x="20" y="64" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="64" width="16" height="12" fill="url(#bar-grad-pre)"/>
+        <text x="216" y="74" class="annot" style="font-size:9px;fill:var(--terra)">0.08</text>
+
+        <!-- a4 -->
+        <text x="0" y="100" class="annot" style="font-size:10px">a₄</text>
+        <rect x="20" y="90" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="90" width="64" height="12" fill="url(#bar-grad-pre)"/>
+        <text x="216" y="100" class="annot" style="font-size:9px">0.32</text>
+
+        <!-- a5 -->
+        <text x="0" y="126" class="annot" style="font-size:10px">a₅</text>
+        <rect x="20" y="116" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="116" width="42" height="12" fill="url(#bar-grad-pre)"/>
+        <text x="216" y="126" class="annot" style="font-size:9px">0.21</text>
+
+        <!-- a6 (low) -->
+        <text x="0" y="152" class="annot" style="font-size:10px">a₆</text>
+        <rect x="20" y="142" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="142" width="24" height="12" fill="url(#bar-grad-pre)"/>
+        <text x="216" y="152" class="annot" style="font-size:9px;fill:var(--terra)">0.12</text>
+
+        <!-- a7 -->
+        <text x="0" y="178" class="annot" style="font-size:10px">a₇</text>
+        <rect x="20" y="168" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="168" width="44" height="12" fill="url(#bar-grad-pre)"/>
+        <text x="216" y="178" class="annot" style="font-size:9px">0.22</text>
+
+        <!-- total -->
+        <line x1="20" y1="200" x2="210" y2="200" stroke="var(--rule-strong)"/>
+        <text x="0" y="216" class="annot" style="font-size:10px;fill:var(--ink)">Σ</text>
+        <rect x="20" y="206" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="206" width="115" height="12" fill="url(#bar-grad-pre)"/>
+        <text x="216" y="216" class="annot" style="font-size:10px;fill:var(--terra);font-weight:600">1.65</text>
+      </g>
+
+      <!-- AFTER bars -->
+      <g transform="translate(340, 60)">
+        <!-- a1 (unchanged) -->
+        <text x="0" y="22" class="annot" style="font-size:10px">a₁</text>
+        <rect x="20" y="12" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="12" width="76" height="12" fill="url(#bar-grad-post)"/>
+        <text x="216" y="22" class="annot" style="font-size:9px">0.38</text>
+
+        <!-- a2 prompted -->
+        <text x="0" y="48" class="annot" style="font-size:10px;fill:var(--lime)">a₂ ●</text>
+        <rect x="20" y="38" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="38" width="130" height="12" fill="url(#bar-grad-post)"/>
+        <text x="216" y="48" class="annot" style="font-size:9px;fill:var(--lime)">0.65</text>
+
+        <!-- a3 prompted -->
+        <text x="0" y="74" class="annot" style="font-size:10px;fill:var(--lime)">a₃ ●</text>
+        <rect x="20" y="64" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="64" width="78" height="12" fill="url(#bar-grad-post)"/>
+        <text x="216" y="74" class="annot" style="font-size:9px;fill:var(--lime)">0.39</text>
+
+        <!-- a4 (unchanged) -->
+        <text x="0" y="100" class="annot" style="font-size:10px">a₄</text>
+        <rect x="20" y="90" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="90" width="64" height="12" fill="url(#bar-grad-post)"/>
+        <text x="216" y="100" class="annot" style="font-size:9px">0.32</text>
+
+        <!-- a5 (unchanged) -->
+        <text x="0" y="126" class="annot" style="font-size:10px">a₅</text>
+        <rect x="20" y="116" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="116" width="42" height="12" fill="url(#bar-grad-post)"/>
+        <text x="216" y="126" class="annot" style="font-size:9px">0.21</text>
+
+        <!-- a6 prompted -->
+        <text x="0" y="152" class="annot" style="font-size:10px;fill:var(--lime)">a₆ ●</text>
+        <rect x="20" y="142" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="142" width="56" height="12" fill="url(#bar-grad-post)"/>
+        <text x="216" y="152" class="annot" style="font-size:9px;fill:var(--lime)">0.28</text>
+
+        <!-- a7 (unchanged) -->
+        <text x="0" y="178" class="annot" style="font-size:10px">a₇</text>
+        <rect x="20" y="168" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="168" width="44" height="12" fill="url(#bar-grad-post)"/>
+        <text x="216" y="178" class="annot" style="font-size:9px">0.22</text>
+
+        <!-- total -->
+        <line x1="20" y1="200" x2="210" y2="200" stroke="var(--rule-strong)"/>
+        <text x="0" y="216" class="annot" style="font-size:10px;fill:var(--ink)">Σ</text>
+        <rect x="20" y="206" width="190" height="12" fill="var(--bg-soft)" stroke="var(--rule)"/>
+        <rect x="20" y="206" width="173" height="12" fill="url(#bar-grad-post)"/>
+        <text x="216" y="216" class="annot" style="font-size:10px;fill:var(--lime);font-weight:600">2.45</text>
+      </g>
+
+      <!-- bottom legend -->
+      <g transform="translate(40, 320)">
+        <circle cx="6" cy="0" r="4" fill="var(--lime)"/>
+        <text x="16" y="3" class="annot" style="font-size:10px">prompted agent · state vector shifted by OGI</text>
+      </g>
+
+      <g transform="translate(40, 348)">
+        <text x="0" y="3" class="annot" style="font-size:10px;letter-spacing:0.05em;">Three prompts, surgically placed · pairwise φ(a₂,a₃) remains negative · loop closes positive</text>
+      </g>
+    </svg>
+    <figcaption><span class="fig-num">FIG. 9</span>The Helix team's per-agent contribution $N_i W_i S_i$ before and after the three-prompt intervention. The agents marked ● ($a_2, a_3, a_6$) are the targets of P-01, P-02, P-03 respectively. Total moves from $\Sigma_{\mathrm{pre}} = 1.65$ to $\Sigma_{\mathrm{post}} \approx 2.45$, yielding $P^{\ast} \approx 0.71$. Four of seven agents are unchanged; the intervention is genuinely minimum-cost.</figcaption>
+  </figure>
+
+  <p>Recomputing $P^{\ast}$ post-intervention yields $\approx 0.71$ — a shift of roughly 24 percentage points. The system is now operating in a regime where the imagined reality has a substantially higher probability of crossing into reality, achieved without any change to the underlying affinity graph and without any agent being coerced. The product of OGI is exactly this: the minimum-cost reframing surface that closes the manifestation gap, surfaced as a small number of prompts to the right agents in the right voice.</p>
 </section>
 
 <!-- ═══════════════════════ §9 ════════════════════════ -->
@@ -1205,7 +1637,7 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
 <!-- ─────────────────────── FOOTER ────────────────────── -->
 <footer>
   <span>OGI / 001 · WORKING PAPER</span>
-  <span class="lime">v0.1 · DRAFT</span>
+  <span class="lime">v0.2 · DRAFT</span>
 </footer>
 
 </div>
