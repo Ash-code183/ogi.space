@@ -392,6 +392,187 @@ table.state-matrix tr.total td {
   text-transform: uppercase;
 }
 
+/* ── FALSIFICATION LIST ────────────────────── */
+.falsify {
+  list-style: none;
+  padding-left: 0;
+  margin: 24px 0;
+  counter-reset: falsify;
+}
+
+.falsify li {
+  counter-increment: falsify;
+  padding: 18px 0 18px 0;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+
+.falsify li:last-child { border-bottom: none; }
+
+.claim-label {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--terra);
+  background: rgba(255, 107, 71, 0.08);
+  padding: 4px 10px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 107, 71, 0.25);
+}
+
+.falsify li p { color: var(--ink); margin: 0; }
+.falsify li p em { color: var(--terra); font-style: italic; font-weight: 500; }
+
+/* ── LOKA TABLE ────────────────────────────── */
+table.loka-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 18px 0;
+}
+
+table.loka-table th,
+table.loka-table td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+
+table.loka-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--ink-mute);
+  font-weight: 500;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+table.loka-table td.rank {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-mute);
+  width: 36px;
+  text-align: center;
+}
+
+table.loka-table td.sanskrit {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  color: var(--ink-soft);
+  font-weight: 400;
+  width: 110px;
+}
+
+table.loka-table td.keyword {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  color: var(--ink);
+  width: 140px;
+}
+
+table.loka-table td.desc {
+  color: var(--ink-soft);
+  font-size: 12.5px;
+}
+
+table.loka-table tr.upper td.rank { color: var(--lime); }
+table.loka-table tr.lower td.rank { color: var(--terra); }
+table.loka-table tr.horizon-row {
+  background: transparent;
+}
+table.loka-table tr.horizon-row td {
+  padding: 4px 10px;
+  border-bottom: 1px dashed var(--rule-strong);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--ink-mute);
+  text-align: center;
+}
+
+/* ── PAIRED AXIS TABLE ─────────────────────── */
+table.axis-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 18px 0;
+}
+
+table.axis-table th,
+table.axis-table td {
+  padding: 10px 8px;
+  text-align: center;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+
+table.axis-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--ink-mute);
+  font-weight: 500;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+table.axis-table td.j {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--lime);
+  width: 28px;
+  font-weight: 600;
+}
+
+table.axis-table td.neg-pole {
+  text-align: right;
+  width: 32%;
+  padding-right: 14px;
+}
+
+table.axis-table td.axis-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  width: 18%;
+}
+
+table.axis-table td.pos-pole {
+  text-align: left;
+  width: 32%;
+  padding-left: 14px;
+}
+
+table.axis-table .pole-keyword {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  display: block;
+  font-size: 14px;
+}
+
+table.axis-table .pole-sanskrit {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 11px;
+  color: var(--ink-mute);
+  display: block;
+  margin-bottom: 2px;
+}
+
+table.axis-table td.neg-pole .pole-keyword { color: var(--terra); }
+table.axis-table td.pos-pole .pole-keyword { color: var(--lime); }
+
+table.axis-table td.weight {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-mute);
+  width: 10%;
+}
+
 /* ── FIGURES ───────────────────────────────── */
 figure {
   margin: 40px 0;
@@ -531,7 +712,7 @@ svg .accent { fill: var(--lime); }
 <!-- ─────────────────────── HEADER ────────────────────── -->
 <header class="hero">
   <div class="meta">
-    <span>Working Paper · v0.2</span>
+    <span>Working Paper · v0.4</span>
     <span class="tag">⟶ OGI / 001</span>
   </div>
 
@@ -542,7 +723,7 @@ svg .accent { fill: var(--lime); }
   <p class="subtitle">A framework for modeling agent dynamics, value entropy and trust topology in a simulated reality — and the case for an orthogonal navigation intelligence built on top of it.</p>
 
   <div class="byline">
-    <div>Author &nbsp;·&nbsp; <span>Shashank Sahu</span></div>
+    <div>Author &nbsp;·&nbsp; <span>Shashank Sahu (Sid Degen)</span></div>
     <div>Draft &nbsp;·&nbsp; <span id="date">Apr 28, 2026</span></div>
   </div>
 </header>
@@ -564,7 +745,7 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
     <li><a href="#s6"><span class="num">06</span> Trust &amp; Power · The Hidden Topology</a></li>
     <li><a href="#s7"><span class="num">07</span> Awareness · The Navigation Coordinate</a></li>
     <li><a href="#s8"><span class="num">08</span> Orthogonal General Intelligence</a></li>
-    <li><a href="#s9"><span class="num">09</span> A Roadmap of Experiments</a></li>
+    <li><a href="#s9"><span class="num">09</span> Falsifiability &amp; Experimental Roadmap</a></li>
     <li><a href="#s10"><span class="num">10</span> References</a></li>
   </ol>
 </nav>
@@ -970,6 +1151,77 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
 
   <p>This is consistent with empirical observations from large coordination efforts — startups, social movements, scientific collaborations — where the internal graph of relationships is rarely monochromatic, but the net direction is what determines outcomes.</p>
 
+  <h3>4.1 The compounding coefficient α</h3>
+
+  <p>Postulate 1 introduces a coefficient $\alpha(\mathbf{x}, t)$ but leaves its functional form unspecified. To make the postulate substantive — to give it a shape capable of failing — we now commit to a parameterization. The specific form we adopt below is one of several reasonable choices; what matters <em>structurally</em> is that $\alpha$ is bounded, multiplicatively asymmetric in positive versus negative interactions, saturating in time, and dependent on relational rather than spatial distance.</p>
+
+  <p>We write $\alpha$ as a saturating time response over a topology-dependent asymptote:</p>
+
+  <div class="equation">
+    $$ \alpha(\mathbf{x}, t) \;=\; \alpha_\infty(\mathbf{x}) \cdot \left[1 - e^{-t / \tau(\mathbf{x})}\right] $$
+    <span class="eq-num">(5)</span>
+  </div>
+
+  <p>The asymptote $\alpha_\infty(\mathbf{x})$ is the ceiling that value emitted from a source can compound toward at network location $\mathbf{x}$. We model it as a sigmoid response to local edge density:</p>
+
+  <div class="equation">
+    $$ \alpha_\infty(\mathbf{x}) \;=\; \alpha_{\max} \cdot \sigma\!\left[\beta\, \big(\rho_+(\mathbf{x}) - \gamma\, \rho_-(\mathbf{x})\big)\right] $$
+    <span class="eq-num">(6)</span>
+  </div>
+
+  <p>where:</p>
+
+  <ul style="list-style:none; padding-left:0; margin: 14px 0 22px;">
+    <li style="padding:6px 0 6px 28px; position:relative; border-bottom:1px dotted var(--rule);">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;top:9px;">▸</span>
+      <span class="mono">α<sub>max</sub></span> &nbsp;∈ (1, ∞) is the universal ceiling. We adopt $\alpha_{\max} = e$ as a baseline on the heuristic that value-entropy follows logarithmic compounding; alternative ceilings are admissible without changing the structural claim.
+    </li>
+    <li style="padding:6px 0 6px 28px; position:relative; border-bottom:1px dotted var(--rule);">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;top:9px;">▸</span>
+      <span class="mono">ρ<sub>+</sub>(x), ρ<sub>−</sub>(x)</span> &nbsp;are the densities of positive and negative edges in the relational neighborhood of $\mathbf{x}$.
+    </li>
+    <li style="padding:6px 0 6px 28px; position:relative; border-bottom:1px dotted var(--rule);">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;top:9px;">▸</span>
+      <span class="mono">γ</span> &nbsp;&gt; 1 is the <em>negativity multiplier</em> — a single betrayal cancels more than one positive interaction. Empirical work on negative-event asymmetry in human trust networks suggests $\gamma \in [3, 5]$.
+    </li>
+    <li style="padding:6px 0 6px 28px; position:relative;">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;top:9px;">▸</span>
+      <span class="mono">β</span> &nbsp;controls the sharpness of the network's response to edge quality, and $\sigma$ is the sigmoid.
+    </li>
+  </ul>
+
+  <p>The time constant $\tau(\mathbf{x})$ encodes how fast value propagates from its source $\mathbf{x}_0$ to location $\mathbf{x}$:</p>
+
+  <div class="equation">
+    $$ \tau(\mathbf{x}) \;=\; \tau_0 \cdot \frac{d_+(\mathbf{x}, \mathbf{x}_0)}{k(\mathbf{x}_0)} $$
+    <span class="eq-num">(7)</span>
+  </div>
+
+  <p>where $d_+(\mathbf{x}, \mathbf{x}_0)$ is the shortest-path distance from $\mathbf{x}_0$ to $\mathbf{x}$ through the subgraph of <em>positive</em> edges only, $k(\mathbf{x}_0)$ is the local connectivity of the source's neighborhood, and $\tau_0$ is the baseline single-edge traversal time.</p>
+
+  <p>This parameterization satisfies four properties that the original statement of Postulate 1 only implied:</p>
+
+  <ol style="list-style:none; padding-left:0; margin: 14px 0 22px;">
+    <li style="padding:8px 0 8px 36px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:9px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;letter-spacing:0.1em;">i.</span>
+      $\alpha(\mathbf{x}, t{=}0) = 0$. Value does not compound instantaneously; the startup transient is a real empirical claim.
+    </li>
+    <li style="padding:8px 0 8px 36px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:9px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;letter-spacing:0.1em;">ii.</span>
+      $\alpha(\mathbf{x}, t \to \infty) \to \alpha_\infty(\mathbf{x}) \leq \alpha_{\max}$. Bounded ceiling. No unbounded returns.
+    </li>
+    <li style="padding:8px 0 8px 36px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:9px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;letter-spacing:0.1em;">iii.</span>
+      When $\gamma \rho_- \gg \rho_+$, $\alpha_\infty \to 0$. Value does not return through trust deficits. This names the failure mode of Postulate 1 explicitly, which is what gives the postulate its scientific shape.
+    </li>
+    <li style="padding:8px 0 8px 36px; position:relative;">
+      <span style="position:absolute;left:0;top:9px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;letter-spacing:0.1em;">iv.</span>
+      Propagation delay scales with <em>relational</em> distance — not Euclidean distance — which is the right primitive for a topology defined by trust rather than space.
+    </li>
+  </ol>
+
+  <p>The structural claim of Postulate 1 is now testable: across a population of agent neighborhoods, the asymptotic compounding coefficient $\alpha_\infty(\mathbf{x})$ should correlate positively with $\rho_+(\mathbf{x})$ and negatively with $\rho_-(\mathbf{x})$. Absence of either correlation falsifies the postulate. We return to this in §9.1.</p>
+
   <div class="case">
     <div class="case-label">Helix · Postulate 2 in the Field</div>
     <p>Returning to the Helix team from §3.1: the edge $\varphi(a_2, a_3)$ is and remains negative throughout the rest of this paper. We will <em>not</em> resolve the personal friction between CTO and VP Engineering. Postulate 2 says we don't need to. What we need is for the loop $a_1 \to a_2 \to (\text{Helix}) \to a_4 \to a_5 \to a_1$ to close positive, and for $a_3$ and $a_6$ to be reframed such that their orientation toward Helix flips from neutral/negative to positive — even if their pairwise edge to $a_2$ stays sour. The loop, not the pair, is what determines $P^{\ast}$.</p>
@@ -984,7 +1236,7 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
 
   <div class="equation">
     $$ P^{\ast} \;=\; \frac{\left[\,\displaystyle\sum_{i=1}^{N} N_i W_i \,\right]\,\times\,[S]}{\left[\,\displaystyle\sum_{i=1}^{N} N_i^{\ast} W_i^{\ast} \,\right]\,\times\,[S^{\ast}]} $$
-    <span class="eq-num">(5)</span>
+    <span class="eq-num">(8)</span>
   </div>
 
   <p>Reading the terms:</p>
@@ -1063,7 +1315,7 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
 
   <div class="case">
     <div class="case-label">Worked Example · Computing P* for Project Helix</div>
-    <p>Applying Equation (5) to the Helix team requires writing down both the current state and the equilibrium target. Values are normalized to $[0, 1]$ — read as "fraction of this quantity currently realized for this agent." For didactic clarity we adopt the element-wise reading $P^{\ast} = \sum_i N_i W_i S_i \,/\, \sum_i N_i^{\ast} W_i^{\ast} S_i^{\ast}$, which is the cleanest scalar specialization of Equation (5).</p>
+    <p>Applying Equation (8) to the Helix team requires writing down both the current state and the equilibrium target. Values are normalized to $[0, 1]$ — read as "fraction of this quantity currently realized for this agent." For didactic clarity we adopt the element-wise reading $P^{\ast} = \sum_i N_i W_i S_i \,/\, \sum_i N_i^{\ast} W_i^{\ast} S_i^{\ast}$, which is the cleanest scalar specialization of Equation (8).</p>
 
     <div class="matrix-grid">
       <div>
@@ -1126,11 +1378,11 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
 
   <h3>6.1 Trust</h3>
 
-  <p>Trust is two-way and compounding. It can be increased or decreased by the actions of <em>either</em> agent in a relationship — not just one. Trust is therefore better modeled as a state that lives on the edge $(a_i \leftrightarrow a_j)$ rather than on either endpoint:</p>
+  <p>Trust is two-way and compounding. It can be increased or decreased by the actions of <em>either</em> agent in a relationship — not just one. Trust is therefore better modeled as a state that lives on the edge $(a_i \leftrightarrow a_j)$ rather than on either endpoint. We write the trust scalar as $T$ (using a separate symbol from the time constant $\tau$ in §4.1):</p>
 
   <div class="equation" style="background:transparent;border:none;padding:12px 0;">
-    $$ \tau(a_i, a_j) \in [0, 1], \qquad \tau(a_i, a_j) \neq \tau(a_j, a_i) \text{ in general} $$
-    <span class="eq-num">(6)</span>
+    $$ T(a_i, a_j) \in [0, 1], \qquad T(a_i, a_j) \neq T(a_j, a_i) \text{ in general} $$
+    <span class="eq-num">(9)</span>
   </div>
 
   <p>The asymmetry matters: $a_i$ may trust $a_j$ deeply while $a_j$ holds only conditional trust in return. Trust compounds through repeated positive actions and collapses non-linearly through betrayal — a single high-magnitude negative event can erase many small positive ones.</p>
@@ -1146,7 +1398,7 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
     <p>Agents are <em>less likely to break the trust</em> of agents who are more powerful than themselves. Power therefore stabilizes trust asymmetrically, in favor of the higher-power node.</p>
   </div>
 
-  <!-- FIGURE 5: TRUST-POWER MATRIX -->
+  <!-- FIGURE 6: TRUST-POWER MATRIX -->
   <figure>
     <svg viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trust-power plane">
       <!-- axes -->
@@ -1228,83 +1480,391 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
 <section id="s7">
   <h2><span class="section-num">§07</span>Awareness · The Navigation Coordinate</h2>
 
-  <p>There is a final state variable we have so far left implicit: <em>awareness</em>. Agents differ — sometimes dramatically — in the degree to which they consciously perceive the simulation they are embedded in. We model awareness as a continuous spectrum:</p>
+  <p>There is a final state variable we have so far left implicit: <em>awareness</em>. Agents differ — sometimes dramatically — in the degree to which they consciously perceive the simulation they are embedded in. We now make this concrete.</p>
 
-  <!-- FIGURE 6: AWARENESS SPECTRUM -->
+  <p>Awareness is not a binary attribute. It is a <em>position</em> over states of consciousness, together with a <em>coupling structure</em> that governs how that position evolves under perturbation. To give it formal content we adopt the 14-fold Loka taxonomy from the Purāṇic tradition (Bhāgavata Purāṇa, Canto 5; Viṣṇu Purāṇa, Book 2) as our basis — but with a structural reading not always foregrounded in modern syntheses: <strong>the seven lower Lokas are the negative-pole expressions of the seven upper Lokas.</strong> They are not a separate ladder of descent; they are the same ladder seen from its shadow.</p>
+
+  <p>This pairing is the central reason we adopt the Loka framework rather than an alternative consciousness taxonomy (Wilberian spectrum, Schwartzian values, Loevinger's ego stages). No modern psychometric basis natively pairs its dimensions into shadow/expression poles; the Lokas do. We honor this structure by representing awareness not as a distribution over 14 states, but as a position on <strong>seven bipolar axes</strong>, each running from a negative pole (lower Loka) to a positive pole (upper Loka).</p>
+
+  <div class="note">The keyword assignments below are an interpretive synthesis. They draw on the traditional Loka readings but commit to a single English keyword per pole, chosen for theoretical coherence rather than exegetical fidelity. The formal model is invariant under relabeling — the Loka names are adopted because the Purāṇic enumeration is the most precise pre-existing 14-element taxonomy of consciousness-states known to us, and uniquely among such taxonomies it organizes its elements in shadow pairs.</div>
+
+  <h3>7.1 The seven paired axes</h3>
+
+  <p>Each axis represents a faculty of consciousness with two expressions. The <em>positive pole</em> expresses the faculty as a connection to reality; the <em>negative pole</em> expresses the same faculty as a distortion of reality. The axis itself is the faculty; the pole is what the faculty <em>does</em>. Consider the Will axis: <em>Discipline</em> is will regulated toward principle (positive); <em>Grasping</em> is the same will, unregulated, fixed on possession (negative). The two are not opposites in any naive sense; they are two ways the same underlying capacity can express.</p>
+
+  <table class="axis-table">
+    <thead>
+      <tr>
+        <th>j</th>
+        <th class="neg-pole" style="text-align:right;">negative pole (lower Loka)</th>
+        <th>axis · faculty</th>
+        <th class="pos-pole" style="text-align:left;">positive pole (upper Loka)</th>
+        <th class="weight">wⱼ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="j">7</td>
+        <td class="neg-pole"><span class="pole-sanskrit">Pātāla</span><span class="pole-keyword">Fear</span></td>
+        <td class="axis-name">Reality-Contact</td>
+        <td class="pos-pole"><span class="pole-sanskrit">Satya</span><span class="pole-keyword">Truth</span></td>
+        <td class="weight">1.00</td>
+      </tr>
+      <tr>
+        <td class="j">6</td>
+        <td class="neg-pole"><span class="pole-sanskrit">Rasātala</span><span class="pole-keyword">Grasping</span></td>
+        <td class="axis-name">Will</td>
+        <td class="pos-pole"><span class="pole-sanskrit">Tapaḥ</span><span class="pole-keyword">Discipline</span></td>
+        <td class="weight">0.93</td>
+      </tr>
+      <tr>
+        <td class="j">5</td>
+        <td class="neg-pole"><span class="pole-sanskrit">Mahātala</span><span class="pole-keyword">Anger</span></td>
+        <td class="axis-name">Generative</td>
+        <td class="pos-pole"><span class="pole-sanskrit">Janaḥ</span><span class="pole-keyword">Creation</span></td>
+        <td class="weight">0.86</td>
+      </tr>
+      <tr>
+        <td class="j">4</td>
+        <td class="neg-pole"><span class="pole-sanskrit">Talātala</span><span class="pole-keyword">Pride</span></td>
+        <td class="axis-name">Sight</td>
+        <td class="pos-pole"><span class="pole-sanskrit">Mahaḥ</span><span class="pole-keyword">Insight</span></td>
+        <td class="weight">0.77</td>
+      </tr>
+      <tr>
+        <td class="j">3</td>
+        <td class="neg-pole"><span class="pole-sanskrit">Sutala</span><span class="pole-keyword">Indulgence</span></td>
+        <td class="axis-name">Interiority</td>
+        <td class="pos-pole"><span class="pole-sanskrit">Svaḥ</span><span class="pole-keyword">Reflection</span></td>
+        <td class="weight">0.67</td>
+      </tr>
+      <tr>
+        <td class="j">2</td>
+        <td class="neg-pole"><span class="pole-sanskrit">Vitala</span><span class="pole-keyword">Desire</span></td>
+        <td class="axis-name">Wanting</td>
+        <td class="pos-pole"><span class="pole-sanskrit">Bhuvaḥ</span><span class="pole-keyword">Aspiration</span></td>
+        <td class="weight">0.53</td>
+      </tr>
+      <tr>
+        <td class="j">1</td>
+        <td class="neg-pole"><span class="pole-sanskrit">Atala</span><span class="pole-keyword">Confusion</span></td>
+        <td class="axis-name">Ground</td>
+        <td class="pos-pole"><span class="pole-sanskrit">Bhūḥ</span><span class="pole-keyword">Embodiment</span></td>
+        <td class="weight">0.33</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The axes are ordered by ascending awareness weight $w_j$: Ground at the bottom (the most embodied, most local faculty), Reality-Contact at the top (the most global, most reality-engaged faculty). The weights are derived in §7.3.</p>
+
+  <!-- FIGURE 7: SEVEN PAIRED AXES -->
   <figure>
-    <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Awareness spectrum">
-      <!-- container box -->
-      <rect x="60" y="60" width="480" height="160" fill="none" stroke="var(--rule-strong)" stroke-width="1"/>
+    <svg viewBox="0 0 600 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The seven paired axes of awareness">
+      <text x="300" y="22" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.22em;">THE SEVEN AXES OF AWARENESS</text>
+      <text x="300" y="40" text-anchor="middle" class="annot" style="font-size:10px;font-style:italic;fill:var(--ink-mute)">each axis runs from a negative pole (lower Loka) to a positive pole (upper Loka)</text>
 
-      <!-- gradient backdrop -->
-      <defs>
-        <linearGradient id="aware-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="var(--lime)" stop-opacity="0.15"/>
-          <stop offset="50%" stop-color="var(--lime)" stop-opacity="0.04"/>
-          <stop offset="100%" stop-color="var(--terra)" stop-opacity="0.08"/>
-        </linearGradient>
-      </defs>
-      <rect x="60" y="60" width="480" height="160" fill="url(#aware-grad)"/>
+      <!-- 7 rows from top (j=7) to bottom (j=1), 70px each, starting at y=60 -->
 
-      <!-- column labels -->
-      <text x="100" y="44" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.15em;fill:var(--lime)">AWARE</text>
-      <text x="500" y="44" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.15em;fill:var(--terra)">UNAWARE</text>
-      <text x="300" y="44" text-anchor="middle" class="annot" style="font-size:11px;letter-spacing:0.15em;">↔ SPECTRUM ↔</text>
-
-      <!-- left cluster of dots -->
-      <g fill="var(--lime)">
-        <circle cx="85" cy="90" r="4"/>
-        <circle cx="115" cy="110" r="4"/>
-        <circle cx="90" cy="135" r="4"/>
-        <circle cx="110" cy="160" r="4"/>
-        <circle cx="85" cy="185" r="4"/>
-        <circle cx="120" cy="205" r="4"/>
+      <!-- j=7: Reality-Contact -->
+      <g transform="translate(0, 60)">
+        <rect x="10" y="0" width="180" height="58" fill="rgba(255,107,71,0.45)" stroke="rgba(255,107,71,0.55)" stroke-width="0.5"/>
+        <rect x="190" y="0" width="220" height="58" fill="var(--bg-soft)" stroke="var(--rule)" stroke-width="0.5"/>
+        <rect x="410" y="0" width="180" height="58" fill="rgba(212,255,61,0.45)" stroke="rgba(212,255,61,0.55)" stroke-width="0.5"/>
+        <text x="20" y="22" style="font-size:10px;font-style:italic;fill:rgba(10,10,11,0.6);font-family:'Fraunces',serif">Pātāla</text>
+        <text x="20" y="44" style="font-size:14px;font-weight:600;fill:var(--bg);font-family:'DM Sans',sans-serif">Fear</text>
+        <text x="300" y="18" text-anchor="middle" style="font-size:9px;letter-spacing:0.2em;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">REALITY-CONTACT</text>
+        <line x1="210" y1="36" x2="390" y2="36" stroke="var(--rule-strong)" stroke-width="1"/>
+        <line x1="210" y1="32" x2="210" y2="40" stroke="var(--terra)" stroke-width="1.5"/>
+        <line x1="300" y1="33" x2="300" y2="39" stroke="var(--ink-mute)" stroke-width="1"/>
+        <line x1="390" y1="32" x2="390" y2="40" stroke="var(--lime)" stroke-width="1.5"/>
+        <text x="210" y="50" text-anchor="middle" style="font-size:8px;fill:var(--terra);font-family:'JetBrains Mono',monospace">−1</text>
+        <text x="300" y="50" text-anchor="middle" style="font-size:8px;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">0</text>
+        <text x="390" y="50" text-anchor="middle" style="font-size:8px;fill:var(--lime);font-family:'JetBrains Mono',monospace">+1</text>
+        <circle cx="363" cy="36" r="4" fill="var(--lime)"/>
+        <circle cx="264" cy="36" r="4" fill="var(--terra)"/>
+        <text x="420" y="22" style="font-size:10px;font-style:italic;fill:rgba(10,10,11,0.6);font-family:'Fraunces',serif">Satya</text>
+        <text x="420" y="44" style="font-size:14px;font-weight:600;fill:var(--bg);font-family:'DM Sans',sans-serif">Truth</text>
+        <text x="580" y="14" text-anchor="end" style="font-size:9px;fill:rgba(10,10,11,0.55);font-family:'JetBrains Mono',monospace">w=1.00</text>
       </g>
 
-      <!-- middle distribution -->
-      <g fill="var(--ink-mute)">
-        <circle cx="220" cy="95" r="3"/>
-        <circle cx="260" cy="115" r="3"/>
-        <circle cx="200" cy="135" r="3"/>
-        <circle cx="280" cy="145" r="3"/>
-        <circle cx="240" cy="165" r="3"/>
-        <circle cx="300" cy="180" r="3"/>
-        <circle cx="340" cy="135" r="3"/>
-        <circle cx="370" cy="160" r="3"/>
+      <!-- j=6: Will -->
+      <g transform="translate(0, 130)">
+        <rect x="10" y="0" width="180" height="58" fill="rgba(255,107,71,0.38)" stroke="rgba(255,107,71,0.48)" stroke-width="0.5"/>
+        <rect x="190" y="0" width="220" height="58" fill="var(--bg-soft)" stroke="var(--rule)" stroke-width="0.5"/>
+        <rect x="410" y="0" width="180" height="58" fill="rgba(212,255,61,0.38)" stroke="rgba(212,255,61,0.48)" stroke-width="0.5"/>
+        <text x="20" y="22" style="font-size:10px;font-style:italic;fill:rgba(10,10,11,0.6);font-family:'Fraunces',serif">Rasātala</text>
+        <text x="20" y="44" style="font-size:14px;font-weight:600;fill:var(--bg);font-family:'DM Sans',sans-serif">Grasping</text>
+        <text x="300" y="18" text-anchor="middle" style="font-size:9px;letter-spacing:0.2em;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">WILL</text>
+        <line x1="210" y1="36" x2="390" y2="36" stroke="var(--rule-strong)" stroke-width="1"/>
+        <line x1="210" y1="32" x2="210" y2="40" stroke="var(--terra)" stroke-width="1.5"/>
+        <line x1="300" y1="33" x2="300" y2="39" stroke="var(--ink-mute)" stroke-width="1"/>
+        <line x1="390" y1="32" x2="390" y2="40" stroke="var(--lime)" stroke-width="1.5"/>
+        <text x="210" y="50" text-anchor="middle" style="font-size:8px;fill:var(--terra);font-family:'JetBrains Mono',monospace">−1</text>
+        <text x="300" y="50" text-anchor="middle" style="font-size:8px;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">0</text>
+        <text x="390" y="50" text-anchor="middle" style="font-size:8px;fill:var(--lime);font-family:'JetBrains Mono',monospace">+1</text>
+        <circle cx="354" cy="36" r="4" fill="var(--lime)"/>
+        <circle cx="264" cy="36" r="4" fill="var(--terra)"/>
+        <text x="420" y="22" style="font-size:10px;font-style:italic;fill:rgba(10,10,11,0.6);font-family:'Fraunces',serif">Tapaḥ</text>
+        <text x="420" y="44" style="font-size:14px;font-weight:600;fill:var(--bg);font-family:'DM Sans',sans-serif">Discipline</text>
+        <text x="580" y="14" text-anchor="end" style="font-size:9px;fill:rgba(10,10,11,0.55);font-family:'JetBrains Mono',monospace">w=0.93</text>
       </g>
 
-      <!-- right cluster -->
-      <g fill="var(--terra)">
-        <circle cx="480" cy="90" r="4"/>
-        <circle cx="510" cy="115" r="4"/>
-        <circle cx="485" cy="140" r="4"/>
-        <circle cx="515" cy="165" r="4"/>
-        <circle cx="495" cy="190" r="4"/>
-        <circle cx="510" cy="210" r="4"/>
-        <circle cx="475" cy="170" r="4"/>
+      <!-- j=5: Generative -->
+      <g transform="translate(0, 200)">
+        <rect x="10" y="0" width="180" height="58" fill="rgba(255,107,71,0.32)" stroke="rgba(255,107,71,0.42)" stroke-width="0.5"/>
+        <rect x="190" y="0" width="220" height="58" fill="var(--bg-soft)" stroke="var(--rule)" stroke-width="0.5"/>
+        <rect x="410" y="0" width="180" height="58" fill="rgba(212,255,61,0.32)" stroke="rgba(212,255,61,0.42)" stroke-width="0.5"/>
+        <text x="20" y="22" style="font-size:10px;font-style:italic;fill:rgba(10,10,11,0.6);font-family:'Fraunces',serif">Mahātala</text>
+        <text x="20" y="44" style="font-size:14px;font-weight:600;fill:var(--ink);font-family:'DM Sans',sans-serif">Anger</text>
+        <text x="300" y="18" text-anchor="middle" style="font-size:9px;letter-spacing:0.2em;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">GENERATIVE</text>
+        <line x1="210" y1="36" x2="390" y2="36" stroke="var(--rule-strong)" stroke-width="1"/>
+        <line x1="210" y1="32" x2="210" y2="40" stroke="var(--terra)" stroke-width="1.5"/>
+        <line x1="300" y1="33" x2="300" y2="39" stroke="var(--ink-mute)" stroke-width="1"/>
+        <line x1="390" y1="32" x2="390" y2="40" stroke="var(--lime)" stroke-width="1.5"/>
+        <text x="210" y="50" text-anchor="middle" style="font-size:8px;fill:var(--terra);font-family:'JetBrains Mono',monospace">−1</text>
+        <text x="300" y="50" text-anchor="middle" style="font-size:8px;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">0</text>
+        <text x="390" y="50" text-anchor="middle" style="font-size:8px;fill:var(--lime);font-family:'JetBrains Mono',monospace">+1</text>
+        <circle cx="363" cy="36" r="4" fill="var(--lime)"/>
+        <circle cx="273" cy="36" r="4" fill="var(--terra)"/>
+        <text x="420" y="22" style="font-size:10px;font-style:italic;fill:rgba(10,10,11,0.6);font-family:'Fraunces',serif">Janaḥ</text>
+        <text x="420" y="44" style="font-size:14px;font-weight:600;fill:var(--ink);font-family:'DM Sans',sans-serif">Creation</text>
+        <text x="580" y="14" text-anchor="end" style="font-size:9px;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">w=0.86</text>
       </g>
 
-      <!-- power indicator below -->
-      <text x="100" y="248" text-anchor="middle" class="annot" style="font-size:10px;fill:var(--lime)">↑ higher power per unit awareness</text>
-      <text x="500" y="248" text-anchor="middle" class="annot" style="font-size:10px;fill:var(--terra)">↓ lower power per unit awareness</text>
+      <!-- j=4: Sight -->
+      <g transform="translate(0, 270)">
+        <rect x="10" y="0" width="180" height="58" fill="rgba(255,107,71,0.25)" stroke="rgba(255,107,71,0.35)" stroke-width="0.5"/>
+        <rect x="190" y="0" width="220" height="58" fill="var(--bg-soft)" stroke="var(--rule)" stroke-width="0.5"/>
+        <rect x="410" y="0" width="180" height="58" fill="rgba(212,255,61,0.25)" stroke="rgba(212,255,61,0.35)" stroke-width="0.5"/>
+        <text x="20" y="22" style="font-size:10px;font-style:italic;fill:var(--ink-mute);font-family:'Fraunces',serif">Talātala</text>
+        <text x="20" y="44" style="font-size:14px;font-weight:600;fill:var(--ink);font-family:'DM Sans',sans-serif">Pride</text>
+        <text x="300" y="18" text-anchor="middle" style="font-size:9px;letter-spacing:0.2em;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">SIGHT</text>
+        <line x1="210" y1="36" x2="390" y2="36" stroke="var(--rule-strong)" stroke-width="1"/>
+        <line x1="210" y1="32" x2="210" y2="40" stroke="var(--terra)" stroke-width="1.5"/>
+        <line x1="300" y1="33" x2="300" y2="39" stroke="var(--ink-mute)" stroke-width="1"/>
+        <line x1="390" y1="32" x2="390" y2="40" stroke="var(--lime)" stroke-width="1.5"/>
+        <text x="210" y="50" text-anchor="middle" style="font-size:8px;fill:var(--terra);font-family:'JetBrains Mono',monospace">−1</text>
+        <text x="300" y="50" text-anchor="middle" style="font-size:8px;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">0</text>
+        <text x="390" y="50" text-anchor="middle" style="font-size:8px;fill:var(--lime);font-family:'JetBrains Mono',monospace">+1</text>
+        <circle cx="372" cy="36" r="4" fill="var(--lime)"/>
+        <circle cx="255" cy="36" r="4" fill="var(--terra)"/>
+        <text x="420" y="22" style="font-size:10px;font-style:italic;fill:var(--ink-mute);font-family:'Fraunces',serif">Mahaḥ</text>
+        <text x="420" y="44" style="font-size:14px;font-weight:600;fill:var(--ink);font-family:'DM Sans',sans-serif">Insight</text>
+        <text x="580" y="14" text-anchor="end" style="font-size:9px;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">w=0.77</text>
+      </g>
 
-      <text x="300" y="270" text-anchor="middle" class="annot" style="font-size:10px">most agents live in the middle; the system is steered from the edges</text>
+      <!-- j=3: Interiority -->
+      <g transform="translate(0, 340)">
+        <rect x="10" y="0" width="180" height="58" fill="rgba(255,107,71,0.20)" stroke="rgba(255,107,71,0.30)" stroke-width="0.5"/>
+        <rect x="190" y="0" width="220" height="58" fill="var(--bg-soft)" stroke="var(--rule)" stroke-width="0.5"/>
+        <rect x="410" y="0" width="180" height="58" fill="rgba(212,255,61,0.20)" stroke="rgba(212,255,61,0.30)" stroke-width="0.5"/>
+        <text x="20" y="22" style="font-size:10px;font-style:italic;fill:var(--ink-mute);font-family:'Fraunces',serif">Sutala</text>
+        <text x="20" y="44" style="font-size:14px;font-weight:600;fill:var(--ink);font-family:'DM Sans',sans-serif">Indulgence</text>
+        <text x="300" y="18" text-anchor="middle" style="font-size:9px;letter-spacing:0.2em;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">INTERIORITY</text>
+        <line x1="210" y1="36" x2="390" y2="36" stroke="var(--rule-strong)" stroke-width="1"/>
+        <line x1="210" y1="32" x2="210" y2="40" stroke="var(--terra)" stroke-width="1.5"/>
+        <line x1="300" y1="33" x2="300" y2="39" stroke="var(--ink-mute)" stroke-width="1"/>
+        <line x1="390" y1="32" x2="390" y2="40" stroke="var(--lime)" stroke-width="1.5"/>
+        <text x="210" y="50" text-anchor="middle" style="font-size:8px;fill:var(--terra);font-family:'JetBrains Mono',monospace">−1</text>
+        <text x="300" y="50" text-anchor="middle" style="font-size:8px;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">0</text>
+        <text x="390" y="50" text-anchor="middle" style="font-size:8px;fill:var(--lime);font-family:'JetBrains Mono',monospace">+1</text>
+        <circle cx="354" cy="36" r="4" fill="var(--lime)"/>
+        <circle cx="273" cy="36" r="4" fill="var(--terra)"/>
+        <text x="420" y="22" style="font-size:10px;font-style:italic;fill:var(--ink-mute);font-family:'Fraunces',serif">Svaḥ</text>
+        <text x="420" y="44" style="font-size:14px;font-weight:600;fill:var(--ink);font-family:'DM Sans',sans-serif">Reflection</text>
+        <text x="580" y="14" text-anchor="end" style="font-size:9px;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">w=0.67</text>
+      </g>
+
+      <!-- j=2: Wanting -->
+      <g transform="translate(0, 410)">
+        <rect x="10" y="0" width="180" height="58" fill="rgba(255,107,71,0.15)" stroke="rgba(255,107,71,0.25)" stroke-width="0.5"/>
+        <rect x="190" y="0" width="220" height="58" fill="var(--bg-soft)" stroke="var(--rule)" stroke-width="0.5"/>
+        <rect x="410" y="0" width="180" height="58" fill="rgba(212,255,61,0.15)" stroke="rgba(212,255,61,0.25)" stroke-width="0.5"/>
+        <text x="20" y="22" style="font-size:10px;font-style:italic;fill:var(--ink-mute);font-family:'Fraunces',serif">Vitala</text>
+        <text x="20" y="44" style="font-size:14px;font-weight:600;fill:var(--ink);font-family:'DM Sans',sans-serif">Desire</text>
+        <text x="300" y="18" text-anchor="middle" style="font-size:9px;letter-spacing:0.2em;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">WANTING</text>
+        <line x1="210" y1="36" x2="390" y2="36" stroke="var(--rule-strong)" stroke-width="1"/>
+        <line x1="210" y1="32" x2="210" y2="40" stroke="var(--terra)" stroke-width="1.5"/>
+        <line x1="300" y1="33" x2="300" y2="39" stroke="var(--ink-mute)" stroke-width="1"/>
+        <line x1="390" y1="32" x2="390" y2="40" stroke="var(--lime)" stroke-width="1.5"/>
+        <text x="210" y="50" text-anchor="middle" style="font-size:8px;fill:var(--terra);font-family:'JetBrains Mono',monospace">−1</text>
+        <text x="300" y="50" text-anchor="middle" style="font-size:8px;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">0</text>
+        <text x="390" y="50" text-anchor="middle" style="font-size:8px;fill:var(--lime);font-family:'JetBrains Mono',monospace">+1</text>
+        <circle cx="345" cy="36" r="4" fill="var(--lime)"/>
+        <circle cx="318" cy="36" r="4" fill="var(--terra)"/>
+        <text x="420" y="22" style="font-size:10px;font-style:italic;fill:var(--ink-mute);font-family:'Fraunces',serif">Bhuvaḥ</text>
+        <text x="420" y="44" style="font-size:14px;font-weight:600;fill:var(--ink);font-family:'DM Sans',sans-serif">Aspiration</text>
+        <text x="580" y="14" text-anchor="end" style="font-size:9px;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">w=0.53</text>
+      </g>
+
+      <!-- j=1: Ground -->
+      <g transform="translate(0, 480)">
+        <rect x="10" y="0" width="180" height="58" fill="rgba(255,107,71,0.10)" stroke="rgba(255,107,71,0.20)" stroke-width="0.5"/>
+        <rect x="190" y="0" width="220" height="58" fill="var(--bg-soft)" stroke="var(--rule)" stroke-width="0.5"/>
+        <rect x="410" y="0" width="180" height="58" fill="rgba(212,255,61,0.10)" stroke="rgba(212,255,61,0.20)" stroke-width="0.5"/>
+        <text x="20" y="22" style="font-size:10px;font-style:italic;fill:var(--ink-mute);font-family:'Fraunces',serif">Atala</text>
+        <text x="20" y="44" style="font-size:14px;font-weight:600;fill:var(--ink);font-family:'DM Sans',sans-serif">Confusion</text>
+        <text x="300" y="18" text-anchor="middle" style="font-size:9px;letter-spacing:0.2em;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">GROUND</text>
+        <line x1="210" y1="36" x2="390" y2="36" stroke="var(--rule-strong)" stroke-width="1"/>
+        <line x1="210" y1="32" x2="210" y2="40" stroke="var(--terra)" stroke-width="1.5"/>
+        <line x1="300" y1="33" x2="300" y2="39" stroke="var(--ink-mute)" stroke-width="1"/>
+        <line x1="390" y1="32" x2="390" y2="40" stroke="var(--lime)" stroke-width="1.5"/>
+        <text x="210" y="50" text-anchor="middle" style="font-size:8px;fill:var(--terra);font-family:'JetBrains Mono',monospace">−1</text>
+        <text x="300" y="50" text-anchor="middle" style="font-size:8px;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">0</text>
+        <text x="390" y="50" text-anchor="middle" style="font-size:8px;fill:var(--lime);font-family:'JetBrains Mono',monospace">+1</text>
+        <circle cx="363" cy="36" r="4" fill="var(--lime)"/>
+        <circle cx="336" cy="36" r="4" fill="var(--terra)"/>
+        <text x="420" y="22" style="font-size:10px;font-style:italic;fill:var(--ink-mute);font-family:'Fraunces',serif">Bhūḥ</text>
+        <text x="420" y="44" style="font-size:14px;font-weight:600;fill:var(--ink);font-family:'DM Sans',sans-serif">Embodiment</text>
+        <text x="580" y="14" text-anchor="end" style="font-size:9px;fill:var(--ink-mute);font-family:'JetBrains Mono',monospace">w=0.33</text>
+      </g>
+
+      <!-- legend at bottom -->
+      <g transform="translate(20, 548)">
+        <circle cx="6" cy="0" r="4" fill="var(--lime)"/>
+        <text x="16" y="3" class="annot" style="font-size:9px">high-A agent (e.g. a₁)</text>
+        <circle cx="170" cy="0" r="4" fill="var(--terra)"/>
+        <text x="180" y="3" class="annot" style="font-size:9px">low-A agent (e.g. a₆)</text>
+      </g>
     </svg>
-    <figcaption><span class="fig-num">FIG. 7</span>The awareness spectrum across the agent population. The majority lives between the poles. Consciously aware agents, on the left, are treated as carrying disproportionate power-per-unit-presence — they steer the topology even when they are numerically a minority.</figcaption>
+    <figcaption><span class="fig-num">FIG. 7</span>The seven paired axes of awareness. Each row is one bipolar axis with a negative pole (lower Loka, terracotta) and a positive pole (upper Loka, lime). Two example agents are positioned on each axis: $a_1$ (high awareness) sits in the positive zone of every axis; $a_6$ (low awareness) sits in the negative zone of five of seven axes. The awareness weights $w_j$ increase from Ground (the most local faculty) to Reality-Contact (the most global).</figcaption>
   </figure>
 
-  <p>The empirical claim — and it is empirical, not axiomatic — is that <strong>consciously aware agents hold disproportionate power</strong>, because awareness is itself a multiplier on every other agent capability. An aware agent's needs are more legible, wants are more articulate, and skills are more deployable, because the agent can model the consequences of their own actions inside the simulation.</p>
+  <h3>7.2 The awareness state vector and the 7×7 coupling matrix</h3>
 
-  <p>To establish a better reality across a mixed population — some aware, some not, most in between — we must design the prompting system such that <em>more aware agents hold more power</em>. This is not an ideological claim; it is a stability claim. A population in which low-awareness agents accumulate high power without a corresponding awareness substrate is one in which trust balance fails (see §6), and $P^{\ast}$ collapses regardless of how well-aligned $N, W, S$ otherwise appear.</p>
+  <p>An agent $a_i$'s instantaneous awareness state is a vector on the seven-dimensional hypercube:</p>
+
+  <div class="equation">
+    $$ \mathbf{v}_i \;=\; (v_{i,1}, v_{i,2}, \ldots, v_{i,7}) \;\in\; [-1, +1]^7 $$
+    <span class="eq-num">(10)</span>
+  </div>
+
+  <p>Each component $v_{i,j}$ encodes the agent's position on axis $j$:</p>
+
+  <ul style="list-style:none; padding-left:0; margin: 14px 0 22px;">
+    <li style="padding:6px 0 6px 28px; position:relative; border-bottom:1px dotted var(--rule);">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;top:9px;">▸</span>
+      $v_{i,j} = +1$: full expression of the positive pole (e.g., full Truth on axis $j=7$).
+    </li>
+    <li style="padding:6px 0 6px 28px; position:relative; border-bottom:1px dotted var(--rule);">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;color:var(--terra);font-size:11px;top:9px;">▸</span>
+      $v_{i,j} = -1$: full expression of the negative pole (e.g., full Fear on axis $j=7$).
+    </li>
+    <li style="padding:6px 0 6px 28px; position:relative;">
+      <span style="position:absolute;left:0;font-family:'JetBrains Mono',monospace;color:var(--ink-mute);font-size:11px;top:9px;">▸</span>
+      $v_{i,j} = 0$: the axis is neither engaged positively nor negatively at this moment.
+    </li>
+  </ul>
+
+  <p>This representation honors the structural insight that the lower Lokas are not independent states; they are the shadow expressions of the upper Lokas. An agent in Fear is not occupying a different ladder from an agent in Truth — both are positioned on the <em>same</em> Reality-Contact axis, at opposite poles.</p>
+
+  <p>The axes are not dynamically independent. A collapse of Reality-Contact (Truth → Fear) typically pulls Will (Discipline → Grasping) and Interiority (Reflection → Indulgence) downward with it. We capture this with a per-agent <em>coupling matrix</em> $\mathbf{C}_i \in \mathbb{R}^{7 \times 7}$, where $C_{i,jk}$ is the rate at which a change on axis $j$ propagates to axis $k$. Combined with a diagonal restoring-force matrix $\Gamma_i \in \mathbb{R}^{7\times 7}$ — capturing each axis's tendency to drift toward its baseline — the awareness dynamics are:</p>
+
+  <div class="equation">
+    $$ \dot{\mathbf{v}}_i \;=\; -\Gamma_i\, \mathbf{v}_i \;+\; \mathbf{C}_i\, \mathbf{v}_i \;+\; \mathbf{M}_i\, \mathbf{u}(t) $$
+    <span class="eq-num">(11)</span>
+  </div>
+
+  <p>where $\mathbf{u}(t)$ is the external perturbation (life events, social inputs, internal noise) and $\mathbf{M}_i$ is the agent's perturbation-response matrix. The full awareness state of agent $a_i$ is therefore the triple $(\mathbf{v}_i, \Gamma_i, \mathbf{C}_i)$: position, restoring forces, and cross-axis coupling.</p>
+
+  <p>The empirical structure we claim about $(\Gamma_i, \mathbf{C}_i)$ — testable in observable behavior — involves three asymmetries, each sign-dependent:</p>
+
+  <ol style="list-style:none; padding-left:0; margin: 14px 0 22px;">
+    <li style="padding:10px 0 10px 32px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:11px;font-family:'JetBrains Mono',monospace;color:var(--terra);font-size:11px;letter-spacing:0.1em;">a.</span>
+      <strong>Negative poles absorb.</strong> When $v_{i,j} &lt; 0$, the diagonal entry of $\Gamma_i$ at $j$ is small — the axis sits near its negative pole with weak restoring force toward zero. Pulling out of Fear, Grasping, or Pride is hard precisely because the negative pole is locally stable.
+    </li>
+    <li style="padding:10px 0 10px 32px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:11px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;letter-spacing:0.1em;">b.</span>
+      <strong>Positive poles radiate.</strong> When $v_{i,j} &gt; 0$, the corresponding entry of $\Gamma_i$ is larger — positive states are <em>not</em> permanently stable; they require active maintenance against drift. This is the structural reason an awareness practice requires daily effort and a single bad period collapses progress.
+    </li>
+    <li style="padding:10px 0 10px 32px; position:relative;">
+      <span style="position:absolute;left:0;top:11px;font-family:'JetBrains Mono',monospace;color:var(--terra);font-size:11px;letter-spacing:0.1em;">c.</span>
+      <strong>Falling propagates; rising does not.</strong> The off-diagonal entries of $\mathbf{C}_i$ are sign-asymmetric. A negative shift on one axis propagates negative shifts on others (Fear pulls Grasping downward, which pulls Anger downward, which pulls Pride downward — a cascade). A positive shift propagates weakly. The eigenvalues of $\mathbf{C}_i$ governing negative motion have larger magnitude than those governing positive motion.
+    </li>
+  </ol>
+
+  <p>The three asymmetries together formalize the intuition that <em>falling is easier than rising</em>. They are testable as sign-dependent regressions on observed transition rates in agent-state data. We commit to this in §9.1.</p>
+
+  <h3>7.3 Scalar awareness</h3>
+
+  <p>For the rest of the framework — particularly the manifestation equation in §5 and the OGI loop in §8 — we need a scalar quantity derived from $(\mathbf{v}_i, \mathbf{C}_i)$. We define two.</p>
+
+  <p>The <strong>position-only awareness</strong>, $A(a_i)$, is what OGI estimates from observation:</p>
+
+  <div class="equation">
+    $$ A(a_i) \;=\; \frac{1}{Z} \sum_{j=1}^{7} w_j \cdot \max(0,\, v_{i,j}) $$
+    <span class="eq-num">(12)</span>
+  </div>
+
+  <p>with axis weights:</p>
+
+  <div class="equation">
+    $$ w_j \;=\; \frac{\log(j+1)}{\log 8}, \qquad Z \;=\; \sum_{j=1}^{7} w_j \;\approx\; 5.10 $$
+    <span class="eq-num">(13)</span>
+  </div>
+
+  <p>Two structural choices in this formula are worth stating explicitly. First, the use of $\max(0, v_{i,j})$ — the positive part — encodes the central claim of the framework: <strong>awareness exists only in the positive pole.</strong> Being deep in Fear, Grasping, or Pride does not contribute to awareness; it contributes to the agent's overall <em>state</em>, but not to their awareness. An agent at $v_{i,j} = -1$ on every axis has $A = 0$. An agent at $v_{i,j} = +1$ on every axis has $A = 1$.</p>
+
+  <p>Second, the logarithmic weighting prioritizes the more global faculties. Reality-Contact ($w_7 = 1.00$) and Will ($w_6 = 0.93$) dominate; Ground ($w_1 = 0.33$) and Wanting ($w_2 = 0.53$) matter less per unit positive expression. This reflects the empirical reading that a fully-embodied agent who has no Reality-Contact is less aware than a partially-embodied agent who does. The weighting can be tuned without changing the framework's structure.</p>
+
+  <p>The <strong>coupling-aware awareness</strong>, $A^{*}(a_i)$, is the underlying theoretical quantity:</p>
+
+  <div class="equation">
+    $$ A^{*}(a_i) \;=\; \frac{1}{Z} \sum_{j=1}^{7} w_j \cdot \max(0,\, v_{i,j}) \cdot s_{i,j} $$
+    <span class="eq-num">(14)</span>
+  </div>
+
+  <p>where $s_{i,j} \in [0,1]$ is the stability of axis $j$ for agent $a_i$ in its current positive position — operationally, the magnitude of the diagonal entry of $\Gamma_i$ at $j$ when $v_{i,j} > 0$, suitably normalized. Two agents with identical $\mathbf{v}_i$ may have very different effective awareness: one whose Truth is stable under pressure and one whose Truth collapses into Fear at the first stressor have the same $A$ but very different $A^{*}$. The framework commits to $A^{*}$ as the theoretical quantity and $A$ as the operational proxy.</p>
+
+  <h3>7.4 Observable proxies</h3>
+
+  <p>The framework is empty if it cannot be measured. We propose four behavioral signals, each cheap to observe, which jointly estimate $A(a_i)$ — and the per-axis components $v_{i,j}$ — without claiming to measure "enlightenment" or interior phenomenology:</p>
+
+  <ol style="list-style:none; padding-left:0; margin: 14px 0 22px;">
+    <li style="padding:10px 0 10px 36px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:11px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;letter-spacing:0.15em;">①</span>
+      <strong>Counterfactual articulation.</strong> Agents with high positive Sight and Reflection articulate paths-not-taken and their consequences; agents at the negative poles describe only the actual path. <em>Operationalization:</em> count the distinct counterfactual branches an agent produces when asked about a recent decision. Maps primarily to axes 3 (Interiority) and 4 (Sight).
+    </li>
+    <li style="padding:10px 0 10px 36px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:11px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;letter-spacing:0.15em;">②</span>
+      <strong>Consistency under pressure.</strong> Agents with stable positive Will maintain stated values under stress; agents at the Grasping pole reveal a different value structure when stressed. <em>Operationalization:</em> compare stated and revealed preferences across high-stress and low-stress observation windows. Maps primarily to axis 6 (Will).
+    </li>
+    <li style="padding:10px 0 10px 36px; position:relative; border-bottom:1px solid var(--rule);">
+      <span style="position:absolute;left:0;top:11px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;letter-spacing:0.15em;">③</span>
+      <strong>Time horizon.</strong> Negative poles operate on shorter horizons (Fear → immediate, Pride → near-term reputation); positive poles hold longer arcs. <em>Operationalization:</em> extract the median time-distance of consequences invoked in the agent's own communication. Maps primarily to axes 2 (Wanting) and 7 (Reality-Contact).
+    </li>
+    <li style="padding:10px 0 10px 36px; position:relative;">
+      <span style="position:absolute;left:0;top:11px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:11px;letter-spacing:0.15em;">④</span>
+      <strong>Self-reference.</strong> Agents with positive Interiority and Reality-Contact can describe their own current axis positions when prompted with the framework; agents at the Fear pole cannot — they <em>are</em> the state. <em>Operationalization:</em> test whether an agent can correctly locate themselves on the seven axes when given the basis.
+    </li>
+  </ol>
+
+  <p>None of these is decisive alone. Together they form a behavioral signature that estimates $\mathbf{v}_i$ to within usable precision.</p>
+
+  <p>The empirical claim of §7 can now be stated precisely. <strong>Agents with higher $A(a_i)$ hold disproportionate power</strong>, because awareness is itself a multiplier on every other agent capability. An aware agent's needs are more legible, wants are more articulate, and skills are more deployable, because the agent can model the consequences of their own actions inside the simulation. The claim is empirical and testable: across a matched population, $A(a_i)$ should correlate with network influence controlling for resources and tenure. We commit to this in §9.1.</p>
+
+  <p>To establish a better reality across a mixed population — some with $A$ near 1, some near 0, most between — we must design the prompting system such that <em>more aware agents hold more power</em>. This is not an ideological claim; it is a stability claim. A population in which low-$A$ agents accumulate high power without a corresponding awareness substrate is one in which trust balance fails (§6) and $P^{\ast}$ collapses regardless of how well-aligned $N, W, S$ otherwise appear.</p>
 
   <div class="case">
-    <div class="case-label">Helix · The Team on the Awareness Spectrum</div>
-    <p>Locating the Helix agents on Figure 7: $a_1, a_2, a_5, a_7$ cluster on the aware side. They read Helix strategically — as a class of product bet, a category move, a return profile — rather than as a discrete operational change. $a_4$ (HoP) is well into the aware zone; he is the most fluent reader of the simulation among the operating team.</p>
-    <p>$a_3$ (VP Eng) lives in the middle of the spectrum. His awareness is high in his own domain (engineering org design) and lower outside it (product strategy, GTM economics). $a_6$ (GTM) is the lowest-awareness agent in the operating set — not because he is less capable, but because his reading of the company is dominated by one variable (revenue rate) and he models other agents primarily through their impact on that variable. This is what makes him simultaneously high-power and low-awareness, the configuration the framework flags as the largest risk surface.</p>
-    <p>The intervention strategy is correspondingly differentiated. Prompts to $a_2$ and $a_5$ can be <em>frames</em> — abstract, future-tense, value-laden — because high-awareness agents will integrate frames into their own model. Prompts to $a_6$ must be <em>numbers</em> — concrete, present-tense, fungible — because the simulation he reads is denominated in dollars. The same imagined reality is being argued for in both cases; the carrier is different.</p>
+    <div class="case-label">Helix · The Team on the Seven Axes</div>
+    <p>The seven-axis representation makes the Helix team's awareness profile sharper than the v0.3 "spectrum" reading allowed. We give each agent's position vector $\mathbf{v}_i \in [-1,+1]^7$ in the standard axis order $(j=1\ldots7)$: <em>Ground, Wanting, Interiority, Sight, Generative, Will, Reality-Contact</em>.</p>
+
+    <p><strong>$a_1$ (CEO).</strong> $\mathbf{v}_1 \approx (+0.7,\, +0.5,\, +0.6,\, +0.8,\, +0.7,\, +0.6,\, +0.7)$. Positive across every axis. Strongest on Sight (Insight reading the market) and Reality-Contact (Truth-oriented, not Fear-driven). $A(a_1) \approx 0.66$.</p>
+
+    <p><strong>$a_2$ (CTO).</strong> $\mathbf{v}_2 \approx (+0.5,\, +0.3,\, +0.4,\, -0.2,\, +0.5,\, +0.4,\, +0.5)$. <em>Negative on Sight</em> — eighteen months of operational overhead has shifted his Sight axis toward Pride: he sees his own frustration more clearly than he sees the strategic landscape. Positive elsewhere but his Will axis is degraded from Discipline toward neutral. $A(a_2) \approx 0.48$.</p>
+
+    <p><strong>$a_3$ (VP Engineering).</strong> $\mathbf{v}_3 \approx (+0.4,\, +0.2,\, +0.1,\, -0.3,\, 0,\, -0.4,\, +0.1)$. <em>Negative on Will</em> (Grasping the engineering domain he wants to own) and <em>negative on Sight</em> (Pride about his role boundaries). Wanting axis tilts toward Aspiration but not strongly. $A(a_3) \approx 0.22$.</p>
+
+    <p><strong>$a_5$ (Lead Designer).</strong> $\mathbf{v}_5 \approx (+0.6,\, +0.5,\, +0.7,\, +0.6,\, +0.8,\, +0.5,\, +0.4)$. Strongest on Generative (Creation flows through him), high on Interiority. $A(a_5) \approx 0.62$.</p>
+
+    <p><strong>$a_6$ (Head of GTM).</strong> $\mathbf{v}_6 \approx (+0.4,\, +0.2,\, -0.3,\, -0.5,\, -0.3,\, -0.4,\, -0.4)$. <em>Negative on five of seven axes.</em> Mildly embodied and aspirational on the lower axes; Indulgence rather than Reflection on Interiority; Pride collapse on Sight; Anger on Generative; Grasping on Will; Fear on Reality-Contact. Not because he is less capable — because his coupling matrix $\mathbf{C}_6$ has activated the cascade described in §7.2(c): the perceived Helix threat propagated downward through five axes simultaneously. $A(a_6) \approx 0.05$.</p>
+
+    <p>The intervention strategy follows directly from the axis profiles. Prompts to high-$A$ agents ($a_1, a_5$) can be <em>frames</em> — abstract, future-tense, value-laden — because their Reality-Contact and Sight axes are positive and stable, so frames integrate into their model without first triggering a defensive collapse. Prompts to low-$A$ agents ($a_6$) must be <em>numbers</em> — concrete, present-tense, fungible — because his Reality-Contact axis is at Fear and any frame would be filtered through threat-detection before reaching cognition. Numbers reach the Ground axis (which is still positive for him) without being filtered through Fear.</p>
+
+    <p>The CTO ($a_2$) is the most delicate case. His Sight axis is negative (Pride-collapse), but his other axes are positive. A prompt that engages the positive axes (Reality-Contact, Generative) while not requiring him to surrender Pride on the Sight axis is the workable intervention — which is exactly what P-01 in §8.3 does (reframe Helix as the technical-frontier project he has authority over, rather than asking him to admit he was wrong about delegation).</p>
   </div>
 </section>
-
 <!-- ═══════════════════════ §8 ════════════════════════ -->
 <section id="s8">
   <h2><span class="section-num">§08</span>Orthogonal General Intelligence</h2>
@@ -1582,38 +2142,75 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
 
 <!-- ═══════════════════════ §9 ════════════════════════ -->
 <section id="s9">
-  <h2><span class="section-num">§09</span>A Roadmap of Experiments</h2>
+  <h2><span class="section-num">§09</span>Falsifiability &amp; Experimental Roadmap</h2>
 
-  <p>This is a working paper, not a finished theory. The following experiments would each, if performed cleanly, falsify or sharpen a specific claim above. They are ordered roughly by tractability.</p>
+  <p>This is a working paper, not a finished theory. A paper that does not name what would refute it is not yet a working paper. We therefore proceed in two parts: §9.1 commits, in advance, to the conditions under which each major claim of this framework should be retracted or revised; §9.2 specifies six experiments that — performed cleanly — would test each condition.</p>
+
+  <h3>9.1 Falsification conditions</h3>
+
+  <p>Six load-bearing claims; six kill conditions. Five are testable cheaply without building the OGI system. The sixth requires the system to exist.</p>
+
+  <ol class="falsify">
+    <li>
+      <span class="claim-label">P1 · Value compounding (§4 + §4.1)</span>
+      <p><em>Falsified if:</em> the asymptotic compounding coefficient $\alpha_\infty(\mathbf{x})$ shows no positive correlation with the local positive-edge density $\rho_+(\mathbf{x})$ across a population of agent neighborhoods — or worse, correlates negatively. Value compounding through positive trust topology is the central claim of Postulate 1; absence of the correlation kills it. A weaker but related falsifier: if the negativity multiplier $\gamma$ recovers as $\gamma \approx 1$ in empirical fits, the asymmetric weight of negative interactions is wrong as stated.</p>
+    </li>
+    <li>
+      <span class="claim-label">P2 · Net-loop closure (§4)</span>
+      <p><em>Falsified if:</em> coordination outcomes in triadic and larger sub-networks track pairwise sign rather than net-loop sign. If a triad with one negative pairwise edge fails at the same rate as a triad with all-negative edges, controlling for net-loop sign, the postulate is wrong. Tested by EXP-01.</p>
+    </li>
+    <li>
+      <span class="claim-label">H1 · Trust asymmetry under power (§6)</span>
+      <p><em>Falsified if:</em> defection rates in trust networks are independent of the power differential between defector and target. If agents break the trust of higher-power agents at the same rate as lower-power agents — controlling for proximity, opportunity, and resource gain from defection — the heuristic is wrong. Tested by EXP-03.</p>
+    </li>
+    <li>
+      <span class="claim-label">H2 · Awareness–power coupling (§7)</span>
+      <p><em>Falsified if:</em> across a matched population, the measured $A(a_i)$ — using the four behavioral proxies of §7.4 — shows no correlation with network influence (decision-routing centrality, cascade-origination rate, opinion-shift coefficients), controlling for resources and tenure. This is the most exposed claim in the framework and therefore the one most worth committing to in advance. A separate falsifier for the seven-axis Loka basis itself: if the recovered coupling matrix $\mathbf{C}_i$ and restoring-force matrix $\Gamma_i$ from behavioral data fail to exhibit the three sign-dependent asymmetries claimed in §7.2 — (a) negative poles absorb, (b) positive poles radiate, (c) falling propagates while rising does not — the basis is wrong as a model of awareness dynamics even if the seven-axis taxonomy is preserved as a static classification. A still-narrower falsifier specific to the pairing claim: if the empirical correlation matrix between Loka-pair complements (Fear↔Truth, Grasping↔Discipline, etc.) does not show strong negative correlation, the bipolar structure is wrong and the basis collapses back to 14 independent states. Tested by EXP-04.</p>
+    </li>
+    <li>
+      <span class="claim-label">E1 · The manifestation equation (§5)</span>
+      <p><em>Falsified if:</em> $P^{\ast}$ values computed from observed $(N, W, S)$ trajectories show no predictive validity for whether a coordination effort completes, on held-out data. The element-wise specialization adopted in §5.1 may need revision; the <em>form</em> of the equation is what is being tested, not its specific scalar instantiation. Tested by EXP-05.</p>
+    </li>
+    <li>
+      <span class="claim-label">S1 · The OGI loop (§8)</span>
+      <p><em>Falsified if:</em> interventions emitted by the OBS → MODEL → GAP → PROMPT loop produce no measurable shift in coordination outcomes compared to no-intervention controls. This requires the system to exist, and is therefore the most expensive test — but the most decisive. Tested by EXP-06.</p>
+    </li>
+  </ol>
+
+  <p>Note the structure: falsification at the framework level (E1, S1) is downstream of falsification at the postulate and heuristic level (P1, P2, H1, H2). A researcher who reproduced our work should encounter falsifiers from top to bottom. If P1 or P2 fails, much of §4 and §5 must be revised before E1 is even meaningful to test. We treat this dependency structure as the framework's research plan, not as a weakness — a working paper is supposed to be falsifiable in pieces, not all at once.</p>
+
+  <h3>9.2 Experimental roadmap</h3>
+
+  <p>Six experiments, each mapped to one or more of the falsification conditions above. Ordered roughly by tractability.</p>
 
   <ol style="list-style:none; padding-left:0; counter-reset:exp; margin: 28px 0;">
     <li style="counter-increment:exp; padding:16px 0 16px 64px; position:relative; border-bottom:1px solid var(--rule);">
       <span style="position:absolute;left:0;top:18px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:10px;letter-spacing:0.15em;">EXP-01</span>
-      <strong>Net-loop closure in small coordination games.</strong> Construct triads with one negative edge and measure whether shared objectives still complete at the rate predicted by Postulate 2. Hypothesis: completion rate tracks net-loop sign, not pairwise sign.
+      <strong>Net-loop closure in small coordination games.</strong> <em>(Tests P2.)</em> Construct triads and larger sub-networks with one negative pairwise edge and measure whether shared objectives complete at the rate predicted by Postulate 2. Hypothesis: completion rate tracks net-loop sign, not pairwise sign.
     </li>
     <li style="counter-increment:exp; padding:16px 0 16px 64px; position:relative; border-bottom:1px solid var(--rule);">
       <span style="position:absolute;left:0;top:18px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:10px;letter-spacing:0.15em;">EXP-02</span>
-      <strong>Need-to-want reframing under vision.</strong> Show that under a sufficiently articulated long-horizon vision, agents tolerate unmet needs at higher rates than control. This tests the soft conversion mechanism in §3.
+      <strong>α-coefficient correlation with trust topology.</strong> <em>(Tests P1.)</em> In observational data from coordination efforts, measure the realized $V^{\ast}/V$ ratio at agents at varying graph-distance from a value source, against the local $\rho_+, \rho_-$ density. Fit the parametric form of equations (5)–(7) and recover $\gamma$. Hypothesis: $\gamma \in [3,5]$ and $\alpha_\infty$ correlates positively with $\rho_+$, negatively with $\rho_-$.
     </li>
     <li style="counter-increment:exp; padding:16px 0 16px 64px; position:relative; border-bottom:1px solid var(--rule);">
       <span style="position:absolute;left:0;top:18px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:10px;letter-spacing:0.15em;">EXP-03</span>
-      <strong>Trust asymmetry under power gradient.</strong> Measure the rate of trust-breaking actions as a function of the power differential. Hypothesis (per §6): defection rate decreases monotonically as the target's power exceeds the actor's.
+      <strong>Trust asymmetry under power gradient.</strong> <em>(Tests H1.)</em> Measure the rate of trust-breaking actions as a function of the power differential between defector and target. Hypothesis: defection rate decreases monotonically as the target's power exceeds the actor's.
     </li>
     <li style="counter-increment:exp; padding:16px 0 16px 64px; position:relative; border-bottom:1px solid var(--rule);">
       <span style="position:absolute;left:0;top:18px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:10px;letter-spacing:0.15em;">EXP-04</span>
-      <strong>Awareness as power-multiplier.</strong> Across a matched population, measure whether self-reported and behaviorally-validated awareness predicts disproportionate network influence, controlling for resources.
+      <strong>Awareness as power-multiplier · Seven-axis Loka basis validation.</strong> <em>(Tests H2.)</em> Across a matched population, compute $A(a_i)$ from the four behavioral proxies of §7.4 and measure correlation with network influence, controlling for resources. Separately, (i) recover the coupling matrix $\mathbf{C}_i$ and restoring-force matrix $\Gamma_i$ from observed state-to-state transitions and test the three sign-dependent asymmetries claimed in §7.2; (ii) compute the empirical correlation matrix between Loka-pair complements (Fear↔Truth, Grasping↔Discipline, Anger↔Creation, Pride↔Insight, Indulgence↔Reflection, Desire↔Aspiration, Confusion↔Embodiment) and verify the negative-correlation prediction.
     </li>
     <li style="counter-increment:exp; padding:16px 0 16px 64px; position:relative; border-bottom:1px solid var(--rule);">
       <span style="position:absolute;left:0;top:18px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:10px;letter-spacing:0.15em;">EXP-05</span>
-      <strong>Manifestation probability calibration.</strong> Build a $P^{\ast}$ estimator from observed $N, W, S$ trajectories in completed and abandoned coordination efforts. Test out-of-sample predictive validity.
+      <strong>Manifestation probability calibration.</strong> <em>(Tests E1.)</em> Build a $P^{\ast}$ estimator from observed $(N, W, S)$ trajectories in completed and abandoned coordination efforts. Test out-of-sample predictive validity. Compare the element-wise form (used in §5.1) against alternative scalar specializations.
     </li>
     <li style="counter-increment:exp; padding:16px 0 16px 64px; position:relative;">
       <span style="position:absolute;left:0;top:18px;font-family:'JetBrains Mono',monospace;color:var(--lime);font-size:10px;letter-spacing:0.15em;">EXP-06</span>
-      <strong>End-to-end OGI loop, narrow domain.</strong> Deploy the OBS → MODEL → GAP → PROMPT loop on a small bounded coordination problem (e.g., a 12-agent founding team converging on a product direction). Measure $P^{\ast}$ before and after.
+      <strong>End-to-end OGI loop, narrow domain.</strong> <em>(Tests S1.)</em> Deploy the OBS → MODEL → GAP → PROMPT loop on a small bounded coordination problem (e.g., a 7–12 agent founding team converging on a product direction; cf. the Helix case in §3.1). Measure $P^{\ast}$ before and after intervention, with no-intervention controls.
     </li>
   </ol>
 
-  <p>Of these, EXP-01 and EXP-03 are the cheapest and the most informative. They should be done first. EXP-06 is the only one that requires the OGI implementation itself; the others can be run as observational or small-scale prospective studies.</p>
+  <p>Of these, EXP-01, EXP-02, and EXP-03 are the cheapest and the most informative — they each test a postulate or heuristic on observational or small-scale data, no system required. EXP-04 is the highest-stakes test for the framework's most original section. EXP-06 is the only experiment that requires the OGI implementation itself.</p>
 </section>
 
 <!-- ═══════════════════════ §10 ════════════════════════ -->
@@ -1637,7 +2234,7 @@ We proceed from the hypothesis that perceived reality is a simulation, and that 
 <!-- ─────────────────────── FOOTER ────────────────────── -->
 <footer>
   <span>OGI / 001 · WORKING PAPER</span>
-  <span class="lime">v0.2 · DRAFT</span>
+  <span class="lime">v0.4 · DRAFT</span>
 </footer>
 
 </div>
